@@ -1,10 +1,16 @@
-FROM docker.io/library/maven:3.8.2-openjdk-17
+FROM docker.io/library/maven:3.8.4-openjdk-17
 
 WORKDIR /opt/pis-backend
-COPY ./pom.xml .
-# COPY ./mvnw .
-# RUN /usr/local/bin/mvn-entrypoint.sh mvn dependency:go-offline
-RUN mvn dependency:go-offline
+COPY . .
+
+RUN /usr/local/bin/mvn-entrypoint.sh mvn dependency:go-offline \
+    && /usr/local/bin/mvn-entrypoint.sh mvn clean \
+    && /usr/local/bin/mvn-entrypoint.sh mvn install \
+    && /usr/local/bin/mvn-entrypoint.sh mvn liberty:package \
+    && /usr/local/bin/mvn-entrypoint.sh mvn liberty:install-feature
+
+RUN microdnf install vi -y
+
 EXPOSE 5000
 
-CMD ["./mvnw", "liberty:dev"]
+CMD ["mvn", "liberty:dev", "-DskipTests=true"]

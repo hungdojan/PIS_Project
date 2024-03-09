@@ -12,7 +12,7 @@ build: compose.yaml
 
 # start containers
 up: compose.yaml ./pis-backend/.mvn/
-	$(ENGINE)-compose up --detach
+	$(ENGINE)-compose up
 
 # stop containers
 down: compose.yaml
@@ -86,5 +86,5 @@ db_cli:
 	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pisdb -uroot -p
 
 ./pis-backend/.mvn/:
-	$(ENGINE) run -v ./pis-backend/:/tmp/data/:z docker.io/library/maven:3.8.3-openjdk-17 \
+	$(ENGINE) run -v ./pis-backend/:/tmp/data/:z docker.io/library/maven:3.8.4-openjdk-17 \
 		bash -c "cd /tmp/data && mvn -N wrapper:wrapper"
