@@ -1,0 +1,71 @@
+version: '3.8'
+name: pis-project
+
+services:
+  database:
+    build:
+      context: ./config/mariadb/
+      dockerfile: Containerfile
+    environment:
+      MARIADB_ROOT_PASSWORD: pis-database
+      MARIADB_DATABASE: pis-db
+    networks:
+      - db_net
+    ports:
+      - 3306:3306
+    volumes:
+      - db_volume:/var/lib/mysql:z  # persistent data
+      # non-persistent data
+      # - ./config/mariadb/init_scripts/:/docker-entrypoint-initdb.d/:ro
+
+  backend:
+    build:
+      context: ./pis-backend/
+      dockerfile: Containerfile
+    depends_on:
+      - database
+    environment: {}
+    networks:
+      - fe_net
+      - db_net
+    ports:
+      - 5000:5000
+    restart: on-failure
+    volumes:
+      - ./pis-backend/:/opt/pis-backend:z
+
+  frontend:
+    build:
+      context: ./pis-frontend
+      dockerfile: Containerfile
+    depends_on:
+      - backend
+    environment: {}
+    networks:
+      - fe_net
+    ports:
+      - 3000:3000
+    restart: on-failure
+    volumes:
+      - ./pis-frontend:/opt/pis-frontend:z
+
+  nginx_proxy:
+    build:
+      context: ./config/nginx/
+      dockerfile: Containerfile
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - fe_net
+    ports:
+      - 8080:80
+    volumes:
+      - ./config/nginx/nginx-conf.d/:/etc/nginx/conf.d/:z
+
+networks:
+  db_net:
+  fe_net:
+
+volumes:
+  db_volume:

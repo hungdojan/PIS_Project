@@ -1,0 +1,8 @@
+FROM docker.io/library/mariadb:10.6
+
+COPY ./init_scripts/ /docker-entrypoint-initdb.d/
+
+ENV MARIADB_ROOT_PASSWORD=pis-database
+ENV MARIADB_DATABASE=PIS_DB
+
+EXPOSE 3306

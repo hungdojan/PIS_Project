@@ -1,0 +1,10 @@
+FROM docker.io/library/maven:3.8.2-openjdk-17
+
+WORKDIR /opt/pis-backend
+COPY ./pom.xml .
+# COPY ./mvnw .
+# RUN /usr/local/bin/mvn-entrypoint.sh mvn dependency:go-offline
+RUN mvn dependency:go-offline
+EXPOSE 5000
+
+CMD ["./mvnw", "liberty:dev"]
