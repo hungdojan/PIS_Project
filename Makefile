@@ -11,7 +11,7 @@ build: compose.yaml
 	$(ENGINE)-compose build
 
 # start containers
-up: compose.yaml ./pis-backend/.mvn/
+up: compose.yaml
 	$(ENGINE)-compose up
 
 # stop containers
@@ -19,15 +19,15 @@ down: compose.yaml
 	$(ENGINE)-compose down
 
 # remove all images, networks and volumes related to this project
-prune: clear_db clear_net
+prune: down clear_db clear_net
 	@echo -n "Do you want to remove installed data? [y/N]"; \
 	read -n 1 -r; \
 	echo ""; \
 	if [[ "$$REPLY" =~ ^[Yy]$$ ]]; then \
 		for i in $$($(ENGINE) images --format 'table {{.Repository}}' | grep $(PREFIX);); do \
-			$(ENGINE) rmi $$i; \
+			$(ENGINE) rmi $$i --force; \
 		done; \
-		$(ENGINE) rmi nginx node maven mariadb; \
+		$(ENGINE) rmi nginx node maven mariadb --force; \
 	fi
 	$(ENGINE) image prune -f
 
@@ -80,11 +80,12 @@ status:
 
 # ======================
 # utility commands
-.PHONY: db_cli
+.PHONY: db_cli gen_mvnw
 
 db_cli:
 	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pisdb -uroot -p
 
-./pis-backend/.mvn/:
+# generate maven-wrapper to run backend locally without maven
+get_mvnw:
 	$(ENGINE) run -v ./pis-backend/:/tmp/data/:z docker.io/library/maven:3.8.4-openjdk-17 \
 		bash -c "cd /tmp/data && mvn -N wrapper:wrapper"
