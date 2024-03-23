@@ -1,5 +1,5 @@
 NAME=architecture
-TARGET=$(NAME).pdf
+TARGET=xdohun00
 
 .PHONY: all pack clean run
 
@@ -9,7 +9,7 @@ run:
 	podman run --rm -it -v .:/data blang/latex:latest make
 
 $(TARGET): $(NAME).tex
-	pdflatex $<
+	pdflatex -jobname=$@ $<
 
 clean:
-	rm -f $(NAME).{aux,out,log,pdf,ps,dvi,toc} *.zip
+	rm -f *.{aux,out,log,ps,dvi,toc} *.zip $(TARGET).pdf
