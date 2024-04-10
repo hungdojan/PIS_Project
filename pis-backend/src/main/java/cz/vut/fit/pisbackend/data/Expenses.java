@@ -1,0 +1,82 @@
+package cz.vut.fit.pisbackend.data;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+import java.util.Date;
+
+@Entity
+@Table(name = "Expenses")
+public class Expenses {
+    @Id
+    private long id;
+    private float price;
+    private Date time;
+    private String type;
+    private String description;
+    @ManyToOne
+    private Employee createdBy;
+    @ManyToOne
+    private Employee orderedFrom;
+
+    public Expenses() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Employee getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Employee createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Employee getOrderedFrom() {
+        return orderedFrom;
+    }
+
+    public void setOrderedFrom(Employee orderedFrom) {
+        this.orderedFrom = orderedFrom;
+    }
+}
