@@ -13,4 +13,14 @@
     <httpEndpoint id="defaultHttpEndpoint" host="*" httpPort="5000" httpsPort="5443" />
 
     <webApplication location="pis-backend.war" contextRoot="/"/>
+
+         <library id="jdbcLib">
+    <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
+</library>
+
+    <dataSource jndiName="jdbc/demo">
+        <jdbcDriver libraryRef="jdbcLib"/>
+        <properties url="jdbc:mariadb://database:3306/pis-db" user="root" password="pis-database"/>
+    </dataSource>
+
 </server>
