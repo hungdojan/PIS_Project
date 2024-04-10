@@ -89,3 +89,7 @@ db_cli:
 get_mvnw:
 	$(ENGINE) run -v ./pis-backend/:/tmp/data/:z docker.io/library/maven:3.8.4-openjdk-17 \
 		bash -c "cd /tmp/data && mvn -N wrapper:wrapper"
+
+# update frontend
+update_fe:
+	@$(ENGINE) exec $(PREFIX)_frontend_1 npm install
