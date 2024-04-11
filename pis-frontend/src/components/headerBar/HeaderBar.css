@@ -1,0 +1,12 @@
+.header-navbar {
+    background-color: rgb(75, 73, 196);
+}
+
+.navbar-brand {
+    color: white;
+    font-size: 30px;
+}
+
+.header-navbar .me-auto .nav-link {
+    color: white;
+}

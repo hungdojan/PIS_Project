@@ -1,1 +1,0 @@
-podman pull docker.io/blang/latex:latest
