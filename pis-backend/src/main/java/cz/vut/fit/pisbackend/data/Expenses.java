@@ -2,6 +2,7 @@ package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -16,10 +17,11 @@ public class Expenses {
     private Date time;
     private String type;
     private String description;
+
     @ManyToOne
     private Employee createdBy;
     @ManyToOne
-    private Employee orderedFrom;
+    private Company orderedFrom;
 
     public Expenses() {
     }
@@ -72,11 +74,11 @@ public class Expenses {
         this.createdBy = createdBy;
     }
 
-    public Employee getOrderedFrom() {
+    public Company getOrderedFrom() {
         return orderedFrom;
     }
 
-    public void setOrderedFrom(Employee orderedFrom) {
+    public void setOrderedFrom(Company orderedFrom) {
         this.orderedFrom = orderedFrom;
     }
 }

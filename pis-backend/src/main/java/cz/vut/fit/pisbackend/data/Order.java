@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
-@Table(name = "Order")
+@Entity(name = "Order_")
+@Table(name = "Order_")
 public class Order {
     @Id
     private long id;
-    private Date time;
+    private Date atTime;
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
@@ -38,12 +38,12 @@ public class Order {
         this.id = id;
     }
 
-    public Date getTime() {
-        return time;
+    public Date getAtTime() {
+        return atTime;
     }
 
-    public void setTime(Date time) {
-        this.time = time;
+    public void setTime(Date atTime) {
+        this.atTime = atTime;
     }
 
     public Boolean getPrepared() {

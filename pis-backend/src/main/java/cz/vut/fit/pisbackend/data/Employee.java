@@ -1,13 +1,15 @@
 package cz.vut.fit.pisbackend.data;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity
+@Entity(name = "Employee")
 @Table(name = "Employee")
 public class Employee {
     @Id
@@ -15,10 +17,13 @@ public class Employee {
     private String login;
     private String password;
     private String role;
+
     @OneToMany(mappedBy = "createdBy")
     private Collection<Expenses>  expenses;
+
     @OneToMany(mappedBy = "createdBy")
     private Collection<Reservation>  reservations;
+
     public Employee(){
         expenses = new ArrayList<>();
         reservations = new ArrayList<>();

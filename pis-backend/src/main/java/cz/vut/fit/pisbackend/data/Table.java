@@ -8,8 +8,8 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity
-@jakarta.persistence.Table(name = "Table")
+@Entity(name = "Tablee")
+@jakarta.persistence.Table(name = "Tablee")
 public class Table {
     @Id
     private long id;

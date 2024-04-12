@@ -13,9 +13,11 @@ import java.util.Date;
 public class Reservation {
     @Id
     private long id;
-    private Date from;
+    private Date at;
     private Date until;
     private String name;
+
+    @Column(name = "new_name_with_keywords")
     private int count;
     private String phone;
     private String email;
@@ -39,12 +41,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public Date getFrom() {
-        return from;
+    public Date getAt() {
+        return at;
     }
 
-    public void setFrom(Date from) {
-        this.from = from;
+    public void setAt(Date at) {
+        this.at = at;
     }
 
     public Date getUntil() {

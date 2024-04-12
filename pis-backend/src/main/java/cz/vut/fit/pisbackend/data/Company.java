@@ -2,13 +2,14 @@ package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity
+@Entity(name = "Company")
 @Table(name = "Company")
 public class Company {
     @Id
@@ -16,8 +17,10 @@ public class Company {
     private String name;
     private String phone;
     private String owner;
+
     @OneToMany(mappedBy = "orderedFrom")
     private Collection<Expenses> expenses;
+
     public Company(){
         expenses = new ArrayList<>();
     }
