@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+    <persistence-unit name="jpa-unit" transaction-type="JTA">
+        <jta-data-source>jdbc/demo</jta-data-source>
+        <class>cz.vut.fit.pisbackend.data.Company</class>
+        <class>cz.vut.fit.pisbackend.data.Drink</class>
+        <class>cz.vut.fit.pisbackend.data.Employee</class>
+        <class>cz.vut.fit.pisbackend.data.Expenses</class>
+        <class>cz.vut.fit.pisbackend.data.Food</class>
+        <class>cz.vut.fit.pisbackend.data.Menu</class>
+        <class>cz.vut.fit.pisbackend.data.Order</class>
+        <class>cz.vut.fit.pisbackend.data.Reservation</class>
+        <class>cz.vut.fit.pisbackend.data.Room</class>
+        <class>cz.vut.fit.pisbackend.data.Table</class>
+        <properties>
+            <property name="jakarta.persistence.schema-generation.database.action"
+                      value="create"/>
+            <property name="jakarta.persistence.schema-generation.scripts.action"
+                      value="create"/>
+            <property name="jakarta.persistence.schema-generation.scripts.create-target"
+                      value="createDDL.ddl"/>
+        </properties>
+    </persistence-unit>
+</persistence>
