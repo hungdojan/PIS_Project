@@ -19,6 +19,8 @@
     color: white;
     font-size: 22px;
     padding: 10px 40px;
+    display: block;
+    width: 300px;
 }
 
 .btn-reservation:hover, .btn-reservation:active{

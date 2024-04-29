@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import './FooterBar.css';
-import {FaFacebook, FaInstagram} from "react-icons/fa";
+import {FaFacebook, FaInstagram, FaPhone, FaAt} from "react-icons/fa";
 import {FaXTwitter} from "react-icons/fa6";
 
 
@@ -17,8 +17,8 @@ const FooterBar = () => {
           <Col sm={6} md={3}>
             <h5>Contact Us</h5>
             <p>Božetěchova 1/2, 612 00<br/>Brno-Královo Pole</p>
-            <p>info@restaurant.com</p>
-            <p>541 141 298</p>
+            <p><FaAt/>&nbsp;&nbsp;info@restaurant.com</p>
+            <p><FaPhone/>&nbsp;&nbsp;+420 541 141 298</p>
           </Col>
           <Col sm={7} md={4}>
             <h5>Opening Hours</h5>

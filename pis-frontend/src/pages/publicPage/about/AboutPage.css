@@ -1,0 +1,18 @@
+.restaurant-image {
+    content:url("../../../../public/restaurant_interior.jpg");
+    width: 55%;
+}
+
+.card-about{
+    background-color: #ffffff13;
+    color: white;
+    text-align: left;
+}
+
+.card-text {
+    font-size: 18px;
+}
+
+.about-container {
+    text-align: center;
+}

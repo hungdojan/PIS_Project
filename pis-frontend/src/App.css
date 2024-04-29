@@ -1,3 +1,10 @@
+:root {
+    --primary-color: #99bd2a;
+    --secondary-color: #ffa600;
+    --primary-bg-color: #080808;
+    --primary-color-dark: #6f8c14;
+}
+
 .box {
     background-color: #3434d680;
 }

@@ -7,48 +7,46 @@ import './HomePage.css';
 
 const HomePage = () => {
   return (
-    <>
-      <Container className="main-container">
-        <h1>Welcome to our Restaurant!</h1>
-        <Row className="mt-5">
-          <Col>
-            <Card className="card-daily-offer">
-              <Card.Body>
-                <Card.Title>Daily Offer</Card.Title>
-                <Card.Text>
-                  <Row>
-                    <Col md={3}>
-                      Menu 1:
-                    </Col>
-                    <Col md={9}>
-                      Fried Chicken with Caesar Salad
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={3}>
-                      Menu 2:
-                    </Col>
-                    <Col md={9}>
-                      Spaghetti Carbonara with Garlic Bread
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={3}>
-                      Today's Special:
-                    </Col>
-                    <Col md={9}>
-                      Grilled Salmon with Seasonal Vegetables
-                    </Col>
-                  </Row>
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+    <Container className="main-container">
+      <h1>Welcome to our Restaurant!</h1>
+      <Row className="mt-5">
+        <Col>
+          <Card className="card-daily-offer">
+            <Card.Body>
+              <Card.Title>Daily Offer</Card.Title>
+              <Card.Text>
+                <Row>
+                  <Col md={3}>
+                    Menu 1:
+                  </Col>
+                  <Col md={9}>
+                    Fried Chicken with Caesar Salad
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={3}>
+                    Menu 2:
+                  </Col>
+                  <Col md={9}>
+                    Spaghetti Carbonara with Garlic Bread
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={3}>
+                    Today's Special:
+                  </Col>
+                  <Col md={9}>
+                    Grilled Salmon with Seasonal Vegetables
+                  </Col>
+                </Row>
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
 
-        <Button className="btn-reservation">Create a reservation</Button>
-      </Container>
-    </>
+      <a href="/reservation" className="btn btn-primary btn-reservation" role="button">Create&nbsp;a&nbsp;reservation</a>
+    </Container>
   );
 };
 

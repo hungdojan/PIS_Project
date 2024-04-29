@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { PublicPage, HomePage, MenuPage, ReservationPage } from './pages/publicPage';
+import { PublicPage, HomePage, MenuPage, ReservationPage, AboutPage } from './pages/publicPage';
 import StaffPage from './pages/staffPage';
 import LoginPage from './pages/login';
 import ManagerPage from './pages/managerPage';
@@ -14,6 +14,7 @@ const App = () => {
         <Route path="/" element={<PublicPage />}>
           <Route path="menu" element={<MenuPage />} />
           <Route path="reservation" element={<ReservationPage />} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="/" element={<HomePage />} />
         </Route>
         <Route path="login" element={<LoginPage />} />
