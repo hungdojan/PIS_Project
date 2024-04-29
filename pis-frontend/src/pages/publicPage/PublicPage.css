@@ -1,9 +1,3 @@
-:root {
-    --primary-color: #99bd2a;
-    --secondary-color: #ffa600;
-    --primary-bg-color: #080808;
-    --primary-color-dark: #6f8c14;
-}
 #root{
     height: 100%;
 }
@@ -35,17 +29,13 @@ html {
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     filter: brightness(50%);
 
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: -1;
-}
-
-.main {
-    height: 100%;
 }
 
 /* -------------------------- Main container CSS -------------------------- */

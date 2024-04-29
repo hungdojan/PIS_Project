@@ -1,0 +1,27 @@
+.card-food {
+    background-color: #ffffff17;
+}
+
+.category {
+    color: var(--primary-color) !important;
+}
+
+.food-name {
+    color: var(--secondary-color);
+}
+
+.food-text {
+    color: white;
+}
+
+.right-info {
+    text-align: right;
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*justify-content: space-between;*/
+}
+
+.food-price {
+    color: var(--secondary-color);
+    font-size: 19px;
+}

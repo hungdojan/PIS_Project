@@ -34,9 +34,8 @@ const HeaderBar = () => {
           <Nav className="mx-auto">
             <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'active nav-link' : 'nav-link'}>Home</Nav.Link>
             <Nav.Link as={Link} to="/menu" className={location.pathname === '/menu' ? 'active nav-link' : 'nav-link'}>Menu</Nav.Link>
-            <Nav.Link as={Link} to="/gallery" className={location.pathname === '/gallery' ? 'active nav-link' : 'nav-link'}>Gallery</Nav.Link>
             <Nav.Link as={Link} to="/reservation" className={location.pathname === '/reservation' ? 'active nav-link' : 'nav-link'}>Reservation</Nav.Link>
-            <Nav.Link as={Link} to="/contact" className={location.pathname === '/contact' ? 'active nav-link' : 'nav-link'}>Contact</Nav.Link>
+            <Nav.Link as={Link} to="/about" className={location.pathname === '/about' ? 'active nav-link' : 'nav-link'}>About</Nav.Link>
           </Nav>
         </Navbar>
         <Nav className="nav-login">

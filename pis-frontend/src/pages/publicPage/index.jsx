@@ -4,6 +4,7 @@ import FooterBar from '../../components/footerBar';
 import MenuPage from './menu';
 import HomePage from './home';
 import ReservationPage from './reservation';
+import AboutPage from './about';
 import './PublicPage.css';
 import React from "react";
 
@@ -12,7 +13,7 @@ const PublicPage = (props) => {
     <div className="page">
       <div className="bg">
       </div>
-      <HeaderBar onRoleChange={props.onRoleChange} role={props.role}/>
+      <HeaderBar/>
       <div className="main">
         <Outlet/>
       </div>
@@ -21,4 +22,4 @@ const PublicPage = (props) => {
   );
 };
 
-export {PublicPage, MenuPage, HomePage, ReservationPage};
+export {PublicPage, MenuPage, HomePage, ReservationPage, AboutPage};
