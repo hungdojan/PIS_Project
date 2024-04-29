@@ -1,0 +1,26 @@
+.card-daily-offer {
+    background-color: #00000040;
+    color: white;
+}
+
+.card-daily-offer .card-title {
+    color: var(--primary-color);
+}
+
+.card-daily-offer .row {
+    padding: 5px 0;
+}
+
+.btn-reservation {
+    margin: 30px auto;
+    display: block;
+    background-color: var(--primary-color-dark);
+    border: 0;
+    color: white;
+    font-size: 22px;
+    padding: 10px 40px;
+}
+
+.btn-reservation:hover, .btn-reservation:active{
+    background-color: var(--primary-color) !important;
+}
