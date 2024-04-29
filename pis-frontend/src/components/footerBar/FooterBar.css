@@ -1,0 +1,36 @@
+.footer {
+    background-color: var(--primary-bg-color);
+    color: #fff;
+    padding: 50px 0;
+}
+
+.footer h5 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.footer p {
+    color: #ccc;
+}
+
+.footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #fff;
+}
+
+.copyright {
+    padding: 25px 0;
+}
+
+.copyright p {
+    color: #ccc;
+    margin-bottom: 0;
+}
+
+.contacts a{
+    margin-right: 20px;
+}

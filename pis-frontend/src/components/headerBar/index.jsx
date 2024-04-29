@@ -1,26 +1,53 @@
 import './HeaderBar.css';
 import Container from 'react-bootstrap/Container';
+import { useState, useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link, useLocation } from 'react-router-dom';
+import {FaHamburger, FaUser} from "react-icons/fa";
+
 
 const HeaderBar = () => {
+  const location = useLocation();
+  const [navbarHeight, setNavbarHeight] = useState(0);
+
+  // Measure the navbar height on component mount and window resize
+  useEffect(() => {
+    function handleResize() {
+      const navbar = document.querySelector('.navbar-menu');
+      if (navbar) {
+        // Padding to keep the size of the fixes navbar (-1 to suppress the gap)
+        setNavbarHeight(navbar.offsetHeight - 1);
+      }
+    }
+
+    handleResize(); // Call it initially
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <Navbar expand="lg" className="header-navbar">
-      <Container fluid>
-        <Navbar.Brand href="/" className="brand-name">
-          Restaurace
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/menu">Menu</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
+    <>
+      <Navbar bg="dark" expand="md" className="navbar-menu fixed-top">
+        <Navbar.Brand as={Link} to="/">Restaurant <FaHamburger className="icon"/></Navbar.Brand>
+        <Navbar id="basic-navbar-nav" className="buttons-bar">
+          <Nav className="mx-auto">
+            <Nav.Link as={Link} to="/" className={location.pathname === '/' ? 'active nav-link' : 'nav-link'}>Home</Nav.Link>
+            <Nav.Link as={Link} to="/menu" className={location.pathname === '/menu' ? 'active nav-link' : 'nav-link'}>Menu</Nav.Link>
+            <Nav.Link as={Link} to="/gallery" className={location.pathname === '/gallery' ? 'active nav-link' : 'nav-link'}>Gallery</Nav.Link>
+            <Nav.Link as={Link} to="/reservation" className={location.pathname === '/reservation' ? 'active nav-link' : 'nav-link'}>Reservation</Nav.Link>
+            <Nav.Link as={Link} to="/contact" className={location.pathname === '/contact' ? 'active nav-link' : 'nav-link'}>Contact</Nav.Link>
           </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+        </Navbar>
+        <Nav className="nav-login">
+          <Nav.Link href="/login" className="nav-link"><FaUser/></Nav.Link>
+        </Nav>
+      </Navbar>
+
+        <div style={{ paddingTop: navbarHeight }}>
+      </div>
+    </>
   );
-};
+}
 
 export default HeaderBar;
