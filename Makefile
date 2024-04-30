@@ -11,7 +11,7 @@ build: compose.yaml
 	$(ENGINE)-compose build
 
 # start containers
-up: compose.yaml
+up: compose.yaml update_fe
 	$(ENGINE)-compose up
 
 # stop containers
@@ -80,7 +80,7 @@ status:
 
 # ======================
 # utility commands
-.PHONY: db_cli gen_mvnw
+.PHONY: db_cli gen_mvnw update_fe
 
 db_cli:
 	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pisdb -uroot -p
@@ -91,5 +91,5 @@ get_mvnw:
 		bash -c "cd /tmp/data && mvn -N wrapper:wrapper"
 
 # update frontend
-update_fe:
-	@$(ENGINE) exec $(PREFIX)_frontend_1 npm install
+update_fe: ./pis-frontend/node_modules/
+	$(ENGINE) run -it --rm localhost/pis-project_frontend npm install
