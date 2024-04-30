@@ -39,9 +39,7 @@ public class OrderManager {
         return em.find(Order.class, id);
     }
 
-    /*
     public List<Order> findAll() {
-        return em.createNamedQuery("Order.findAll", Order.class).getResultList();
+        return em.createNamedQuery("Order_.findAll", Order.class).getResultList();
     }
-    */
 }
