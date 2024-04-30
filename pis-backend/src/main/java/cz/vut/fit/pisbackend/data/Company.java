@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Table(name = "Company")
 public class Company {
     @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String phone;

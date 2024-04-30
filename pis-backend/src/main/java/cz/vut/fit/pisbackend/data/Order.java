@@ -10,7 +10,9 @@ import java.util.Date;
 @Entity(name = "Order_")
 @Table(name = "Order_")
 public class Order {
+
     @Id
+    @GeneratedValue
     private long id;
     private Date atTime;
     private Boolean prepared;

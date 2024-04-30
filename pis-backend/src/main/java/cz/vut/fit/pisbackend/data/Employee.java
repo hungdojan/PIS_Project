@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.OneToMany;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Table(name = "Employee")
 public class Employee {
     @Id
+    @GeneratedValue
     private long id;
     private String login;
     private String password;

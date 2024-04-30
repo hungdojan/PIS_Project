@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -11,7 +12,9 @@ import java.util.Date;
 @Entity
 @Table(name = "Expenses")
 public class Expenses {
+
     @Id
+    @GeneratedValue
     private long id;
     private float price;
     private Date time;
