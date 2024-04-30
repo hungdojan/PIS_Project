@@ -3,12 +3,17 @@ package cz.vut.fit.pisbackend.data;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity(name = "Tablee")
+@NamedQueries({
+    @NamedQuery(name="Table.findAll", query="SELECT t FROM Tablee t"),
+})
 @jakarta.persistence.Table(name = "Tablee")
 public class Table {
     @Id

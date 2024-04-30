@@ -42,7 +42,7 @@ public class Order {
         return atTime;
     }
 
-    public void setTime(Date atTime) {
+    public void setAtTime(Date atTime) {
         this.atTime = atTime;
     }
 
