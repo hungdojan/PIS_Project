@@ -1,17 +1,16 @@
 import './PrivateHeaderBar.css';
-import Container from 'react-bootstrap/Container';
 import { useState, useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link, useLocation } from 'react-router-dom';
-import {FaHamburger, FaUser} from "react-icons/fa";
-import {FaRightFromBracket} from "react-icons/fa6";
+import { FaHamburger } from 'react-icons/fa';
+import { FaRightFromBracket } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 
-const HeaderBar = () => {
+const PrivateHeaderBar = () => {
   const location = useLocation();
-  const navigate = useNavigate()
-  const [navbarHeight, setNavbarHeight] = useState(0);
+  const navigate = useNavigate();
+  const [_, setNavbarHeight] = useState(0);
   const [role, setRole] = useState('');
 
   useEffect(() => {
@@ -19,8 +18,7 @@ const HeaderBar = () => {
     const _role = localStorage.getItem('role');
     if (_role === null) {
       setRole('user');
-    }
-    else {
+    } else {
       setRole(_role);
     }
 
@@ -40,45 +38,64 @@ const HeaderBar = () => {
 
   const handleLogOut = () => {
     localStorage.setItem('role', 'user');
-    alert("TODO log out");
+    alert('TODO log out');
     navigate('/');
   };
 
   return (
     <>
       <Navbar bg="dark" expand="md" className="navbar-menu fixed-top">
-        <Navbar.Brand as={Link} to="/">Restaurant <FaHamburger className="private icon"/></Navbar.Brand>
-        <Navbar id="basic-navbar-nav" className="buttons-bar">
+        <Navbar.Brand as={Link} to="/">
+          Restaurant <FaHamburger className="private icon" />
+        </Navbar.Brand>
+        <Navbar id="basic-navbar-nav" className="buttons-private-bar">
           <Nav>
+            {role === 'user' && <></>}
 
-            {role === 'user' &&
+            {role === 'admin' && (
               <>
+                <Nav.Link
+                  as={Link}
+                  to="/manage-users"
+                  className={
+                    location.pathname === '/manage-users'
+                      ? 'active nav-link'
+                      : 'nav-link'
+                  }
+                >
+                  Manage Users
+                </Nav.Link>
               </>
-            }
+            )}
 
-            {role === 'admin' &&
+            {role === 'staff' && (
               <>
-                <Nav.Link as={Link} to="/manage-users" className={location.pathname === '/manage-users' ? 'active nav-link' : 'nav-link'}>Manage Users</Nav.Link>
+                <Nav.Link
+                  as={Link}
+                  to="/orders"
+                  className={
+                    location.pathname === '/orders'
+                      ? 'active nav-link'
+                      : 'nav-link'
+                  }
+                >
+                  Orders
+                </Nav.Link>
               </>
-            }
-
-            {role === 'staff' &&
-              <>
-                <Nav.Link as={Link} to="/orders" className={location.pathname === '/orders' ? 'active nav-link' : 'nav-link'}>Orders</Nav.Link>
-              </>
-            }
-
+            )}
           </Nav>
         </Navbar>
 
-        {role !== "user" &&
+        {role !== 'user' && (
           <Nav className="nav-login">
-            <Nav.Link className="nav-link" onClick={handleLogOut}><FaRightFromBracket/></Nav.Link>
+            <Nav.Link className="nav-link" onClick={handleLogOut}>
+              <FaRightFromBracket />
+            </Nav.Link>
           </Nav>
-        }
+        )}
       </Navbar>
     </>
   );
-}
+};
 
-export default HeaderBar;
+export default PrivateHeaderBar;
