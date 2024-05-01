@@ -1,5 +1,4 @@
 import './HeaderBar.css';
-import Container from 'react-bootstrap/Container';
 import { useState, useEffect } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -11,12 +10,12 @@ const HeaderBar = () => {
   const location = useLocation();
   const [navbarHeight, setNavbarHeight] = useState(0);
 
-  // Measure the navbar height on component mount and window resize
   useEffect(() => {
+    // Measure the navbar height on component mount and window resize
     function handleResize() {
       const navbar = document.querySelector('.navbar-menu');
       if (navbar) {
-        // Padding to keep the size of the fixes navbar (-1 to suppress the gap)
+        // Padding to keep the size of the fixed navbar (-1 to suppress the gap)
         setNavbarHeight(navbar.offsetHeight - 1);
       }
     }

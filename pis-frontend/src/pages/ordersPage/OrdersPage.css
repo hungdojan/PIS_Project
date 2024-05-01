@@ -1,0 +1,156 @@
+.staff-main-container {
+    background-color: #000000bf;
+    height: 100%;
+    color: white;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.null-text {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #ffffff60;
+}
+
+.panel {
+    height: 100%;
+}
+
+.left-panel {
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--secondary-bg-color);
+}
+
+.right-panel {
+    height: 100%;
+    /*display: flex;*/
+    padding: 10px 35px 10px 25px;
+    /*position: relative;*/
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-table-link {
+    background-color: #303030;
+    color: white !important;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: solid #444 2px;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+}
+
+.nav-table-item .active {
+    background-color: var(--primary-color-dark);
+    border-color: var(--primary-color);
+}
+
+.food-card {
+    cursor: pointer;
+    background-color: #eee;
+    min-height: 130px;
+}
+
+.food-card:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.food-card:active {
+    background-color: var(--primary-color);
+}
+
+
+.table-title {
+    color: var(--secondary-color);
+}
+
+.div-buttons {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    height: 140px;
+    padding: 15px 0;
+}
+
+.div-buttons .btn {
+    background-color: var(--secondary-color);
+    border: none;
+    color: black;
+    font-size: 26px;
+}
+
+.div-buttons .btn:hover {
+    filter: brightness(110%);
+}
+
+.div-buttons .btn:active {
+    background-color: var(--secondary-color);
+    filter: brightness(130%);
+}
+
+
+.div-buttons > button:not(:first-child) {
+    margin-left: 10px;
+}
+
+.div-buttons > button:not(:last-child) {
+    margin-right: 10px;
+}
+
+.btn-add-food {
+    width: 180px;
+    height: 100%;
+}
+
+.order-list-box {
+    height: 100%;
+}
+
+.order-list {
+    padding-top: 15px;
+    height: 100%;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.order-list .list-group-item {
+    background-color: #ddd;
+    border: none;
+    margin-bottom: 3px !important;
+    color: black;
+}
+
+.order-list .list-group-item.active {
+    background-color: var(--primary-color-dark);
+    border: none;
+    margin: 0;
+}
+
+.box-food-items {
+    padding-top: 15px;
+}
+
+.box-summary {
+    justify-content: center;
+    height: 60px;
+    color: white;
+    border: none;
+    border-top: solid #555 3px;
+    padding: 10px 20px 0 0;
+    text-align: right;
+}
+
+.checked-sum-price {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.sum-price {
+    font-size: 25px;
+}

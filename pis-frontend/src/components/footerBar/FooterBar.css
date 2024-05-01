@@ -2,6 +2,7 @@
     background-color: var(--primary-bg-color);
     color: #fff;
     padding: 50px 0;
+    flex: 1; /* Fill the rest of the page */
 }
 
 .footer h5 {

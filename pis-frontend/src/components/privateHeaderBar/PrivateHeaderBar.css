@@ -1,0 +1,68 @@
+.navbar-menu {
+    background-color: var(--primary-bg-color) !important;
+}
+
+.navbar-brand {
+    width: 280px;
+}
+
+.navbar-brand .icon{
+    color: var(--secondary-color);
+    padding-bottom: 3px;
+}
+
+.navbar-brand {
+    color: var(--primary-color) !important;
+    font-size: 35px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-weight: bold;
+}
+
+.navbar-brand.private {
+    border: none;
+}
+
+.buttons-bar {
+    padding-right: 300px;
+    margin: 0;
+}
+
+.buttons-bar .navbar-nav .nav-link {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.buttons-bar .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+
+.buttons-bar .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+
+.buttons-bar .navbar-nav .nav-link:hover {
+    color: white;
+}
+
+.buttons-bar .nav-link.active {
+    color: white !important;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: white;
+    text-underline-position: under;
+}
+
+.nav-login{
+    padding: 10px 15px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.nav-login .nav-link{
+    color: white;
+    font-size: 25px;
+}
