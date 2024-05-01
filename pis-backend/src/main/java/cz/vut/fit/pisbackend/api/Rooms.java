@@ -107,30 +107,6 @@ public class Rooms {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
 
-    @Path("/{id}/reservations")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addRoomReservation(@PathParam("id") Long roomId, ReservationDTO reservation)
-    {
-        Room r = roomMngr.find(roomId);
-        if (r != null)
-        {
-            Reservation newReservation = new Reservation();
-            newReservation.setAt(reservation.getAt());
-            newReservation.setUntil(reservation.getUntil());
-            newReservation.setName(reservation.getName());
-            newReservation.setCount(reservation.getCount());
-            newReservation.setPhone(reservation.getPhone());
-            newReservation.setEmail(reservation.getEmail());
-            newReservation.setCreatedBy(employeeMngr.find(reservation.getCreatedByEmployeeId()));
-            roomMngr.addReservation(r, newReservation);
-            List<ReservationDTO> allReservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList();
-            return Response.ok(allReservations).build();
-        }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
-    }
 
     @Path("/{id}/orders")
     @GET
@@ -144,27 +120,6 @@ public class Rooms {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
 
-    @Path("/{id}/orders")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response addRoomOrders(@PathParam("id") Long roomId, OrderDTO order)
-    {
-        Room r = roomMngr.find(roomId);
-        if (r != null)
-        {
-            Order newOrder = new Order();
-            newOrder.setId(order.getId());
-            newOrder.setAtTime(order.getAtTime());
-            newOrder.setPayed(order.getPayed());
-            newOrder.setPrepared(order.getPrepared());
-            newOrder.setPreparedTime(order.getPreparedTime());
-            // add totable,toroom, list of drinks,foods
-            roomMngr.addOrder(r, newOrder);
-            List<OrderDTO> allOrders = r.getOrders().stream().map(re -> new OrderDTO(re)).toList();
-            return Response.ok(allOrders).build();
-        }
-        else
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
-    }
+
+
 }
