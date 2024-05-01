@@ -45,8 +45,7 @@ public class Rooms {
     @Produces(MediaType.APPLICATION_JSON)
     public Response createRoom(RoomDTO roomDTO) {
         Room existing = roomMngr.find(roomDTO.getId());
-        if (existing == null)
-        {
+        if (existing == null){
             Room p = new Room();
             p.setId(roomDTO.getId());
             p.setCapacity(roomDTO.getCapacity());
@@ -55,8 +54,7 @@ public class Rooms {
             final URI uri = UriBuilder.fromPath("/room/{resourceServerId}").build(savedRoom.getId());
             return Response.created(uri).entity(savedRoom).build();
         }
-        else
-        {
+        else{
             return Response.status(Response.Status.CONFLICT).entity(new ErrorDTO("duplicate id")).build();
         }
     }
@@ -68,15 +66,15 @@ public class Rooms {
     public Response updateRoom(@PathParam("id") Long id, RoomDTO src)
     {
         Room r = roomMngr.find(id);
-        if (r != null)
-        {
+        if (r != null){
             r.setId(src.getId());
             r.setCapacity(src.getCapacity());
             r.setDescription(src.getDescription());
             return Response.ok(r).build();
         }
-        else
+        else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
     }
 
     @DELETE
@@ -85,13 +83,13 @@ public class Rooms {
     public Response deleteRoom(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
-        if (r != null)
-        {
+        if (r != null){
             roomMngr.remove(r);
             return Response.ok().build();
         }
-        else
+        else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
     }
 
     @Path("/{id}/reservations")
@@ -100,10 +98,12 @@ public class Rooms {
     public Response getRoomReservations(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
-        if (r != null)
+        if (r != null){
             return Response.ok(r.getReservations()).build();
-        else
+        }
+        else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
     }
 
 
@@ -113,10 +113,12 @@ public class Rooms {
     public Response getRoomOrders(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
-        if (r != null)
+        if (r != null){
             return Response.ok(r.getOrders()).build();
-        else
+        }
+        else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
     }
 
     @GET
@@ -131,9 +133,11 @@ public class Rooms {
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAvailableRooms(@PathParam("id") Long id,@PathParam("at") Date at,@PathParam("until") Date until) {
         Room r = roomMngr.find(id);
-        if (r != null)
+        if (r != null){
             return Response.ok(roomMngr.isRoomAvailable(r,at,until)).build();
-        else
+        }
+        else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
     }
 }
