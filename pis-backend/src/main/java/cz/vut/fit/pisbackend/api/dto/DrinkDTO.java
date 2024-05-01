@@ -1,33 +1,36 @@
-package cz.vut.fit.pisbackend.data;
+package cz.vut.fit.pisbackend.api.dto;
 
-import jakarta.persistence.*;
-import jakarta.persistence.Table;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
-@Entity
-@NamedQueries({
-    @NamedQuery(name="Drink.findAll", query="SELECT f FROM Drink f"),
-})
-@Table(name = "Drink")
-public class Drink {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+import cz.vut.fit.pisbackend.data.Drink;
+
+public class DrinkDTO {
+
     private long id;
     private String name;
     private String description;
     private float price;
     private String type;
     private int volume;
-    @ManyToMany
-    private Collection<Order> orders;
-    @ManyToMany
-    private Collection<Menu> menus;
-    public Drink(){
-        orders = new ArrayList<>();
-        menus = new ArrayList<>();
+
+    public DrinkDTO(long id, String name, String description, float price, String type, int volume) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.type = type;
+        this.volume = volume;
     }
+
+    public DrinkDTO(Drink drink) {
+        this.id = drink.getId();
+        this.name = drink.getName();
+        this.description = drink.getDescription();
+        this.price = drink.getPrice();
+        this.type = drink.getType();
+        this.volume = drink.getVolume();
+    }
+
     public long getId(){
         return id;
     }
@@ -63,17 +66,5 @@ public class Drink {
     }
     public void setVolume(int volume){
         this.volume = volume;
-    }
-    public Collection<Order> getOrders(){
-        return orders;
-    }
-    public void setOrders(Collection<Order> orders){
-        this.orders = orders;
-    }
-    public Collection<Menu> getMenus(){
-        return menus;
-    }
-    public void setMenus(Collection<Menu> menus){
-        this.menus = menus;
     }
 }
