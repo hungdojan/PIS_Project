@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
+import { PrivateHeaderBar } from '../../components';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -37,39 +38,42 @@ const LoginPage = () => {
     }
   };
   return (
-    <Container fluid className="mb-3 login-container">
-      <label className="mb-3 login-label">Login Page</label>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 login-input" controlId="usernameField">
-          <Form.Control
-            type="text"
-            placeholder="Username"
-            onChange={handleUsernameChange}
-          />
-        </Form.Group>
-        <Form.Group className="mb-3 login-input" controlId="passwordField">
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            onChange={handlePasswordChange}
-          />
-        </Form.Group>
-        <Container className="submit-container">
-          <Button
-            className="login-submit-button mb-3"
-            variant="primary"
-            type="submit"
-          >
-            Submit
-          </Button>
-        </Container>
-      </Form>
-      {error && (
-        <Alert variant="danger" className="mb-3">
-          Login failed!
-        </Alert>
-      )}
-    </Container>
+    <>
+      <PrivateHeaderBar />
+      <Container fluid className="mb-3 login-container">
+        <label className="mb-3 login-label">Login Page</label>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3 login-input" controlId="usernameField">
+            <Form.Control
+              type="text"
+              placeholder="Username"
+              onChange={handleUsernameChange}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3 login-input" controlId="passwordField">
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              onChange={handlePasswordChange}
+            />
+          </Form.Group>
+          <Container className="submit-container">
+            <Button
+              className="login-submit-button mb-3"
+              variant="primary"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Container>
+        </Form>
+        {error && (
+          <Alert variant="danger" className="mb-3">
+            Login failed!
+          </Alert>
+        )}
+      </Container>
+    </>
   );
 };
 
