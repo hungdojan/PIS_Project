@@ -120,6 +120,11 @@ public class Rooms {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
     }
 
-
+    @GET
+    @Path("/available/{at}/{until}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAvailableRooms(@PathParam("at") Date at,@PathParam("until") Date until) {
+        return roomMngr.findAvailableRooms(at,until).stream().map(r -> new RoomDTO(r)).toList();
+    }
 
 }
