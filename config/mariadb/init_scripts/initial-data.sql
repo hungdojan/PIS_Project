@@ -34,13 +34,13 @@ INSERT INTO Menu (name, description) VALUES ('Menu3', 'Menu for Wednesday');
 INSERT INTO Menu (name, description) VALUES ('Menu4', 'Menu for Thursday');
 INSERT INTO Menu (name, description) VALUES ('Menu5', 'Menu for Friday');
 
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-27 10:22:56', FALSE,NULL, FALSE, NULL, 1);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-28 11:22:56', FALSE, NULL, FALSE, 1, NULL);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, NULL, 3);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-30 15:22:56', FALSE, NULL, FALSE, NULL, 4);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-27 10:22:56', FALSE, '2024-06-29 14:22:56', FALSE, 2, 1);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-28 11:22:56', FALSE, '2024-06-29 13:22:56', FALSE, 1, 1);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, 2, 3);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-30 15:22:56', FALSE, '2024-06-29 12:42:56', FALSE, 1, 4);
 
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Lemonade',NULL, 2.3, 'non-alcoholic',0.4);
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Cola', NULL, 1.99, 'non-alcoholic', 0.33);
+INSERT INTO Drink (name, description, price, type, volume) VALUES ('Lemonade', NULL, 2.3, 'non-alcoholic',0.4);
+INSERT INTO Drink (name, description, price, type, volume) VALUES ('Cola',  NULL, 1.99, 'non-alcoholic', 0.33);
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 0.33);
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Beer', NULL, 2.5, 'alcoholic', 0.5);
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Coffee', NULL, 2.5, 'hot', 0.5);
