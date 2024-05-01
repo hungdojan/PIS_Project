@@ -25,13 +25,16 @@ import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 
+import cz.vut.fit.pisbackend.data.Drink;
 import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Room;
 import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Table;
+import cz.vut.fit.pisbackend.service.DrinkManager;
 import cz.vut.fit.pisbackend.service.FoodManager;
 import cz.vut.fit.pisbackend.service.OrderManager;
 
+import cz.vut.fit.pisbackend.api.dto.DrinkDTO;
 import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
 import cz.vut.fit.pisbackend.api.dto.FoodDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderDTO;
@@ -45,6 +48,8 @@ public class OrdersResource {
     private OrderManager orderMgr;
     @Inject
     private FoodManager foodMgr;
+    @Inject
+    private DrinkManager drinkMgr;
 
     @Context
     private UriInfo context;
@@ -61,6 +66,7 @@ public class OrdersResource {
     public Response addOrder(OrderDTO order)
     {
         Collection<Food> food = foodMgr.findByIds(order.getFoods());
+        Collection<Drink> drinks = drinkMgr.findByIds(order.getDrinks());
 
         Order o = new Order();
         o.setAtTime(order.getAtTime());
@@ -68,6 +74,7 @@ public class OrdersResource {
         o.setPreparedTime(order.getPreparedTime());
         o.setPayed(order.getPayed());
         o.setFoods(food);
+        o.setDrinks(drinks);
 
         Order saved = orderMgr.create(o);
         return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
@@ -85,12 +92,14 @@ public class OrdersResource {
                            .build();
         }
         Collection<Food> food = foodMgr.findByIds(order.getFoods());
+        Collection<Drink> drinks = drinkMgr.findByIds(order.getDrinks());
 
         found.setAtTime(order.getAtTime());
         found.setPrepared(order.getPrepared());
         found.setPreparedTime(order.getPreparedTime());
         found.setPayed(order.getPayed());
         found.setFoods(food);
+        found.setDrinks(drinks);
 
         Order saved = orderMgr.update(found);
         return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();

@@ -15,6 +15,7 @@ public class OrderResponseDTO {
     private Date preparedTime;
     private Boolean payed;
     private Collection<FoodDTO> foods;
+    private Collection<DrinkDTO> drinks;
 
     public OrderResponseDTO() {}
 
@@ -28,9 +29,13 @@ public class OrderResponseDTO {
                             .stream()
                             .map(FoodDTO::new)
                             .collect(Collectors.toList());
+        this.drinks = order.getDrinks()
+                            .stream()
+                            .map(DrinkDTO::new)
+                            .collect(Collectors.toList());
     }
 
-       public long getId() {
+    public long getId() {
         return id;
     }
 
@@ -76,6 +81,14 @@ public class OrderResponseDTO {
 
     public void setFoods(Collection<FoodDTO> foods) {
         this.foods = foods;
+    }
+
+    public Collection<DrinkDTO> getDrinks() {
+        return drinks;
+    }
+
+    public void setDrinks(Collection<DrinkDTO> drinks) {
+        this.drinks = drinks;
     }
 
 }

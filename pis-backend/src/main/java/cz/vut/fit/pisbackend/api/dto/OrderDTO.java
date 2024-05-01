@@ -14,6 +14,7 @@ public class OrderDTO {
     private Date preparedTime;
     private Boolean payed;
     private List<Long> foods;
+    private List<Long> drinks;
 
     public OrderDTO() {}
 
@@ -63,6 +64,14 @@ public class OrderDTO {
 
     public void setFoods(List<Long> foods) {
         this.foods = foods;
+    }
+
+    public List<Long> getDrinks() {
+        return this.drinks;
+    }
+
+    public void setDrinks(List<Long> drinks) {
+        this.drinks = drinks;
     }
 
 }
