@@ -28,26 +28,16 @@
     margin: 0;
 }
 
-.buttons-bar .navbar-nav .nav-link {
+.buttons-private-bar .navbar-nav .nav-link {
     color: var(--primary-color);
     font-size: 18px;
 }
 
-.buttons-bar .navbar-nav .nav-link:hover {
+.buttons-private-bar .navbar-nav .nav-link:hover {
     color: white;
 }
 
-
-.buttons-bar .navbar-nav .nav-link:hover {
-    color: white;
-}
-
-
-.buttons-bar .navbar-nav .nav-link:hover {
-    color: white;
-}
-
-.buttons-bar .nav-link.active {
+.buttons-private-bar .nav-link.active {
     color: white !important;
     text-decoration: underline;
     text-decoration-thickness: 2px;
