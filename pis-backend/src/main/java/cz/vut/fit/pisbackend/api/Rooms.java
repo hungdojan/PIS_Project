@@ -122,16 +122,20 @@ public class Rooms {
     }
 
     @GET
-    @Path("/available/{at}/{until}")
+    @Path("/available")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<RoomDTO>  getAvailableRooms(@PathParam("at") Date at,@PathParam("until") Date until) {
+    public List<RoomDTO>  getAvailableRooms(ReservationDTO reservation) {
+        Date at = reservation.getAt();
+        Date until = reservation.getUntil();
         return roomMngr.findAvailableRooms(at,until).stream().map(r -> new RoomDTO(r)).toList();
     }
 
     @GET
-    @Path("/available/{id}/{at}/{until}")
+    @Path("/available/{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAvailableRooms(@PathParam("id") Long id,@PathParam("at") Date at,@PathParam("until") Date until) {
+    public Response getAvailableRooms(@PathParam("id") Long id, ReservationDTO reservation) {
+        Date at = reservation.getAt();
+        Date until = reservation.getUntil();
         Room r = roomMngr.find(id);
         if (r != null){
             return Response.ok(roomMngr.isRoomAvailable(r,at,until)).build();

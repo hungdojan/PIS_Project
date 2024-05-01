@@ -11,8 +11,6 @@ public class RoomDTO {
     private long id;
     private int capacity;
     private String description;
-    private Collection<Long> reservationIds;
-    private Collection<Long> orderIds;
 
     public RoomDTO() { }
 
@@ -20,22 +18,12 @@ public class RoomDTO {
         this.id = room.getId();
         this.capacity = room.getCapacity();
         this.description = room.getDescription();
-        this.reservationIds = room.getReservations()
-            .stream()
-            .map(Reservation::getId)
-            .collect(Collectors.toList());
-        this.orderIds = room.getOrders()
-            .stream()
-            .map(Order::getId)
-            .collect(Collectors.toList());
     }
 
-    public RoomDTO(long id, int capacity, String description, Collection<Long> reservationIds, Collection<Long> orderIds) {
+    public RoomDTO(long id, int capacity, String description) {
         this.id = id;
         this.capacity = capacity;
         this.description = description;
-        this.reservationIds = reservationIds;
-        this.orderIds = orderIds;
     }
 
     public long getId() {
@@ -60,21 +48,5 @@ public class RoomDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Collection<Long> getReservationIds() {
-        return reservationIds;
-    }
-
-    public void setReservationIds(Collection<Long> reservationIds) {
-        this.reservationIds = reservationIds;
-    }
-
-    public Collection<Long> getOrderIds() {
-        return orderIds;
-    }
-
-    public void setOrderIds(Collection<Long> orderIds) {
-        this.orderIds = orderIds;
     }
 }
