@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
-import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Food;
+import cz.vut.fit.pisbackend.data.Order;
+import cz.vut.fit.pisbackend.data.Room;
 import cz.vut.fit.pisbackend.data.Table;
 
 public class OrderResponseDTO {
@@ -14,6 +15,8 @@ public class OrderResponseDTO {
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
+    // TODO private Room toRoom;
+    private TableDTO toTable;
     private Collection<FoodDTO> foods;
     private Collection<DrinkDTO> drinks;
 
@@ -33,6 +36,7 @@ public class OrderResponseDTO {
                             .stream()
                             .map(DrinkDTO::new)
                             .collect(Collectors.toList());
+        this.toTable = new TableDTO(order.getToTable());
     }
 
     public long getId() {
@@ -73,6 +77,14 @@ public class OrderResponseDTO {
 
     public void setPayed(Boolean payed) {
         this.payed = payed;
+    }
+
+    public TableDTO getToTable() {
+        return toTable;
+    }
+
+    public void setToTable(TableDTO table) {
+        this.toTable = table;
     }
 
     public Collection<FoodDTO> getFoods() {

@@ -13,6 +13,8 @@ public class OrderDTO {
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
+    private long toRoom;
+    private long toTable;
     private List<Long> foods;
     private List<Long> drinks;
 
@@ -56,6 +58,22 @@ public class OrderDTO {
 
     public void setPayed(Boolean payed) {
         this.payed = payed;
+    }
+
+    public long getToRoom() {
+        return toRoom;
+    }
+
+    public void setToRoom(long room) {
+        this.toRoom = room;
+    }
+
+    public long getToTable() {
+        return toTable;
+    }
+
+    public void setToTable(long table) {
+        this.toTable = table;
     }
 
     public List<Long> getFoods() {

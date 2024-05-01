@@ -33,12 +33,14 @@ import cz.vut.fit.pisbackend.data.Table;
 import cz.vut.fit.pisbackend.service.DrinkManager;
 import cz.vut.fit.pisbackend.service.FoodManager;
 import cz.vut.fit.pisbackend.service.OrderManager;
+import cz.vut.fit.pisbackend.service.TableManager;
 
 import cz.vut.fit.pisbackend.api.dto.DrinkDTO;
 import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
 import cz.vut.fit.pisbackend.api.dto.FoodDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
+import cz.vut.fit.pisbackend.api.dto.TableDTO;
 
 
 @Path("orders")
@@ -50,6 +52,8 @@ public class OrdersResource {
     private FoodManager foodMgr;
     @Inject
     private DrinkManager drinkMgr;
+    @Inject
+    private TableManager tableMgr;
 
     @Context
     private UriInfo context;
@@ -67,12 +71,15 @@ public class OrdersResource {
     {
         Collection<Food> food = foodMgr.findByIds(order.getFoods());
         Collection<Drink> drinks = drinkMgr.findByIds(order.getDrinks());
+        Table table = tableMgr.find(order.getToTable());
+        //o.setToRoom(order.getToRoom());
 
         Order o = new Order();
         o.setAtTime(order.getAtTime());
         o.setPrepared(order.getPrepared());
         o.setPreparedTime(order.getPreparedTime());
         o.setPayed(order.getPayed());
+        o.setToTable(table);
         o.setFoods(food);
         o.setDrinks(drinks);
 

@@ -22,18 +22,19 @@ public class TableManager {
     }
 
     @Transactional
-    public Table save(Table p) {
-        return em.merge(p);
+    public Table create(Table t) {
+        em.persist(t);
+        return t;
     }
 
     @Transactional
-    public void remove(Table p) {
-        em.remove(em.merge(p));
+    public void remove(Table t) {
+        em.remove(em.merge(t));
     }
 
     @Transactional
-    public void addTable(Table p) {
-        save(p);
+    public Table update(Table t) {
+        return em.merge(t);
     }
 
     public Table find(long id) {

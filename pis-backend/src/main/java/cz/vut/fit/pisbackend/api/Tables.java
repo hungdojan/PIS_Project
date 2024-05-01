@@ -20,8 +20,11 @@ import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 
 import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
+import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
 import cz.vut.fit.pisbackend.api.dto.TableDTO;
+import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Table;
+import cz.vut.fit.pisbackend.service.OrderManager;
 import cz.vut.fit.pisbackend.service.TableManager;
 
 @Path("tables")
@@ -29,6 +32,9 @@ public class Tables {
 
     @Inject
     private TableManager tableMgr;
+    @Inject
+    private OrderManager orderMgr;
+
     @Context
     private UriInfo context;
 
@@ -42,5 +48,15 @@ public class Tables {
         } else {
             return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
         }
+    }
+
+    /**
+     * Get all orders at the table with the given table id
+     */
+    @GET
+    @Path("{id}/orders")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<OrderResponseDTO> getOrders(@PathParam("table_id") long tableId) {
+        return orderMgr.findByTableId().stream().map(t -> new OrderResponseDTO(t)).toList();
     }
 }
