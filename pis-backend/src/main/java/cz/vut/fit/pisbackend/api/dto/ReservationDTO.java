@@ -1,6 +1,5 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-
 import cz.vut.fit.pisbackend.data.Reservation;
 
 import java.util.ArrayList;

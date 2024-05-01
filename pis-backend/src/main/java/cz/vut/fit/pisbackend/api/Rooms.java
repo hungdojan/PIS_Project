@@ -71,7 +71,8 @@ public class Rooms {
             r.setId(src.getId());
             r.setCapacity(src.getCapacity());
             r.setDescription(src.getDescription());
-            return Response.ok(r).build();
+            Room updatedRoom = roomMngr.update(r);
+            return Response.ok(new RoomDTO(updatedRoom)).build();
         }
         else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
@@ -122,6 +123,7 @@ public class Rooms {
 
     @GET
     @Path("/available")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public List<RoomDTO>  getAvailableRooms(ReservationDTO reservation) {
         Date at = reservation.getAt();
@@ -131,6 +133,7 @@ public class Rooms {
 
     @GET
     @Path("/available/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAvailableRooms(@PathParam("id") Long id, ReservationDTO reservation) {
         Date at = reservation.getAt();
