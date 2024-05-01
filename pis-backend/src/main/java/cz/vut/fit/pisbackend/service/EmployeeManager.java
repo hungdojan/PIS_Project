@@ -18,7 +18,7 @@ public class EmployeeManager {
     public EmployeeManager() {}
 
     @Transactional
-    public Employee save(Employee p) {
+    public Employee create(Employee p) {
         return em.merge(p);
     }
 
@@ -28,18 +28,21 @@ public class EmployeeManager {
     }
 
     @Transactional
-    public void addEmployee(Employee p) {
-        save(p);
+    public void update(Employee p) {
+        em.merge(p);
     }
 
     public Employee find(long id) {
         return em.find(Employee.class, id);
     }
 
-        /*
-    public List<Employee> findAll() {
-        return em.createNamedQuery("Employee.findAll", Employee.class).getResultList();
+    public Employee getUser(String username) {
+        return em.createQuery(
+            "SELECT e FROM Employee e WHERE e.login = :username", Employee.class
+        ).setParameter("username", username).getSingleResult();
     }
-        */
 
+    public List<Employee> getAll() {
+        return em.createQuery("Select e FROM Employee e", Employee.class).getResultList();
+    }
 }
