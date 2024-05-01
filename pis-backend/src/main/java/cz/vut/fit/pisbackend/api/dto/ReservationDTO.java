@@ -1,8 +1,12 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+
+import cz.vut.fit.pisbackend.data.Reservation;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class ReservationDTO {
     private long id;
@@ -21,6 +25,16 @@ public class ReservationDTO {
         roomIds = new ArrayList<>();
     }
 
+    public ReservationDTO(Reservation reservation) {
+        this.id = reservation.getId();
+        this.at = reservation.getAt();
+        this.until = reservation.getUntil();
+        this.name = reservation.getName();
+        this.count = reservation.getCount();
+        this.phone = reservation.getPhone();
+        this.email = reservation.getEmail();
+        this.createdByEmployeeId = reservation.getCreatedBy().getId();
+    }
     public ReservationDTO(long id, Date at, Date until, String name, int count,
                           String phone, String email, long createdByEmployeeId,
                           Collection<Long> tableIds, Collection<Long> roomIds) {

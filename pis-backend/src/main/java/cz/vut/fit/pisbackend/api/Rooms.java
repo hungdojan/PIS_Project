@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.api;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -95,30 +96,28 @@ public class Rooms {
     @Path("/{id}/reservations")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRoomReservations(@PathParam("id") Long id)
+    public List<ReservationDTO> getRoomReservations(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
+        List<ReservationDTO> reservations = new ArrayList<>();
         if (r != null){
-            return Response.ok(r.getReservations()).build();
+            reservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList;
         }
-        else{
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
-        }
+        return reservations;
     }
 
 
     @Path("/{id}/orders")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getRoomOrders(@PathParam("id") Long id)
+    public List<OrderDTO> getRoomOrders(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
+        List<OrderDTO> orders = new ArrayList<>();
         if (r != null){
-            return Response.ok(r.getOrders()).build();
+            orders = r.getOrders().stream().map(o -> new OrderDTO(o)).toList;
         }
-        else{
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
-        }
+        return orders;
     }
 
     @GET
