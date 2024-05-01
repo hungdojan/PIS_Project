@@ -41,10 +41,6 @@ public class TableManager {
         return em.find(Table.class, id);
     }
 
-    public List<Table> findAvailable() {
-        return new ArrayList<>(); // TODO TableManager findAvailable
-    }
-
     public List<Table> findAll() {
         return em.createNamedQuery("Table.findAll", Table.class).getResultList();
     }

@@ -2,6 +2,7 @@ package cz.vut.fit.pisbackend.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -43,9 +44,9 @@ public class FoodManager {
 
     public List<Food> findByIds(List<Long> ids) {
         String jpql = "SELECT f FROM Food f WHERE f.id IN :ids";
-        TypedQuery<Food> query = em.createQuery(jpql, Food.class);
-        query.setParameter("ids", ids);
-        return query.getResultList();
+        return em.createQuery(jpql)
+                    .setParameter("ids", ids)
+                    .getResultList();
     }
 
     public List<Food> findAll() {

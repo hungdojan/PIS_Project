@@ -43,9 +43,9 @@ public class DrinkManager {
 
     public List<Drink> findByIds(List<Long> ids) {
         String jpql = "SELECT f FROM Drink f WHERE f.id IN :ids";
-        TypedQuery<Drink> query = em.createQuery(jpql, Drink.class);
-        query.setParameter("ids", ids);
-        return query.getResultList();
+        return em.createQuery(jpql)
+                    .setParameter("ids", ids)
+                    .getResultList();
     }
 
     public List<Drink> findAll() {

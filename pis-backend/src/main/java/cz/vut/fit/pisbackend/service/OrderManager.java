@@ -42,10 +42,10 @@ public class OrderManager {
     }
 
     public List<Order> findByTableId(long tableId) {
-        String jpql = "SELECT o FROM Order_ o WHERE o.toTable = :tableId";
-        TypedQuery<Order> query = em.createQuery(jpql, Order.class);
-        query.setParameter("tableId", tableId);
-        return query.getResultList();
+        String jpql = "SELECT o FROM Order_ o JOIN o.toTable t WHERE t.id = :tableId";
+        return em.createQuery(jpql, Order.class)
+                    .setParameter("tableId", tableId)
+                    .getResultList();
     }
 
     public List<Order> findAll() {

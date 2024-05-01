@@ -8,6 +8,9 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "Menu")
+@NamedQueries({
+    @NamedQuery(name="Menu.findAll", query="SELECT f FROM Menu f"),
+})
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

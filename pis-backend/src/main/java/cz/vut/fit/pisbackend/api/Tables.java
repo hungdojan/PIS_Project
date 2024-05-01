@@ -38,16 +38,10 @@ public class Tables {
     @Context
     private UriInfo context;
 
-    // TODO query params
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TableDTO> getTables(@QueryParam("available") Boolean available) {
-        if (available) {
-            // TODO
-            return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
-        } else {
-            return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
-        }
+    public List<TableDTO> getTables() {
+        return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
     }
 
     /**
@@ -57,6 +51,6 @@ public class Tables {
     @Path("{id}/orders")
     @Produces({MediaType.APPLICATION_JSON})
     public List<OrderResponseDTO> getOrders(@PathParam("table_id") long tableId) {
-        return orderMgr.findByTableId().stream().map(t -> new OrderResponseDTO(t)).toList();
+        return orderMgr.findByTableId(tableId).stream().map(t -> new OrderResponseDTO(t)).toList();
     }
 }
