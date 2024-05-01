@@ -101,7 +101,7 @@ public class Rooms {
         Room r = roomMngr.find(id);
         List<ReservationDTO> reservations = new ArrayList<>();
         if (r != null){
-            reservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList;
+            reservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList();
         }
         return reservations;
     }
@@ -115,7 +115,7 @@ public class Rooms {
         Room r = roomMngr.find(id);
         List<OrderDTO> orders = new ArrayList<>();
         if (r != null){
-            orders = r.getOrders().stream().map(o -> new OrderDTO(o)).toList;
+            orders = r.getOrders().stream().map(o -> new OrderDTO(o)).toList();
         }
         return orders;
     }
