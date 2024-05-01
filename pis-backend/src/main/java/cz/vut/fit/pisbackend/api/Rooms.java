@@ -1,0 +1,170 @@
+package cz.vut.fit.pisbackend.api;
+
+import java.net.URI;
+import java.util.Date;
+import java.util.List;
+
+import cz.vut.fit.pisbackend.api.dto.*;
+import cz.vut.fit.pisbackend.data.*;
+import cz.vut.fit.pisbackend.data.EmployeeManager;
+import jakarta.inject.Inject;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
+import cz.vut.fit.pisbackend.service.RoomManager;
+
+import java.util.List;
+
+@Path("/rooms")
+public class Rooms {
+    @Inject
+    private RoomManager roomMngr;
+    private EmployeeManager employeeMngr;
+    @Context
+    private UriInfo context;
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getRooms() {
+        return roomMngr.findAll().stream().map(r -> new RoomDTO(r)).toList();
+    }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoomById(@PathParam("id") long id) {
+        Room room = roomMngr.find(id);
+        if (room == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        }
+        return Response.ok(new RoomDTO(room)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response createRoom(RoomDTO roomDTO) {
+        Room existing = roomMngr.find(roomDTO.getId());
+        if (existing == null)
+        {
+            Room p = new Room();
+            p.setId(roomDTO.getId());
+            p.setCapacity(roomDTO.getCapacity());
+            p.setDescription(roomDTO.getDescription());
+            Room savedRoom = roomMngr.save(p);
+            final URI uri = UriBuilder.fromPath("/room/{resourceServerId}").build(savedRoom.getId());
+            return Response.created(uri).entity(savedRoom).build();
+        }
+        else
+        {
+            return Response.status(Response.Status.CONFLICT).entity(new ErrorDTO("duplicate id")).build();
+        }
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateRoom(@PathParam("id") Long id, RoomDTO src)
+    {
+        Room r = roomMngr.find(id);
+        if (r != null)
+        {
+            r.setId(src.getId());
+            r.setCapacity(src.getCapacity());
+            r.setDescription(src.getDescription());
+            return Response.ok(r).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteRoom(@PathParam("id") Long id)
+    {
+        Room r = roomMngr.find(id);
+        if (r != null)
+        {
+            roomMngr.remove(r);
+            return Response.ok().build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+
+    @Path("/{id}/reservations")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoomReservations(@PathParam("id") Long id)
+    {
+        Room r = roomMngr.find(id);
+        if (r != null)
+            return Response.ok(r.getReservations()).build();
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+
+    @Path("/{id}/reservations")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addRoomReservation(@PathParam("id") Long roomId, ReservationDTO reservation)
+    {
+        Room r = roomMngr.find(roomId);
+        if (r != null)
+        {
+            Reservation newReservation = new Reservation();
+            newReservation.setAt(reservation.getAt());
+            newReservation.setUntil(reservation.getUntil());
+            newReservation.setName(reservation.getName());
+            newReservation.setCount(reservation.getCount());
+            newReservation.setPhone(reservation.getPhone());
+            newReservation.setEmail(reservation.getEmail());
+            newReservation.setCreatedBy(employeeMngr.find(reservation.getCreatedByEmployeeId()));
+            roomMngr.addReservation(r, newReservation);
+            List<ReservationDTO> allReservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList();
+            return Response.ok(allReservations).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+
+    @Path("/{id}/orders")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRoomOrders(@PathParam("id") Long id)
+    {
+        Room r = roomMngr.find(id);
+        if (r != null)
+            return Response.ok(r.getOrders()).build();
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+
+    @Path("/{id}/orders")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addRoomOrders(@PathParam("id") Long roomId, OrderDTO order)
+    {
+        Room r = roomMngr.find(roomId);
+        if (r != null)
+        {
+            Order newOrder = new Order();
+            newOrder.setId(order.getId());
+            newOrder.setAtTime(order.getAtTime());
+            newOrder.setPayed(order.getPayed());
+            newOrder.setPrepared(order.getPrepared());
+            newOrder.setPreparedTime(order.getPreparedTime());
+            // add totable,toroom, list of drinks,foods
+            roomMngr.addOrder(r, newOrder);
+            List<OrderDTO> allOrders = r.getOrders().stream().map(re -> new OrderDTO(re)).toList();
+            return Response.ok(allOrders).build();
+        }
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
+}
