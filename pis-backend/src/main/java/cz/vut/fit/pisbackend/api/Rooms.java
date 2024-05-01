@@ -25,7 +25,7 @@ public class Rooms {
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getRooms() {
+    public List<RoomDTO> getRooms() {
         return roomMngr.findAll().stream().map(r -> new RoomDTO(r)).toList();
     }
 
@@ -50,7 +50,7 @@ public class Rooms {
             p.setId(roomDTO.getId());
             p.setCapacity(roomDTO.getCapacity());
             p.setDescription(roomDTO.getDescription());
-            Room savedRoom = roomMngr.save(p);
+            Room savedRoom = roomMngr.create(p);
             final URI uri = UriBuilder.fromPath("/room/{resourceServerId}").build(savedRoom.getId());
             return Response.created(uri).entity(savedRoom).build();
         }
@@ -124,10 +124,10 @@ public class Rooms {
     @GET
     @Path("/available/{at}/{until}")
     @Produces({MediaType.APPLICATION_JSON})
-    public Response getAvailableRooms(@PathParam("at") Date at,@PathParam("until") Date until) {
+    public List<RoomDTO>  getAvailableRooms(@PathParam("at") Date at,@PathParam("until") Date until) {
         return roomMngr.findAvailableRooms(at,until).stream().map(r -> new RoomDTO(r)).toList();
     }
-    
+
     @GET
     @Path("/available/{id}/{at}/{until}")
     @Produces({MediaType.APPLICATION_JSON})

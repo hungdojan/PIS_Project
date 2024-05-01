@@ -2,6 +2,7 @@ package cz.vut.fit.pisbackend.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Reservation;
@@ -47,7 +48,7 @@ public class RoomManager {
     }
 
     public List<Room> findAvailableRooms(Date at, Date until){
-        String jpql = "SELECT r FROM Room r " + 
+        String jpql = "SELECT r FROM Room r " +
                       "WHERE NOT EXISTS " +
                       "(SELECT res FROM r.reservations res " +
                       "WHERE (res.at <= :until AND res.until >= :at))";
@@ -56,7 +57,7 @@ public class RoomManager {
         query.setParameter("until", until);
         return query.getResultList();
     }
-    
+
     public boolean isRoomAvailable(Room room, Date at, Date until) {
         for (Reservation reservation : room.getReservations()) {
             if (reservation.getAt().before(until) && reservation.getUntil().after(at)) {
