@@ -1,3 +1,3 @@
-CREATE DATABASE IF NOT EXISTS pisdb;
+CREATE DATABASE IF NOT EXISTS `pis-db`;
 
-USE pisdb;
+USE `pis-db`;

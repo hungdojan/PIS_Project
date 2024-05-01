@@ -85,6 +85,9 @@ status:
 db_cli:
 	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pis-db -uroot -p
 
+db_preload:
+	$(ENGINE) exec -it $(PREFIX)_database_1 bash -c "mariadb pis-db -uroot -p < /initial-data.sql"
+
 # generate maven-wrapper to run backend locally without maven
 get_mvnw:
 	$(ENGINE) run -v ./pis-backend/:/tmp/data/:z docker.io/library/maven:3.8.4-openjdk-17 \
