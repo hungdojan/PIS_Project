@@ -2,55 +2,36 @@ INSERT INTO Company (name, phone, owner) VALUES ('Company1', '+420165161665', 'O
 INSERT INTO Company (name, phone, owner) VALUES ('Company2', '+420541616578', 'Owner2');
 INSERT INTO Company (name, phone, owner) VALUES ('Company3', '+420876543212', 'Owner3');
 INSERT INTO Company (name, phone, owner) VALUES ('Company4', '+420654321003', 'Owner4');
+INSERT INTO Company (name, phone, owner) VALUES ('Company5', '+420123456789', 'Owner5');
 
-INSERT INTO Employee (name, login, password, role) VALUES ('Adam Holter', 'xholte00', 'password', 'MANAGER');
-INSERT INTO Employee (name, login, password, role) VALUES ('Mirina Hill', 'xhillm00', 'password', 'CHEF');
-INSERT INTO Employee (name, login, password, role) VALUES ('Marta Dorn', 'xdornm00', 'password', 'STAFF');
-INSERT INTO Employee (name, login, password, role) VALUES ('Lorenzo Grande', 'xgrand00', 'password', 'STAFF');
-INSERT INTO Employee (name, login, password, role) VALUES ('Alice Johnson', 'xjohns00', 'password123', 'MANAGER');
-INSERT INTO Employee (name, login, password, role) VALUES ('John Doe', 'xdoej00', 'password123', 'CHEF');
-INSERT INTO Employee (name, login, password, role) VALUES ('Jane Smith', 'xsmithj00', 'password123', 'STAFF');
-INSERT INTO Employee (name, login, password, role) VALUES ('Bob Brown', 'xbrown00', 'password123', 'STAFF');
+INSERT INTO Employee (login, password, role) VALUES ('xholte00', 'password', 'MANAGER');
+INSERT INTO Employee (login, password, role) VALUES ('xhillm00', 'password', 'CHEF');
+INSERT INTO Employee (login, password, role) VALUES ('xdornm00', 'password', 'STAFF');
+INSERT INTO Employee (login, password, role) VALUES ('xgrand00', 'password', 'STAFF');
+INSERT INTO Employee (login, password, role) VALUES ('xjohns00', 'password123', 'MANAGER');
+INSERT INTO Employee (login, password, role) VALUES ('xdoej00', 'password123', 'CHEF');
 
-INSERT INTO Reservation (at, until, name, count, phone, email, createdBy) VALUES ('27-06-2024 20:00:00','27-06-2024 22:00:00', 2, '+420651651144', jan@gmail.com, 3);
-INSERT INTO Reservation (at, until, name, count, phone, email, createdBy) VALUES ('27-06-2024 16:00:00','28-06-2024 00:00:00', 2, '+420298413154', fero@gmail.com, 4);
-INSERT INTO Reservation (at, until, name, count, phone, email, createdBy) 
-VALUES ('28-06-2024 19:00:00', '28-06-2024 21:00:00', 'John Doe', 4, '+420123456789', 'john.doe@gmail.com', 1);
-INSERT INTO Reservation (at, until, name, count, phone, email, createdBy) 
-VALUES ('29-06-2024 13:00:00', '29-06-2024 15:00:00', 'Jane Smith', 3, '+420987654321', 'jane.smith@gmail.com', 2);
+INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id)
+VALUES ('2024-06-27 20:00:00','2024-06-27 22:00:00', 'Jan Holter', 2, '+420651651144', 'jan@gmail.com', 1);
+INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id)
+VALUES ('2024-06-28 16:00:00','2024-06-28 18:00:00', 'Marina Hill', 3, '+420298413154', 'marina.hill@gmail.com', 1);
+INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id)
+VALUES ('2024-06-28 19:00:00', '2024-06-28 21:00:00', 'Fero Stark', 2, '+420987654321', 'fero.stark@gmail.com', 2);
+INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id)
+VALUES ('2024-06-29 14:00:00', '2024-06-29 16:00:00', 'Alice Johnson', 4, '+420159357486', 'alice.johnson@gmail.com', 1);
+INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id)
+VALUES ('2024-06-29 15:00:00', '2024-06-29 23:00:00', 'Lorenzo Grande', 100, '+420876543210', 'lorenzo.grande@gmail.com', 2);
 
+INSERT INTO Room (id, capacity, description) VALUES (1, 100, 'Very nice room');
+INSERT INTO Room (id, capacity, description) VALUES (2, 200, 'Large event hall');
+INSERT INTO Room (id, capacity, description) VALUES (3, 50, 'Small private room');
+INSERT INTO Room (id, capacity, description) VALUES (4, 120, 'Medium-sized meeting room');
 
-INSERT INTO Room (name, capacity, description) VALUES ('Room1', 100, 'Very nice room');
-INSERT INTO Room (name, capacity, description) VALUES ('Room2', 50, 'Cozy room with a great view');
-INSERT INTO Room (name, capacity, description) VALUES ('Room3', 150, 'Large banquet hall');
-
-
-
-INSERT INTO reservation_room (reservation_id, room_id) VALUES (1, 2);
-INSERT INTO reservation_room (reservation_id, room_id) VALUES (2, 3);
-INSERT INTO reservation_tablee (reservation_id, tablee_id) VALUES (2, 3);
-
-
-
-INSERT INTO Tablee (name, capacity) VALUES ('Table 1', 5);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 2', 5);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 3', 5);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 4', 5);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 5', 4);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 6', 4);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 7', 4);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 9', 4);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 3', 2);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 10', 2);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 11', 2);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 12', 2);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 13', 6);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 14', 6);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 15', 6);
-INSERT INTO Tablee (name, capacity) VALUES ('Table 16', 6);
-
-
-INSERT INTO reservation_tablee (reservation_id, tablee_id) VALUES (4, 1);
+INSERT INTO Tablee (id, capacity) VALUES (1, 5);
+INSERT INTO Tablee (id, capacity) VALUES (2, 10);
+INSERT INTO Tablee (id, capacity) VALUES (3, 8);
+INSERT INTO Tablee (id, capacity) VALUES (4, 6);
+INSERT INTO Tablee (id, capacity) VALUES (5, 4);
 
 INSERT INTO Menu (name, description) VALUES ('Menu1', 'Menu for Monday');
 INSERT INTO Menu (name, description) VALUES ('Menu2', 'Menu for Tuesday');
@@ -58,45 +39,60 @@ INSERT INTO Menu (name, description) VALUES ('Menu3', 'Menu for Wednesday');
 INSERT INTO Menu (name, description) VALUES ('Menu4', 'Menu for Thursday');
 INSERT INTO Menu (name, description) VALUES ('Menu5', 'Menu for Friday');
 
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id)
+VALUES ('2024-06-27 10:22:56', FALSE,NULL, FALSE, NULL, 1);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id)
+VALUES ('2024-06-28 11:22:56', FALSE, NULL, FALSE, 1, NULL);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id)
+VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, NULL, 3);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id)
+VALUES ('2024-06-30 15:22:56', FALSE, NULL, FALSE, NULL, 4);
 
-INSERT INTO Order (atTime, prepared, preparedTime, payed, toRoom, toTable) VALUES ('27-06-2024 10:22:56', False,'', False, '', 1);
-INSERT INTO Order (atTime, prepared, preparedTime, payed, toRoom, toTable) VALUES ('27-06-2024 16:22:56', True, '27-06-2024 9:50:06', False, 1, '');
-INSERT INTO Order (atTime, prepared, preparedTime, payed, toRoom, toTable) 
-VALUES ('28-06-2024 14:22:56', False, '', False, '', 2);
-INSERT INTO Order (atTime, prepared, preparedTime, payed, toRoom, toTable) 
-VALUES ('29-06-2024 11:22:56', True, '29-06-2024 10:50:06', False, '', 3);
+INSERT INTO Drink (name, description, price, type, volume)
+VALUES ('Lemonade',NULL, 2.3, 'non-alcoholic',0.4);
+INSERT INTO Drink (name, description, price, type, volume)
+VALUES ('Cola', NULL, 1.99, 'non-alcoholic', 0.33);
+INSERT INTO Drink (name, description, price, type, volume)
+VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 0.33);
+INSERT INTO Drink (name, description, price, type, volume)
+VALUES ('Beer', NULL, 2.5, 'alcoholic', 0.5);
+INSERT INTO Drink (name, description, price, type, volume)
+VALUES ('Coffee', NULL, 2.5, 'hot', 0.5);
+
+INSERT INTO Food (name, description, price, type, allergens, grams)
+VALUES ('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500);
+INSERT INTO Food (name, description, price, type, allergens, grams)
+VALUES ('French Fries', 'Crispy and tasty', 3.50, 'side', '1,2', 200);
+INSERT INTO Food (name, description, price, type, allergens, grams)
+VALUES ('Chicken Salad', 'Grilled chicken with mixed greens', 8.99, 'meat', '1,2', 350);
+INSERT INTO Food (name, description, price, type, allergens, grams)
+VALUES ('Vegan Burger', 'Delicious plant-based burger', 7.99, 'vegetarian', '1', 400);
+
+INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id)
+VALUES (99, '2024-06-27 17:50:06', 'food', 'Importand food', 1, 2);
+INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id)
+VALUES (150, '2024-06-28 13:00:00', 'equipment', 'Kitchen maintenance', 1, 2);
+INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id)
+VALUES (300, '2024-06-29 15:30:00', 'repair', 'HVAC system repair', 3, 3);
 
 
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('Lemonade','', 2.3, 'non-alcoholic',0.4);
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('Cola','', 1.99,'non-alcoholic',0.33);
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('Fanta','', 1.99,'non-alcoholic',0.33);
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('Sprite','', 1.99,'non-alcoholic',0.33);
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('Beer','', 2.5,'alcoholic',0.5);
-INSERT INTO Drink (name, descriprion, price, type, volume) VALUES ('coffee','', 2.5,'hot',0.5);
-INSERT INTO Drink (name, description, price, type, volume) 
-VALUES ('Orange Juice', 'Freshly squeezed', 2.5, 'non-alcoholic', 0.4);
-INSERT INTO Drink (name, description, price, type, volume) 
-VALUES ('Espresso', 'Strong coffee', 1.8, 'hot', 0.15);
-INSERT INTO Drink (name, description, price, type, volume) 
-VALUES ('Tea', 'Green tea', 1.5, 'hot', 0.3);
+INSERT INTO Reservation_Room (Reservation_id, rooms_id) VALUES (5, 1);
+INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (1, 1);
+INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (3, 3);
+INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (4, 4);
 
-INSERT INTO order_drink (order_id, drink_id) VALUES (2, 6);
-INSERT INTO order_drink (order_id, drink_id) VALUES (3, 7);
-INSERT INTO menu_drink (menu_id, drink_id) VALUES (1, 1);
-INSERT INTO menu_drink (menu_id, drink_id) VALUES (3, 4);
+INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (1, 1);
+INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (2, 1);
+INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (1, 2);
 
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500);
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('French fries', 'Very delicious', 3.00 , 'side', '1,2', 200);
-INSERT INTO Food (name, description, price, type, allergens, grams) 
-VALUES ('Chicken Burger', 'Juicy chicken with lettuce', 8.99, 'meat', '1,2', 450);
-INSERT INTO Food (name, description, price, type, allergens, grams) 
-VALUES ('Salad', 'Mixed greens with vinaigrette', 5.99, 'vegetarian', '1', 300);
+INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (1, 1);
+INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (1, 2);
+INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (3, 3);
 
-INSERT INTO order_food (order_id, food_id) VALUES (1, 2);
-INSERT INTO order_food (order_id, food_id) VALUES (1, 7);
-INSERT INTO menu_food (menu_id, food_id) VALUES (2, 1);
-INSERT INTO menu_food (menu_id, food_id) VALUES (3, 2);
+INSERT INTO Order__Food (Order__id, foods_id) VALUES (1, 1);
+INSERT INTO Order__Food (Order__id, foods_id) VALUES (2, 2);
+INSERT INTO Order__Food (Order__id, foods_id) VALUES (3, 3);
 
-INSERT INTO Expenses (price, time, type, description, createdBy, orderedFrom) VALUES (99, '27-06-2024 17:50:06', 'food', 'Importand food', 1, 2);
-INSERT INTO Expenses (price, time, type, description, createdBy, orderedFrom) 
-VALUES (150, '29-06-2024 12:30:00', 'beverages', 'Stocking up on drinks', 2, 3);
+INSERT INTO Menu_Food (Menu_id, foods_id) VALUES (1, 1);
+INSERT INTO Menu_Food (Menu_id, foods_id) VALUES (2, 1);
+INSERT INTO Menu_Food (Menu_id, foods_id) VALUES (4, 2);
