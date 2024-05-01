@@ -20,7 +20,6 @@ import java.util.List;
 public class Rooms {
     @Inject
     private RoomManager roomMngr;
-    private EmployeeManager employeeMngr;
     @Context
     private UriInfo context;
 
@@ -126,5 +125,15 @@ public class Rooms {
     public Response getAvailableRooms(@PathParam("at") Date at,@PathParam("until") Date until) {
         return roomMngr.findAvailableRooms(at,until).stream().map(r -> new RoomDTO(r)).toList();
     }
-
+    
+    @GET
+    @Path("/available/{id}/{at}/{until}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAvailableRooms(@PathParam("id") Long id,@PathParam("at") Date at,@PathParam("until") Date until) {
+        Room r = roomMngr.find(id);
+        if (r != null)
+            return Response.ok(roomMngr.isRoomAvailable(r,at,until)).build();
+        else
+            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+    }
 }
