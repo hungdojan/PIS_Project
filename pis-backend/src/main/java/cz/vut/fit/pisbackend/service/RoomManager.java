@@ -8,6 +8,7 @@ import cz.vut.fit.pisbackend.data.Reservation;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import cz.vut.fit.pisbackend.data.Room;
@@ -54,5 +55,14 @@ public class RoomManager {
         query.setParameter("at", at);
         query.setParameter("until", until);
         return query.getResultList();
+    }
+    
+    public boolean isRoomAvailable(Room room, Date at, Date until) {
+        for (Reservation reservation : room.getReservations()) {
+            if (reservation.getAt().before(until) && reservation.getUntil().after(at)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
