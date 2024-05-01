@@ -24,7 +24,7 @@
             <property name="jakarta.persistence.schema-generation.scripts.create-target"
                       value="createDDL.ddl"/>
             <property name="jakarta.persistence.sql-load-script-source"
-                      value="initial-data.sql"/>
+                      value="META-INF/initial-data.sql"/>
         </properties>
     </persistence-unit>
 </persistence>
