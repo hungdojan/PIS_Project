@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name="Food.findAll", query="SELECT f FROM Food f"),
+})
 @Table(name = "Food")
 public class Food {
 

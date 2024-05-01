@@ -21,18 +21,19 @@ public class OrderManager {
     }
 
     @Transactional
-    public Order save(Order p) {
-        return em.merge(p);
+    public Order create(Order o) {
+        em.persist(o);
+        return o;
     }
 
     @Transactional
-    public void remove(Order p) {
-        em.remove(em.merge(p));
+    public void remove(Order o) {
+        em.remove(em.merge(o));
     }
 
     @Transactional
-    public void addOrder(Order p) {
-        save(p);
+    public Order update(Order o) {
+        return em.merge(o);
     }
 
     public Order find(long id) {

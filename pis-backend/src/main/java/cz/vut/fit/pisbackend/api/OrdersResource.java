@@ -2,12 +2,17 @@ package cz.vut.fit.pisbackend.api;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.Collection;
 import java.util.List;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.stream.Collectors;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -24,9 +29,13 @@ import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Room;
 import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Table;
+import cz.vut.fit.pisbackend.service.FoodManager;
 import cz.vut.fit.pisbackend.service.OrderManager;
+
 import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
+import cz.vut.fit.pisbackend.api.dto.FoodDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderDTO;
+import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
 
 
 @Path("orders")
@@ -34,59 +43,73 @@ public class OrdersResource {
 
     @Inject
     private OrderManager orderMgr;
+    @Inject
+    private FoodManager foodMgr;
+
     @Context
     private UriInfo context;
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<OrderDTO> orders() {
-
-        //Order o = orderMgr.find(id);
-        //
-        // TODO remove mocked data
-        Order o = new Order();
-        o.setAtTime(new Date()); // default ctor is the current date
-        o.setPrepared(false);
-        o.setPayed(false);
-        Room r = new Room();
-        r.setCapacity(25);
-        r.setDescription("Very nice room :D");
-        r.getOrders().add(o);
-        o.setToRoom(r);
-
-        Table t = new Table();
-        t.setCapacity(4);
-        t.getOrders().add(o);
-        o.setToTable(t);
-
-        Food f = new Food();
-        f.setId(1);
-        f.setName("Kureci platek");
-        f.setDescription("Menzova delikatesa");
-        f.setPrice(86);
-        f.setType("Co je toto? :D");
-        f.setGrams(210);
-        f.getOrders().add(o);
-
-        orderMgr.save(o);
-
-        //o.getFoods().add(f);
-        return orderMgr.findAll().stream().map(x -> new OrderDTO(x)).toList();
-        //return Response.ok(new OrderDTO(o)).build();
+    public List<OrderResponseDTO> orders() {
+        return orderMgr.findAll().stream().map(x -> new OrderResponseDTO(x)).toList();
     }
 
-    /**
-     * Adds a new order.
-     * @param order The order to add.
-     * @return
-     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(OrderDTO order)
     {
-        Order saved = orderMgr.save(order.toEntity());
-        final URI uri = UriBuilder.fromPath("/order/{resourceServerId}").build(saved.getId());
-        return Response.created(uri).entity(saved).build();
+        Collection<Food> food = foodMgr.findByIds(order.getFoods());
+
+        Order o = new Order();
+        o.setAtTime(order.getAtTime());
+        o.setPrepared(order.getPrepared());
+        o.setPreparedTime(order.getPreparedTime());
+        o.setPayed(order.getPayed());
+        o.setFoods(food);
+
+        Order saved = orderMgr.create(o);
+        return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
     }
+
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateOrder(OrderDTO order)
+    {
+        Order found = orderMgr.find(order.getId());
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ErrorDTO("Cannot update non-existing order"))
+                           .build();
+        }
+        Collection<Food> food = foodMgr.findByIds(order.getFoods());
+
+        found.setAtTime(order.getAtTime());
+        found.setPrepared(order.getPrepared());
+        found.setPreparedTime(order.getPreparedTime());
+        found.setPayed(order.getPayed());
+        found.setFoods(food);
+
+        Order saved = orderMgr.update(found);
+        return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteOrder(@PathParam("id") long id)
+    {
+        Order found = orderMgr.find(id);
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ErrorDTO("Cannot delete non-existing order"))
+                           .build();
+        }
+        orderMgr.remove(found);
+        return Response.status(Response.Status.OK).build();
+    }
+
 }
