@@ -1,10 +1,6 @@
 package cz.vut.fit.pisbackend.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.persistence.Table;
 
 import java.util.Date;
@@ -14,9 +10,10 @@ import java.util.Date;
 public class Expenses {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private float price;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date time;
     private String type;
     private String description;

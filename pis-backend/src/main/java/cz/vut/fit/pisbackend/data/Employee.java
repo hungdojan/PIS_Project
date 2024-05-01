@@ -1,11 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.JoinColumn;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,7 +12,7 @@ import java.util.stream.Stream;
 @Table(name = "Employee")
 public class Employee {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String login;
     private String password;
