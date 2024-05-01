@@ -4,6 +4,7 @@ import StaffPage from './pages/staffPage';
 import LoginPage from './pages/login';
 import ManagerPage from './pages/managerPage';
 import AdminPage from './pages/adminPage';
+import OrdersPage from './pages/ordersPage';
 import './App.css';
 import { NotFound } from './components';
 
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="staff" element={<StaffPage />}></Route>
         <Route path="manager" element={<ManagerPage />}></Route>
         <Route path="admin" element={<AdminPage />}></Route>
+        <Route path="orders" element={<OrdersPage />}></Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
