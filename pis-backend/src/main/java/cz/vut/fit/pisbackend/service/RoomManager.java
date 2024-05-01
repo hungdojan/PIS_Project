@@ -22,8 +22,9 @@ public class RoomManager {
     }
 
     @Transactional
-    public Room save(Room room) {
-        return em.merge(room);
+    public Room create(Room room) {
+        em.persist(room);
+        return room;
     }
 
     @Transactional
@@ -31,9 +32,9 @@ public class RoomManager {
         em.remove(em.merge(room));
     }
 
-    @Transactional
-    public void addRoom(Room room) {
-        save(room);
+     @Transactional
+    public Room update(Room room) {
+        return em.merge(room);
     }
 
     public Room find(long id) {
@@ -44,26 +45,14 @@ public class RoomManager {
         return em.createQuery("SELECT r FROM Room r", Room.class).getResultList();
     }
 
-    @Transactional
-    public void addReservation(Room r, Reservation re)
-    {
-        r.getReservations().add(re);
-        re.getRooms().add(r);
-        re.setRooms(re.getRooms());
-        save(r);
+    public List<Room> findAvailableRooms(Date at, Date until){
+        String jpql = "SELECT r FROM Room r " + 
+                      "WHERE NOT EXISTS " +
+                      "(SELECT res FROM r.reservations res " +
+                      "WHERE (res.at <= :until AND res.until >= :at))";
+        TypedQuery<Room> query = em.createQuery(jpql, Room.class);
+        query.setParameter("at", at);
+        query.setParameter("until", until);
+        return query.getResultList();
     }
-
-    @Transactional
-    public void addOrder(Room r, Order o)
-    {
-        r.getOrders().add(o);
-        o.setToRoom(r);
-        save(r);
-    }
-/*
-    public List<Room> findAvailable() {
-        return new ArrayList<>();
-    }
-
- */
 }
