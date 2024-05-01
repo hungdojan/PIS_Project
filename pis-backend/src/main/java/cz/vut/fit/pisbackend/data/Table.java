@@ -2,6 +2,7 @@ package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -17,6 +18,7 @@ import java.util.Collection;
 @jakarta.persistence.Table(name = "Tablee")
 public class Table {
     @Id
+    @GeneratedValue
     private long id;
     private int capacity;
     @ManyToMany

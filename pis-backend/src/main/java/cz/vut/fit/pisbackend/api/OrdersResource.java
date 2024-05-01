@@ -2,6 +2,7 @@ package cz.vut.fit.pisbackend.api;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -28,7 +29,7 @@ import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderDTO;
 
 
-@Path("order")
+@Path("orders")
 public class OrdersResource {
 
     @Inject
@@ -36,31 +37,24 @@ public class OrdersResource {
     @Context
     private UriInfo context;
 
-    @Path("{id}")
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response order(@PathParam("id") Long id) {
-        if (id == null || id < 0)  {
-            // TODO http bad request?
-        }
+    public List<OrderDTO> orders() {
 
         //Order o = orderMgr.find(id);
         //
         // TODO remove mocked data
         Order o = new Order();
-        o.setId(1);
         o.setAtTime(new Date()); // default ctor is the current date
         o.setPrepared(false);
         o.setPayed(false);
         Room r = new Room();
-        r.setId(1);
         r.setCapacity(25);
         r.setDescription("Very nice room :D");
         r.getOrders().add(o);
         o.setToRoom(r);
 
         Table t = new Table();
-        t.setId(1);
         t.setCapacity(4);
         t.getOrders().add(o);
         o.setToTable(t);
@@ -74,12 +68,11 @@ public class OrdersResource {
         f.setGrams(210);
         f.getOrders().add(o);
 
+        orderMgr.save(o);
+
         //o.getFoods().add(f);
-        Order os = orderMgr.find(id);
-        if (os != null)
-            return Response.ok(new OrderDTO(os)).build();
-        else
-            return Response.status(Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+        return orderMgr.findAll().stream().map(x -> new OrderDTO(x)).toList();
+        //return Response.ok(new OrderDTO(o)).build();
     }
 
     /**
@@ -92,26 +85,8 @@ public class OrdersResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(OrderDTO order)
     {
-        Order existing = orderMgr.find(order.getId());
-        if (order.getAtTime() == null) {
-            return Response.status(Status.CONFLICT).entity(new ErrorDTO("wtf")).build();
-        }
-        if (existing == null)
-        {
-            Order o = new Order();
-            o.setId(order.getId());
-            o.setAtTime(order.getAtTime());
-            o.setPrepared(order.getPrepared());
-            o.setPreparedTime(order.getPreparedTime());
-            o.setPayed(order.getPayed());
-
-            Order saved = orderMgr.save(o);
-            final URI uri = UriBuilder.fromPath("/order/{resourceServerId}").build(saved.getId());
-            return Response.created(uri).entity(saved).build();
-        }
-        else
-        {
-            return Response.status(Status.CONFLICT).entity(new ErrorDTO("duplicate id")).build();
-        }
+        Order saved = orderMgr.save(order.toEntity());
+        final URI uri = UriBuilder.fromPath("/order/{resourceServerId}").build(saved.getId());
+        return Response.created(uri).entity(saved).build();
     }
 }

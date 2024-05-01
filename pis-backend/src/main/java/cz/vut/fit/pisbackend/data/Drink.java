@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -12,6 +13,7 @@ import java.util.Collection;
 @Table(name = "Drink")
 public class Drink {
     @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String description;

@@ -11,7 +11,9 @@ import java.util.Date;
 @Entity
 @Table(name = "Reservation")
 public class Reservation {
+
     @Id
+    @GeneratedValue
     private long id;
     private Date at;
     private Date until;

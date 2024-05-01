@@ -9,7 +9,9 @@ import java.util.Collection;
 @Entity
 @Table(name = "Room")
 public class Room{
+
     @Id
+    @GeneratedValue
     private long id;
     private int capacity;
     private String description;

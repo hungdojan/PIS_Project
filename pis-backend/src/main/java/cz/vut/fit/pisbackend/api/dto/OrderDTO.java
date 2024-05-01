@@ -23,6 +23,15 @@ public class OrderDTO {
         this.payed = order.getPayed();
     }
 
+    public Order toEntity() {
+        Order order = new Order();
+        order.setAtTime(atTime);
+        order.setPrepared(prepared);
+        order.setPreparedTime(preparedTime);
+        order.setPayed(payed);
+        return order;
+    }
+
     public long getId() {
         return id;
     }
