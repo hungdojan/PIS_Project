@@ -3,6 +3,7 @@ package cz.vut.fit.pisbackend.api.dto;
 import cz.vut.fit.pisbackend.data.Employee;
 
 public class EmployeeDTO {
+    private long id;
     private String login;
     private String role;
 
@@ -10,11 +11,13 @@ public class EmployeeDTO {
 
     }
     public EmployeeDTO(Employee employee) {
+        this.id = employee.getId();
         this.login = employee.getLogin();
         this.role = employee.getRole();
     }
 
-    public EmployeeDTO(String login, String role) {
+    public EmployeeDTO(long id, String login, String role) {
+        this.id = id;
         this.login = login;
         this.role = role;
     }
@@ -33,5 +36,13 @@ public class EmployeeDTO {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

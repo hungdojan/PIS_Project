@@ -34,69 +34,78 @@ public class EmployeeAPI {
     public Response validate(Employee e) {
         Employee employee = employeeManager.getUser(e.getLogin());
         if (employee == null)
-            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDTO("Login Failed")).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new ResponseMessageDTO("Login Failed")).build();
         if (!pbkdf2PasswordHash.verify(e.getPassword().toCharArray(), employee.getPassword())) {
-            return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDTO("Login Failed")).build();
+            return Response.status(Response.Status.UNAUTHORIZED).entity(new ResponseMessageDTO("Login Failed")).build();
         }
-        return Response.status(Response.Status.ACCEPTED).entity(new JwtDTO("TODO")).build();
+        return Response.status(Response.Status.OK).entity(new JwtDTO("TODO")).build();
     }
 
-    @Path("create")
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response create(Employee e) {
+        if (!e.createRequestValidation()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!"))
+                .build();
+        }
+
         Employee foundEmployee = employeeManager.getUser(e.getLogin());
         if (foundEmployee != null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("User already exists")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User already exists")).build();
         }
+
         Employee newEmployee = new Employee();
         newEmployee.setLogin(e.getLogin());
         newEmployee.setRole(e.getRole());
         newEmployee.setPassword(pbkdf2PasswordHash.generate(e.getPassword().toCharArray()));
 
-         employeeManager.update(newEmployee);
-        return Response.status(Response.Status.ACCEPTED).entity(new EmployeeDTO(newEmployee)).build();
+        employeeManager.update(newEmployee);
+        return Response.status(Response.Status.CREATED).entity(new EmployeeDTO(newEmployee)).build();
     }
 
-    @Path("update")
-    @POST
+    @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    @RolesAllowed("Admin")
+//    @RolesAllowed("Admin")
     public Response update(Employee e) {
+        if (!e.createRequestValidation()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!"))
+                .build();
+        }
         Employee employee = employeeManager.find(e.getId());
         if (employee == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("User not found!")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User not found!")).build();
         }
         employee.setRole(e.getRole());
         employee.setLogin(e.getLogin());
         employee.setPassword(pbkdf2PasswordHash.generate(e.getPassword().toCharArray()));
 
         employeeManager.update(employee);
-        return Response.status(Response.Status.ACCEPTED).entity(new EmployeeDTO(employee)).build();
+        return Response.status(Response.Status.CREATED).entity(new EmployeeDTO(employee)).build();
     }
 
-    @Path("delete/{id}")
-    @GET
+    @Path("{id}")
+    @DELETE
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
 //    @RolesAllowed("Admin")
     public Response delete(@PathParam("id") long id) {
         Employee employee = employeeManager.find(id);
         if (employee == null) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("User not found!")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User not found!")).build();
         }
         employeeManager.remove(employee);
-        return Response.status(Response.Status.ACCEPTED).entity(new ResponseMessageDTO("User `" + id + "` deleted!")).build();
+        return Response.status(Response.Status.OK).entity(new ResponseMessageDTO("User `" + id + "` deleted!")).build();
     }
 
     @GET
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
 //    @RolesAllowed("Admin")
-    public List<EmployeeDTO> get(@Context HttpHeaders hh) {
-        System.out.println(hh.getRequestHeaders());
+    public List<EmployeeDTO> get() {
         return employeeManager.getAll().stream().map(EmployeeDTO::new).toList();
     }
 

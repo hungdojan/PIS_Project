@@ -19,7 +19,8 @@ public class EmployeeManager {
 
     @Transactional
     public Employee create(Employee p) {
-        return em.merge(p);
+        em.persist(p);
+        return p;
     }
 
     @Transactional
@@ -39,7 +40,7 @@ public class EmployeeManager {
     public Employee getUser(String username) {
         return em.createQuery(
             "SELECT e FROM Employee e WHERE e.login = :username", Employee.class
-        ).setParameter("username", username).getSingleResult();
+        ).setParameter("username", username).getResultList().stream().findFirst().orElse(null);
     }
 
     public List<Employee> getAll() {
