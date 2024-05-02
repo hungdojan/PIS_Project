@@ -1,31 +1,31 @@
 # Employee
 
-- **POST /employee/login**
+- **POST /employees/login**
     - **Name**: Employee login
     - **Parameters**: `Employee` (with `login` and `password`)
     - **Output**: `EmployeeDTO` with a JWT cookie on success
 
-- **POST /employee**
+- **POST /employees**
     - **Name**: Create a new employee
     - **Parameters**: `Employee` (with `login`, `password`, and `role`)
     - **Output**: `EmployeeDTO` (requires admin privileges via JWT)
 
-- **PUT /employee**
+- **PUT /employees**
     - **Name**: Update an existing employee
     - **Parameters**: `Employee` (with `id`, `login`, `password`, `role`) and `jwt` query parameter
     - **Output**: `EmployeeDTO` (requires admin privileges via JWT)
 
-- **DELETE /employee/{id}**
+- **DELETE /employees/{id}**
     - **Name**: Delete an employee by ID
     - **Parameters**: `id` (Employee ID) and `jwt` query parameter
     - **Output**: Confirmation message (requires admin privileges via JWT)
 
-- **GET /employee**
+- **GET /employees**
     - **Name**: Retrieve all employees
     - **Parameters**: `jwt` query parameter
     - **Output**: List of `EmployeeDTO` (requires admin privileges via JWT)
 
-- **GET /employee/logout**
+- **GET /employees/logout**
     - **Name**: Logout current user
     - **Parameters**: `jwt` cookie parameter
     - **Output**: Logout confirmation message
@@ -143,7 +143,7 @@
 
 # Food
 
-- **GET /food**
+- **GET /foods**
     - **Name**: Retrieve all food items
     - **Parameters**: None
     - **Output**: List of `FoodDTO`
