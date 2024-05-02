@@ -26,9 +26,9 @@ public class Reservation {
     private String email;
     @ManyToOne
     private Employee createdBy;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private Collection<cz.vut.fit.pisbackend.data.Table> tables;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
     private Collection<Room> rooms;
 
     public Reservation() {
