@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/reservations")
-public class Reservations {
+public class ReservationsAPI {
 
     @Inject
     private ReservationManager reservationMngr;
@@ -41,7 +41,7 @@ public class Reservations {
     public Response getReservationById(@PathParam("id") long id) {
         Reservation reservation = reservationMngr.find(id);
         if (reservation == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("Reservation not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("Reservation not found")).build();
         }
         return Response.ok(new ReservationResponseDTO(reservation)).build();
     }
@@ -72,7 +72,7 @@ public class Reservations {
     public Response updateReservation(@PathParam("id") Long id, ReservationDTO reservationDTO) {
         Reservation reservation = reservationMngr.find(id);
         if (reservation == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("Reservation not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("Reservation not found")).build();
         }
         reservation.setAt(reservationDTO.getAt());
         reservation.setUntil(reservationDTO.getUntil());
@@ -93,7 +93,7 @@ public class Reservations {
     public Response deleteReservation(@PathParam("id") Long id) {
         Reservation reservation = reservationMngr.find(id);
         if (reservation == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("Reservation not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("Reservation not found")).build();
         }
         reservationMngr.remove(reservation);
         return Response.status(Response.Status.OK).build();

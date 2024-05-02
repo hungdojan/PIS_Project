@@ -1,7 +1,7 @@
 package cz.vut.fit.pisbackend.data;
 
-import jakarta.persistence.*;
 import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Date;
 

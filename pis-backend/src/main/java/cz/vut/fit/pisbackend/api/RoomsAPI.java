@@ -13,7 +13,7 @@ import jakarta.ws.rs.core.*;
 import cz.vut.fit.pisbackend.service.RoomManager;
 
 @Path("/rooms")
-public class Rooms {
+public class RoomsAPI {
     @Inject
     private RoomManager roomMngr;
     @Context
@@ -31,7 +31,7 @@ public class Rooms {
     public Response getRoomById(@PathParam("id") long id) {
         Room room = roomMngr.find(id);
         if (room == null) {
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("not found")).build();
         }
         return Response.ok(new RoomDTO(room)).build();
     }
@@ -50,7 +50,7 @@ public class Rooms {
             return Response.created(uri).entity(savedRoom).build();
         }
         else{
-            return Response.status(Response.Status.CONFLICT).entity(new ErrorDTO("duplicate id")).build();
+            return Response.status(Response.Status.CONFLICT).entity(new ResponseMessageDTO("duplicate id")).build();
         }
     }
 
@@ -68,7 +68,7 @@ public class Rooms {
             return Response.ok(new RoomDTO(updatedRoom)).build();
         }
         else{
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("not found")).build();
         }
     }
 
@@ -83,7 +83,7 @@ public class Rooms {
             return Response.status(Response.Status.OK).build();
         }
         else{
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("not found")).build();
         }
     }
 
@@ -104,10 +104,10 @@ public class Rooms {
     @Path("/{id}/orders")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderDTO> getRoomOrders(@PathParam("id") Long id)
+    public List<OrderResponseDTO> getRoomOrders(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
-        List<OrderDTO> orders = new ArrayList<>();
+        List<OrderResponseDTO> orders = new ArrayList<>();
         if (r != null){
             orders = r.getOrders().stream().map(o -> new OrderResponseDTO(o)).toList();
         }
@@ -136,7 +136,7 @@ public class Rooms {
             return Response.ok(roomMngr.isRoomAvailable(r,at,until)).build();
         }
         else{
-            return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(new ResponseMessageDTO("not found")).build();
         }
     }
 }

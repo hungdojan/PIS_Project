@@ -1,9 +1,9 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+import cz.vut.fit.pisbackend.data.Menu;
+
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import cz.vut.fit.pisbackend.data.Menu;
 
 public class MenuResponseDTO {
 

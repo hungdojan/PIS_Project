@@ -1,13 +1,10 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-import java.util.Date;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Order;
-import cz.vut.fit.pisbackend.data.Room;
-import cz.vut.fit.pisbackend.data.Table;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
 
 public class OrderResponseDTO {
     private long id;

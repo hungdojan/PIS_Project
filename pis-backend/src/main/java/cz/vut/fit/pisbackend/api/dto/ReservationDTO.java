@@ -1,14 +1,7 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-import cz.vut.fit.pisbackend.data.Order;
-import cz.vut.fit.pisbackend.data.Table;
-import cz.vut.fit.pisbackend.data.Room;
-import cz.vut.fit.pisbackend.data.Reservation;
-
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 public class ReservationDTO {
     private long id;

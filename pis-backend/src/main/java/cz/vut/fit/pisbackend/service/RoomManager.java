@@ -1,18 +1,15 @@
 package cz.vut.fit.pisbackend.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-
-import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Reservation;
+import cz.vut.fit.pisbackend.data.Room;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
-import cz.vut.fit.pisbackend.data.Room;
+import java.util.Date;
+import java.util.List;
 
 @RequestScoped
 public class RoomManager {
