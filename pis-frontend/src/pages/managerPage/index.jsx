@@ -91,7 +91,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
         </Nav.Item>
       </Nav>
       <hr />
-      <DropdownButton
+      {/* <DropdownButton
         id="dropdownUser2"
         title={
           <img
@@ -108,7 +108,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
         <Dropdown.Item href="#">Profile</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item href="#">Sign out</Dropdown.Item>
-      </DropdownButton>
+      </DropdownButton> */}
     </div>
   );
 };
@@ -132,7 +132,7 @@ function ManageRoomsDashboard() {
       </Col>
       {/* <Col md={3} className="editing-tool"> */}
       <Col md={3} className="editing-tool">
-        <TableEditForm onDelete={handleDelete} onSave={onSave}/>
+        <TableEditForm onDelete={handleDelete} onSave={onSave} />
       </Col>
     </Row>
   );
@@ -190,21 +190,25 @@ function TableManagement() {
   );
 }
 
-const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
+const TableEditForm = ({ onSave, onDelete, table = {}, room = {} }) => {
   const [roomName, setRoomName] = useState(room.roomName || '');
   const [tableName, setTableName] = useState(table.name || '');
   const [capacity, setCapacity] = useState(table.capacity || '');
 
   const handleSave = () => {
     // Check if required fields are not empty
-    if (roomName.trim() === '' || tableName.trim() === '' || capacity.trim() === '') {
+    if (
+      roomName.trim() === '' ||
+      tableName.trim() === '' ||
+      capacity.trim() === ''
+    ) {
       alert('Please fill in all fields');
       return;
     }
 
     // Create an object representing the table
     const editedTable = {
-      id: table.id || null, 
+      id: table.id || null,
       name: tableName.trim(),
       capacity: capacity.trim(),
     };
@@ -259,13 +263,14 @@ const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
         </Col>
         <Col>
           <Button onClick={handleSave}>Save</Button>
-          <Button variant="danger" onClick={handleDelete}>Delete</Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
         </Col>
       </Row>
     </div>
   );
 };
-
 
 function ElementForm({ onSave, onDelete }) {
   const [name, setName] = useState('');
