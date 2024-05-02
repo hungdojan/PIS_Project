@@ -63,7 +63,6 @@ public class Rooms {
     {
         Room r = roomMngr.find(id);
         if (r != null){
-            r.setId(src.getId());
             r.setCapacity(src.getCapacity());
             r.setDescription(src.getDescription());
             Room updatedRoom = roomMngr.update(r);
