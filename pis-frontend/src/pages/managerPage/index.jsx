@@ -3,6 +3,7 @@ import {
   Nav,
   NavItem,
   NavLink,
+  Form,
   Dropdown,
   DropdownButton,
   Container,
@@ -11,6 +12,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import './ManagerPage.css';
+import {FaTrash} from "react-icons/fa";
 
 // =========== MAIN MANAGER VIEW ===========
 const ManagerDahsboard = () => {
@@ -46,8 +48,6 @@ const ManagerDahsboard = () => {
           activeNavItem={activeNavItem}
         />
         <Col className="manager-view">{renderActiveComponent()}</Col>
-
-        {/* <ManageRoomsDashboard /> */}
       </Row>
     </Container>
   );
@@ -66,7 +66,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
         <svg className="bi me-2" width="40" height="32">
           <use xlinkHref="#bootstrap"></use>
         </svg>
-        <span className="fs-4">Sidebar</span>
+        <span className="fs-4">Manager</span>
       </a>
       <hr />
 
@@ -78,7 +78,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
       >
         <Nav.Item>
           <Nav.Link eventKey="manager-room-reservations">
-            Manage room reservations
+            Room reservations & tables
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
@@ -87,7 +87,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="manager-expenses-pricing">Manage prices</Nav.Link>
+          <Nav.Link eventKey="manager-expenses-pricing">Manage food & prices</Nav.Link>
         </Nav.Item>
       </Nav>
       <hr />
@@ -116,21 +116,20 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
 // =========== VIEW 1 ===========
 function ManageRoomsDashboard() {
   const onSave = (table) => {
-    // Handle save logic here
+    // TODO Handle save logic here
     console.log('Saving table:', table);
   };
 
   const handleDelete = (id) => {
-    // Handle delete logic here
+    // TODO Handle delete logic here
     console.log(`Deleting table with ID: ${id}`);
   };
 
   return (
     <Row>
-      <Col className="manage-rooms">
+      <Col className="manage-rooms ps-3">
         <ManageRooms />
       </Col>
-      {/* <Col md={3} className="editing-tool"> */}
       <Col md={3} className="editing-tool">
         <TableEditForm onDelete={handleDelete} onSave={onSave}/>
       </Col>
@@ -139,72 +138,136 @@ function ManageRoomsDashboard() {
 }
 
 function ManageRooms() {
+  const [selectedRoom, setSelectedRoom] = useState(null);
+  const [reservationDate, setReservationDate] = useState(null);
+  const [reservationTime, setReservationTime] = useState(null);
+  // TODO load and remove room reservations
+  const rooms = [
+    { id: 1, name: 'Room 1', description: 'Description for Room 1', reservationDate: '2024-05-20', reservationTime: '10:00' }, // Example reservation date and time
+    { id: 2, name: 'Room 2', description: 'Description for Room 2', reservationDate: null, reservationTime: null },
+    { id: 3, name: 'Room 3', description: 'Description for Room 3', reservationDate: '2024-06-10', reservationTime: '14:00' }, // Example reservation date and time
+  ];
+
+  const handleRoomSelect = (room) => {
+    setSelectedRoom(room);
+    setReservationDate(room.reservationDate);
+  };
+
+  const handleDateChange = (e) => {
+    setReservationDate(e.target.value);
+  };
+
+  const handleTimeChange = (e) => {
+    setReservationTime(e.target.value);
+  };
+
   return (
     <>
-      <Row>
+      <Row className="pt-4 pe-3">
+        <h4>Room reservations</h4>
         <Col className="d-flex align-items-center">
           {/* Dropdown */}
-          <DropdownButton id="dropdown-basic-button" title="Dropdown">
-            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          <DropdownButton id="dropdown-basic-button" title={selectedRoom ? selectedRoom.name : "Select Room"}>
+            {rooms.map((room) => (
+              <Dropdown.Item key={room.id} onClick={() => handleRoomSelect(room)}>
+                Room {room.name}
+              </Dropdown.Item>
+            ))}
           </DropdownButton>
         </Col>
-        <Col className="d-flex align-items-center justify-content-end">
-          {/* Delete Button */}
-          <Button variant="danger">Delete</Button>
+        <Col className="text-danger">
+          {reservationDate && reservationTime? "The room is reserved": ""}
+        </Col>
+        <Col>
+          <Form.Control
+            type="date"
+            value={reservationDate || ''}
+            onChange={handleDateChange}
+            disabled={!selectedRoom}
+          />
+        </Col>
+        <Col>
+          <Form.Control
+            type="time"
+            value={reservationTime || ''}
+            onChange={handleTimeChange}
+            disabled={!selectedRoom}
+          />
         </Col>
       </Row>
-      <Row>
-        <TableManagement />
-      </Row>
-      <Row>
-        <Col className="bottom-row">All tables count</Col>
-        <Col className="bottom-row">Total capacity</Col>
+      <h4 className="mt-5 pt-4">Table overview</h4>
+      <Row className="pe-3">
+        <TableManagement/>
       </Row>
     </>
   );
 }
 
 function TableManagement() {
-  const [components, setComponents] = useState([]);
+  // const [components, setComponents] = useState([]);
 
-  const addComponent = () => {
-    setComponents((prevComponents) => [
-      ...prevComponents,
-      <div className="rectangle">Table</div>,
+  const [tables, setTables] = useState([]);
+
+  // todo
+  useEffect(() => {
+    // Initialize tables when component mounts
+    const initialTables = [
+      { id: 1, capacity: 4 },
+      { id: 2, capacity: 6 },
+      { id: 3, capacity: 2 },
+      { id: 4, capacity: 8 },
+      { id: 5, capacity: 3 }
+    ];
+    setTables(initialTables);
+  }, []);
+
+  const addTable = () => {
+    // TODO
+    const id = tables.length + 1;
+    const capacity = 4;
+
+    setTables((prevTables) => [
+      ...prevTables,
+      { id: id, capacity: capacity }
     ]);
+  };
+
+  const handleRemoveTable = (table_id) => {
+    // TODO
+    setTables(prevTables => prevTables.filter(table => table.id !== table_id));
   };
 
   return (
     <>
-      <div className="table-management-container">
-        {components.map((component, index) => (
-          <div key={index} className="row">
-            {component}
-          </div>
-        ))}
-      </div>
-      <button onClick={addComponent}>Add Rectangle</button>
+      <Container fluid className="container-tables mt-2">
+        <Button onClick={addTable} className="btn-add-table">Add Table</Button>
+        <Row className="table-management-container">
+          {tables.map((table, index) => (
+            <Col key={index} xs={12} sm={6} md={4} lg={2} className="mt-4">
+              <div className="table">
+                <div className="table-id">Table <b className="text-primary">{table.id}</b></div>
+                <div>Capacity:&nbsp;<span className="text-danger fw-bold">{table.capacity}</span></div>
+                <button className="btn-trash text-danger" onClick={() => handleRemoveTable(table.id)}>
+                  <FaTrash/>
+                </button>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </Container>
     </>
   );
 }
 
-const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
-  const [roomName, setRoomName] = useState(room.roomName || '');
+const TableEditForm = ({onSave, onDelete, table= {}, room = {} }) => {
+  // const [roomName, setRoomName] = useState(room.roomName || '');
   const [tableName, setTableName] = useState(table.name || '');
   const [capacity, setCapacity] = useState(table.capacity || '');
 
   const handleSave = () => {
-    // Check if required fields are not empty
-    if (roomName.trim() === '' || tableName.trim() === '' || capacity.trim() === '') {
-      alert('Please fill in all fields');
-      return;
-    }
-
     // Create an object representing the table
     const editedTable = {
-      id: table.id || null, 
+      id: table.id || null,
       name: tableName.trim(),
       capacity: capacity.trim(),
     };
@@ -212,7 +275,7 @@ const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
     // Create an object representing the table
     const editedRoom = {
       id: room.id || null, // assuming table has an id
-      roomName: roomName.trim(),
+      // roomName: roomName.trim(),
       capacity: capacity.trim(),
     };
 
@@ -220,7 +283,6 @@ const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
     onSave(editedTable);
 
     // Clear input fields
-    setRoomName('');
     setTableName('');
     setCapacity('');
   };
@@ -231,37 +293,30 @@ const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
   };
 
   return (
-    <div>
-      <Row>
-        <Col>
+    <div className="p-4">
+        <h4>Edit table</h4>
+        <div>
           <input
             type="text"
-            placeholder="Room Name"
-            value={roomName}
-            onChange={(e) => setRoomName(e.target.value)}
-          />
-        </Col>
-        <Col>
-          <input
-            type="text"
-            placeholder="Table Name"
+            placeholder="Table ID"
             value={tableName}
+            className="input-field m-0 mb-2"
             onChange={(e) => setTableName(e.target.value)}
           />
-        </Col>
-        <Col>
+        </div>
+        <div>
           <input
             type="text"
             placeholder="Capacity"
             value={capacity}
+            className="input-field m-0"
             onChange={(e) => setCapacity(e.target.value)}
           />
-        </Col>
-        <Col>
-          <Button onClick={handleSave}>Save</Button>
-          <Button variant="danger" onClick={handleDelete}>Delete</Button>
-        </Col>
-      </Row>
+        </div>
+        <div className="pt-3">
+          <Button onClick={handleSave} className="me-2">Save</Button>
+          <Button onClick={handleDelete} variant="danger" >Delete</Button>
+        </div>
     </div>
   );
 };
@@ -308,41 +363,46 @@ function ElementForm({ onSave, onDelete }) {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <input
+        className="input-field"
         type="text"
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
       <input
+        className="input-field"
         type="text"
         placeholder="Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
       <input
+        className="input-field"
         type="text"
         placeholder="Amount"
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
       />
       <input
+        className="input-field"
         type="text"
         placeholder="Price"
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
       <input
+        className="input-field"
         type="text"
         placeholder="Category"
         value={category}
         onChange={(e) => setCategory(e.target.value)}
       />
-      <Row>
-        <button onClick={handleSave}>Save</button>
-        <button onClick={onDelete}>Delete</button>
-      </Row>
+      <div className="button-row mx-auto">
+        <button className="save-button text-bg-primary" onClick={handleSave}>Save</button>
+        {/*<button className=" delete-button" onClick={onDelete}>Delete</button>*/}
+      </div>
     </div>
   );
 }
@@ -377,9 +437,9 @@ const Expenses = () => {
 const FoodPricing = () => {
   // Sample data for food items
   const foodItems = [
-    { id: 1, name: 'Food 1', portionSize: 'Medium', price: '$10' },
-    { id: 2, name: 'Food 2', portionSize: 'Large', price: '$15' },
-    { id: 3, name: 'Food 3', portionSize: 'Small', price: '$8' },
+    {id: 1, name: 'Food 1', type: "todo", grams: '250g', price: '$10'},
+    {id: 2, name: 'Food 2', grams: '50g', price: '$15'},
+    {id: 3, name: 'Food 3', grams: '100g', price: '$8' },
     // Add more food items as needed
   ];
 
@@ -401,14 +461,14 @@ const FoodPricing = () => {
   };
 
   return (
-    <Container fluid>
+    <Container fluid className="pl-3 pe-0 pt-0">
       <Row>
-        <Col>
+        <Col sm={12} md={9} className="pt-3 pe-4">
           <h2>Food Overview</h2>
           <Row>
             <Col>
               {/* Dropdown for filtering food categories */}
-              <DropdownButton title={`Filter by Category: ${selectedCategory}`}>
+              <DropdownButton title={`Filter by Category: ${selectedCategory}`} className="mb-3">
                 {categories.map((category) => (
                   <Dropdown.Item
                     key={category}
@@ -420,22 +480,24 @@ const FoodPricing = () => {
               </DropdownButton>
             </Col>
           </Row>
-          <Row>
+          <Row className="food-headers mb-2">
             <Col>ID</Col>
             <Col>Name</Col>
-            <Col>Portion Size</Col>
+            <Col>Category type</Col>
+            <Col>Weight</Col>
             <Col>Price per Portion</Col>
           </Row>
           {filteredFoodItems.map((food) => (
-            <Row key={food.id}>
+            <Row key={food.id} className="food-values">
               <Col>{food.id}</Col>
               <Col>{food.name}</Col>
-              <Col>{food.portionSize}</Col>
+              <Col>{food.type}</Col>
+              <Col>{food.grams}</Col>
               <Col>{food.price}</Col>
             </Row>
           ))}
         </Col>
-        <Col>
+        <Col sm={0} md={3} className="food-edit-panel p-3">
           <h2>Food Editing Panel</h2>
           <ElementForm />
         </Col>

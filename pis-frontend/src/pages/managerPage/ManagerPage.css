@@ -1,6 +1,97 @@
-.table-management-container {
-    border: 1px solid black;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
-    grid-auto-flow: row;
+/* ----- Rooms and tables ----- */
+.table {
+    background-color: #ddd;
+    border: 6px solid #ccc;
+    border-radius: 15px;
+    padding: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.rectangle:hover {
+    background-color: #e0e0e0;
+}
+
+.container-tables {
+    text-align: left;
+    height: 100vh;
+}
+
+.table-id {
+    font-size: 20px;
+}
+
+.btn-trash {
+    background-color: transparent;
+    border: none;
+}
+
+.editing-tool {
+    background-color: #ddd !important;
+}
+
+
+
+/* ----- Food edit ----- */
+.food-edit-panel h2 {
+    text-align: center;
+}
+
+.food-edit-panel {
+    background-color: red;
+    height: 100vh;
+    background-color: #ddd;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.button-row {
+    margin-top: 10px;
+}
+
+.save-button, .delete-button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    /*background-color: #4caf50;*/
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button {
+    background-color: #f44336;
+}
+
+.save-button:hover,
+.delete-button:hover {
+    opacity: 0.8;
+}
+
+.food-headers {
+    border-bottom: solid #bbb 2px;
+    text-align: right;
+}
+
+.food-values {
+    text-align: right;
 }
