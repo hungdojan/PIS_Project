@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Path("/reservations")
-public class ReservationResource {
+public class Reservations {
 
     @Inject
     private ReservationManager reservationMngr;
