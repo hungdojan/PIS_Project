@@ -1,5 +1,6 @@
 import './StaffPage.css';
 // import './OrdersPage.css';
+import axios from 'axios'; // Import Axios
 import React, { useEffect, useState } from 'react';
 import {
   Container,
@@ -11,7 +12,7 @@ import {
   ListGroup,
   Button,
   Card,
-  Form, 
+  Form,
 } from 'react-bootstrap'; // Import ListGroup, Button, and Card
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { FaRegCircleXmark, FaRegCircleCheck } from 'react-icons/fa6';
@@ -35,11 +36,11 @@ const StaffPage = () => {
       case 'staff-create-food-order':
         return <OrdersPage2 />;
       case 'staff-get-food-reservations':
-        return <TableOrders2 orders={sampleOrders} />;
+        return <FoodOrders />;
       case 'staff-get-table-reservations':
-        return <TableReservations reservations={sampleReservations}/>;
+        return <TableReservations reservations={sampleReservations} />;
       case 'staff-create-table-reservations':
-        return <CreateTableReservations2/>
+        return <CreateTableReservations2 />;
       default:
         return null;
     }
@@ -131,10 +132,28 @@ const StaffSidebar = ({
   );
 };
 // ============== FOOD ORDERS ==============
-const TableOrders2 = ({ orders }) => {
+const FoodOrders = () => {
+  const [orders, setOrders] = useState([]);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const [timeFilter, setTimeFilter] = useState('');
+
+  useEffect(() => {
+    fetchFoodOrders(); // Call fetchTables when the component mounts
+  }, []); // Empty dependency array to mimic componentDidMount
+
+  const fetchFoodOrders = () => {
+    axios
+      .get('/api/orders')
+      .then((resp) => {
+        setOrders(resp.data); // Update the tables state with the fetched data
+        console.log(resp.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching food orders:', err);
+        alert(err); // Display an alert for the error (temporary)
+      });
+  };
 
   const handleCategoryChange = (e) => {
     setCategoryFilter(e.target.value);
@@ -148,9 +167,87 @@ const TableOrders2 = ({ orders }) => {
     setTimeFilter(e.target.value);
   };
 
-  const filteredOrders = orders.filter(order => {
+  const handlePay = (orderId) => {
+    updateOrderPayment(orderId, 'payed');
+  };
+
+  const handleServe = (orderId) => {
+    updateOrderServed(orderId, 'served');
+  };
+  const updateOrderPayment = (orderId, status) => {
+    // Find the order to update
+    const orderToUpdate = orders.find((order) => order.id === orderId);
+    const modifiedOrderToUpdate = {
+      ...orderToUpdate, // Keep all existing properties
+      drinks: orderToUpdate.drinks.map((drink) => drink.id), // Map drinks array to contain only IDs
+      foods: orderToUpdate.foods.map((food) => food.id),
+      // toTable: orderToUpdate.drinks.map(toTable => toTable.id),
+      toTable: orderToUpdate.toTable.id,
+      payed: true, // Map drinks array to contain only IDs
+      // Map drinks array to contain only IDs
+    };
+    console.log(modifiedOrderToUpdate);
+    // // Update the order status locally
+    // const updatedOrders = orders.map((order) => {
+    //   if (order.id === orderId) {
+    //     return { ...order, [status]: true };
+    //   }
+    //   return order;
+    // });
+    // setOrders(updatedOrders);
+    // console.log(updatedOrders);
+    // Send PUT request to update the order on the server
+    axios
+      .put(`/api/orders/`, modifiedOrderToUpdate)
+      .then((resp) => {
+        // Handle success if needed
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.error('Error updating order:', err);
+        // Handle error if needed
+      });
+  };
+
+  const updateOrderServed = (orderId, status) => {
+    // Find the order to update
+    const orderToUpdate = orders.find((order) => order.id === orderId);
+    const modifiedOrderToUpdate = {
+      ...orderToUpdate, // Keep all existing properties
+      drinks: orderToUpdate.drinks.map((drink) => drink.id), // Map drinks array to contain only IDs
+      foods: orderToUpdate.foods.map((food) => food.id),
+      // toTable: orderToUpdate.drinks.map(toTable => toTable.id),
+      toTable: orderToUpdate.toTable.id,
+      prepared: true, // Map drinks array to contain only IDs
+      // Map drinks array to contain only IDs
+    };
+    console.log(modifiedOrderToUpdate);
+    // // Update the order status locally
+    // const updatedOrders = orders.map((order) => {
+    //   if (order.id === orderId) {
+    //     return { ...order, [status]: true };
+    //   }
+    //   return order;
+    // });
+    // setOrders(updatedOrders);
+    // console.log(updatedOrders);
+    // Send PUT request to update the order on the server
+    axios
+      .put(`/api/orders/`, modifiedOrderToUpdate)
+      .then((resp) => {
+        // Handle success if needed
+        console.log(resp);
+      })
+      .catch((err) => {
+        console.error('Error updating order:', err);
+        // Handle error if needed
+      });
+  };
+
+  const filteredOrders = orders.filter((order) => {
     return (
-      (categoryFilter === '' || order.status.toLowerCase() === categoryFilter.toLowerCase()) &&
+      (categoryFilter === '' ||
+        order.status.toLowerCase() === categoryFilter.toLowerCase()) &&
       (dateFilter === '' || order.orderDate === dateFilter) &&
       (timeFilter === '' || order.orderTime === timeFilter)
     );
@@ -162,38 +259,66 @@ const TableOrders2 = ({ orders }) => {
         <Col md={2}>
           <Form.Select value={categoryFilter} onChange={handleCategoryChange}>
             <option value="">Filter by Category</option>
-            <option value="pending">Pending</option>
-            <option value="served">Served</option>
-            <option value="paid">Paid</option>
+            <option value="false">Pending</option>
+            <option value="true">Prepared</option>
           </Form.Select>
         </Col>
         <Col md={2}>
-          <Form.Control type="date" value={dateFilter} onChange={handleDateChange} placeholder="Filter by Date" />
+          <Form.Control
+            type="date"
+            value={dateFilter}
+            onChange={handleDateChange}
+            placeholder="Filter by Date"
+          />
         </Col>
         <Col md={2}>
-          <Form.Control type="time" value={timeFilter} onChange={handleTimeChange} placeholder="Filter by Time" />
+          <Form.Control
+            type="time"
+            value={timeFilter}
+            onChange={handleTimeChange}
+            placeholder="Filter by Time"
+          />
         </Col>
       </Row>
       <Row>
         <Col>
           <div className="d-flex flex-column">
             {filteredOrders.map((order) => (
-              <div key={order.orderId} className="mb-3 border rounded p-3">
+              <div key={order.id} className="mb-3 border rounded p-3">
                 <Row>
-                  <Col><strong>Order ID:</strong> {order.orderId}</Col>
-                  <Col><strong>Table Name:</strong> {order.tableName}</Col>
-                  <Col><strong>Order Date:</strong> {order.orderDate}</Col>
-                </Row>
-                <Row>
-                  <Col><strong>Order Time:</strong> {order.orderTime}</Col>
-                  <Col><strong>Status:</strong> {order.status}</Col>
-                  <Col><strong>Total Summary:</strong> {order.totalSummary}</Col>
+                  <Col>
+                    <strong>Order ID:</strong> {order.id}
+                  </Col>
+                  <Col>
+                    <strong>Table ID:</strong> {order.toTable.id}
+                  </Col>
+                  <Col>
+                    <strong>Order Time:</strong> {order.atTime}
+                  </Col>
                 </Row>
                 <Row>
                   <Col>
-                    <Button variant="danger">Delete</Button>{' '}
+                    <strong>Prepared:</strong> {order.prepared ? 'Yes' : 'No'}
+                  </Col>
+                  <Col>
+                    <strong>Payed:</strong> {order.payed ? 'Yes' : 'No'}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Button
+                      variant="info"
+                      onClick={() => handleServe(order.id)}
+                    >
+                      Served
+                    </Button>{' '}
                     <Button variant="primary">Edit</Button>{' '}
-                    <Button variant="success">Pay</Button>
+                    <Button
+                      variant="success"
+                      onClick={() => handlePay(order.id)}
+                    >
+                      Pay
+                    </Button>
                   </Col>
                 </Row>
               </div>
@@ -202,6 +327,74 @@ const TableOrders2 = ({ orders }) => {
         </Col>
       </Row>
     </>
+
+    // {/* <>
+    //   <Row className="mb-3">
+    //     <Col md={2}>
+    //       <Form.Select value={categoryFilter} onChange={handleCategoryChange}>
+    //         <option value="">Filter by Category</option>
+    //         <option value="pending">Pending</option>
+    //         <option value="served">Served</option>
+    //         <option value="paid">Paid</option>
+    //       </Form.Select>
+    //     </Col>
+    //     <Col md={2}>
+    //       <Form.Control
+    //         type="date"
+    //         value={dateFilter}
+    //         onChange={handleDateChange}
+    //         placeholder="Filter by Date"
+    //       />
+    //     </Col>
+    //     <Col md={2}>
+    //       <Form.Control
+    //         type="time"
+    //         value={timeFilter}
+    //         onChange={handleTimeChange}
+    //         placeholder="Filter by Time"
+    //       />
+    //     </Col>
+    //   </Row>
+    //   <Row>
+    //     <Col>
+    //       <div className="d-flex flex-column">
+    //         {filteredOrders.map((order) => (
+    //           <div key={order.orderId} className="mb-3 border rounded p-3">
+    //             <Row>
+    //               <Col>
+    //                 <strong>Order ID:</strong> {order.orderId}
+    //               </Col>
+    //               <Col>
+    //                 <strong>Table Name:</strong> {order.tableName}
+    //               </Col>
+    //               <Col>
+    //                 <strong>Order Date:</strong> {order.orderDate}
+    //               </Col>
+    //             </Row>
+    //             <Row>
+    //               <Col>
+    //                 <strong>Order Time:</strong> {order.orderTime}
+    //               </Col>
+    //               <Col>
+    //                 <strong>Status:</strong> {order.status}
+    //               </Col>
+    //               <Col>
+    //                 <strong>Total Summary:</strong> {order.totalSummary}
+    //               </Col>
+    //             </Row>
+    //             <Row>
+    //               <Col>
+    //                 <Button variant="danger">Delete</Button>{' '}
+    //                 <Button variant="primary">Edit</Button>{' '}
+    //                 <Button variant="success">Pay</Button>
+    //               </Col>
+    //             </Row>
+    //           </div>
+    //         ))}
+    //       </div>
+    //     </Col>
+    //   </Row>
+    // </> */}
   );
 };
 const TableOrders = ({ orders }) => {
@@ -221,9 +414,10 @@ const TableOrders = ({ orders }) => {
     setTimeFilter(e.target.value);
   };
 
-  const filteredOrders = orders.filter(order => {
+  const filteredOrders = orders.filter((order) => {
     return (
-      (categoryFilter === '' || order.status.toLowerCase() === categoryFilter.toLowerCase()) &&
+      (categoryFilter === '' ||
+        order.status.toLowerCase() === categoryFilter.toLowerCase()) &&
       (dateFilter === '' || order.orderDate === dateFilter) &&
       (timeFilter === '' || order.orderTime === timeFilter)
     );
@@ -241,10 +435,20 @@ const TableOrders = ({ orders }) => {
           </Form.Select>
         </Col>
         <Col md={2}>
-          <Form.Control type="date" value={dateFilter} onChange={handleDateChange} placeholder="Filter by Date" />
+          <Form.Control
+            type="date"
+            value={dateFilter}
+            onChange={handleDateChange}
+            placeholder="Filter by Date"
+          />
         </Col>
         <Col md={2}>
-          <Form.Control type="time" value={timeFilter} onChange={handleTimeChange} placeholder="Filter by Time" />
+          <Form.Control
+            type="time"
+            value={timeFilter}
+            onChange={handleTimeChange}
+            placeholder="Filter by Time"
+          />
         </Col>
       </Row>
       <Row>
@@ -252,12 +456,24 @@ const TableOrders = ({ orders }) => {
           <div className="d-flex flex-column">
             {filteredOrders.map((order) => (
               <div key={order.orderId} className="mb-3 p-3 border rounded">
-                <p><strong>Order ID:</strong> {order.orderId}</p>
-                <p><strong>Table Name:</strong> {order.tableName}</p>
-                <p><strong>Order Date:</strong> {order.orderDate}</p>
-                <p><strong>Order Time:</strong> {order.orderTime}</p>
-                <p><strong>Status:</strong> {order.status}</p>
-                <p><strong>Total Summary:</strong> {order.totalSummary}</p>
+                <p>
+                  <strong>Order ID:</strong> {order.orderId}
+                </p>
+                <p>
+                  <strong>Table Name:</strong> {order.tableName}
+                </p>
+                <p>
+                  <strong>Order Date:</strong> {order.orderDate}
+                </p>
+                <p>
+                  <strong>Order Time:</strong> {order.orderTime}
+                </p>
+                <p>
+                  <strong>Status:</strong> {order.status}
+                </p>
+                <p>
+                  <strong>Total Summary:</strong> {order.totalSummary}
+                </p>
                 <Button variant="danger">Delete</Button>{' '}
                 <Button variant="primary">Edit</Button>{' '}
                 <Button variant="success">Pay</Button>
@@ -268,34 +484,34 @@ const TableOrders = ({ orders }) => {
       </Row>
     </>
   );
-}; 
-const sampleOrders = [
-  {
-    id: 1,
-    tableName: 'Table 1',
-    orderDate: '2024-05-01',
-    orderTime: '12:30 PM',
-    status: 'Pending',
-    totalSummary: '$50.00'
-  },
-  {
-    id: 2,
-    tableName: 'Table 2',
-    orderDate: '2024-05-01',
-    orderTime: '1:45 PM',
-    status: 'Completed',
-    totalSummary: '$65.00'
-  },
-  {
-    id: 3,
-    tableName: 'Table 3',
-    orderDate: '2024-05-02',
-    orderTime: '11:00 AM',
-    status: 'Pending',
-    totalSummary: '$30.00'
-  },
-  // Add more sample orders as needed
-];
+};
+// const sampleOrders = [
+//   {
+//     id: 1,
+//     tableName: 'Table 1',
+//     orderDate: '2024-05-01',
+//     orderTime: '12:30 PM',
+//     status: 'Pending',
+//     totalSummary: '$50.00'
+//   },
+//   {
+//     id: 2,
+//     tableName: 'Table 2',
+//     orderDate: '2024-05-01',
+//     orderTime: '1:45 PM',
+//     status: 'Completed',
+//     totalSummary: '$65.00'
+//   },
+//   {
+//     id: 3,
+//     tableName: 'Table 3',
+//     orderDate: '2024-05-02',
+//     orderTime: '11:00 AM',
+//     status: 'Pending',
+//     totalSummary: '$30.00'
+//   },
+//   // Add more sample orders as needed
+// ];
 
 const OrdersTable = ({ orders }) => {
   // Check if orders is undefined or empty
@@ -309,9 +525,19 @@ const OrdersTable = ({ orders }) => {
         <Col>
           {/* Dropdown for picking category */}
           <Dropdown>
-            {/* Dropdown.Toggle */}
-            {/* Dropdown.Menu */}
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Select room
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+              <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            </Dropdown.Menu>
           </Dropdown>
+        </Col>
+        <Col>
+        <h1></h1>
         </Col>
         {/* Date and time filtering */}
         {/* Additional filtering options */}
@@ -752,12 +978,11 @@ function CreateTableReservations() {
       </Col>
       {/* <Col md={3} className="editing-tool"> */}
       <Col md={3} className="editing-tool">
-        <TableEditForm onDelete={handleDelete} onSave={onSave}/>
+        <TableEditForm onDelete={handleDelete} onSave={onSave} />
       </Col>
     </Row>
   );
 }
-
 
 function CreateTableReservations2() {
   return (
@@ -852,15 +1077,14 @@ function TableEditForm2() {
           />
         </Col>
         <Col>
-          <Button onClick={handleReservationConfirm}>Confirm Reservation</Button>
+          <Button onClick={handleReservationConfirm}>
+            Confirm Reservation
+          </Button>
         </Col>
       </Row>
     </div>
   );
 }
-
-
-
 
 function ManageRooms() {
   return (
@@ -914,21 +1138,25 @@ function TableManagement() {
   );
 }
 
-const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
+const TableEditForm = ({ onSave, onDelete, table = {}, room = {} }) => {
   const [roomName, setRoomName] = useState(room.roomName || '');
   const [tableName, setTableName] = useState(table.name || '');
   const [capacity, setCapacity] = useState(table.capacity || '');
 
   const handleSave = () => {
     // Check if required fields are not empty
-    if (roomName.trim() === '' || tableName.trim() === '' || capacity.trim() === '') {
+    if (
+      roomName.trim() === '' ||
+      tableName.trim() === '' ||
+      capacity.trim() === ''
+    ) {
       alert('Please fill in all fields');
       return;
     }
 
     // Create an object representing the table
     const editedTable = {
-      id: table.id || null, 
+      id: table.id || null,
       name: tableName.trim(),
       capacity: capacity.trim(),
     };
@@ -983,13 +1211,14 @@ const TableEditForm = ({ onSave, onDelete, table= {}, room = {} }) => {
         </Col>
         <Col>
           <Button onClick={handleSave}>Save</Button>
-          <Button variant="danger" onClick={handleDelete}>Delete</Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
         </Col>
       </Row>
     </div>
   );
 };
-
 
 const sampleReservations = [
   {
@@ -1065,7 +1294,9 @@ const TableReservations = ({ reservations }) => {
           <Col>{reservation.time}</Col>
           <Col>{reservation.tableId}</Col>
           <Col>
-            <Button variant="info" className="me-2">Edit</Button>
+            <Button variant="info" className="me-2">
+              Edit
+            </Button>
             <Button variant="danger">Delete</Button>
           </Col>
         </Row>
