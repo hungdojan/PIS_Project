@@ -146,28 +146,34 @@ function TableEditForm2() {
   );
 }
 
-const sampleReservations = [
-  {
-    id: 1,
-    name: 'John Doe',
-    phoneNumber: '123-456-7890',
-    time: '10:00 AM - 12:00 PM',
-    tableId: 5,
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    phoneNumber: '987-654-3210',
-    time: '12:30 PM - 2:30 PM',
-    tableId: 3,
-  },
-  // Add more sample reservations if needed
-];
+const TableReservations = () => {
+    const [reservations, setReservations] = useState([]);
 
-const TableReservations = ({ reservations }) => {
-  if (!reservations || reservations.length === 0) {
-    return <div>No orders available</div>;
-  }
+    useEffect(() => {
+        axios
+            .get('/api/reservations')
+            .then((resp) => {
+                const data = resp.data;
+                setReservations([...reservations, ...data]);
+            })
+            .catch((err) => {
+                alert(err); // TODO: delete this?
+            });
+    }, []);
+
+    const handleDelete = (id) => {
+      axios
+      .delete(`/api/reservations/${id}`)
+      .then((response) => {
+      })
+      .catch((err) => {
+        alert(err);
+      });
+    }
+
+  //if (!reservations || reservations.length === 0) {
+  //  return <div>No orders available</div>;
+  //}
 
   return (
     <Container>
@@ -220,10 +226,14 @@ const TableReservations = ({ reservations }) => {
           <Col>{reservation.time}</Col>
           <Col>{reservation.tableId}</Col>
           <Col>
-            <Button variant="info" className="me-2">
+            <Button variant="info"
+                    className="me-2">
               Edit
             </Button>
-            <Button variant="danger">Delete</Button>
+            <Button variant="danger"
+                    onClick={() => handleDelete(reservation.id)}>
+              Delete
+            </Button>
           </Col>
         </Row>
       ))}
@@ -231,4 +241,4 @@ const TableReservations = ({ reservations }) => {
   );
 };
 
-export { CreateTableReservations2, TableReservations, sampleReservations };
+export { CreateTableReservations2, TableReservations };

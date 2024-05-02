@@ -22,7 +22,6 @@ import OrdersPageView from './OrdersPageView';
 import {
   CreateTableReservations2,
   TableReservations,
-  sampleReservations,
 } from './TableReservations';
 import TableOrders from './TableOrders';
 
@@ -46,7 +45,7 @@ const StaffPage = () => {
       case 'staff-get-food-reservations':
         return <FoodOrders />;
       case 'staff-get-table-reservations':
-        return <TableReservations reservations={sampleReservations} />;
+        return <TableReservations />;
       case 'staff-create-table-reservations':
         return <CreateTableReservations2 />;
       default:
