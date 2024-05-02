@@ -22,9 +22,9 @@ public class Food {
     private String type;
     private String allergens;
     private int grams;
-    @ManyToMany
+    @ManyToMany(mappedBy="foods")
     private Collection<Order> orders;
-    @ManyToMany
+    @ManyToMany(mappedBy="foods")
     private Collection<Menu> menus;
     public Food(){
         orders = new ArrayList<>();

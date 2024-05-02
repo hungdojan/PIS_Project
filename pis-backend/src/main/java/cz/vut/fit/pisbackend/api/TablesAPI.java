@@ -1,7 +1,11 @@
 package cz.vut.fit.pisbackend.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import cz.vut.fit.pisbackend.api.dto.ReservationResponseDTO;
+import cz.vut.fit.pisbackend.data.Room;
+import cz.vut.fit.pisbackend.data.Table;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -37,13 +41,25 @@ public class TablesAPI {
         return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
     }
 
+    @Path("/{id}/reservations")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ReservationResponseDTO> getTableReservations(@PathParam("id") Long id)
+    {
+        Table t = tableMgr.find(id);
+        List<ReservationResponseDTO> reservations = new ArrayList<>();
+        if (t != null){
+            reservations = t.getReservations().stream().map(re -> new ReservationResponseDTO(re)).toList();
+        }
+        return reservations;
+    }
     /**
      * Get all orders at the table with the given table id
      */
     @GET
     @Path("{id}/orders")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<OrderResponseDTO> getOrders(@PathParam("table_id") long tableId) {
+    public List<OrderResponseDTO> getOrders(@PathParam("id") long tableId) {
         return orderMgr.findByTableId(tableId).stream().map(t -> new OrderResponseDTO(t)).toList();
     }
 
