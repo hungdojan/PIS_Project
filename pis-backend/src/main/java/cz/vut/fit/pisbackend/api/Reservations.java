@@ -12,7 +12,6 @@ import jakarta.ws.rs.core.*;
 import java.net.URI;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Path("/reservations")
@@ -32,8 +31,8 @@ public class Reservations {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationDTO> getReservations() {
-        return reservationMngr.findAll().stream().map(r -> new ReservationDTO(r)).toList();
+    public List<ReservationResponseDTO> getReservations() {
+        return reservationMngr.findAll().stream().map(r -> new ReservationResponseDTO(r)).toList();
     }
 
     @GET
@@ -44,7 +43,7 @@ public class Reservations {
         if (reservation == null) {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("Reservation not found")).build();
         }
-        return Response.ok(new ReservationDTO(reservation)).build();
+        return Response.ok(new ReservationResponseDTO(reservation)).build();
     }
 
     @POST
@@ -59,11 +58,11 @@ public class Reservations {
         reservation.setPhone(reservationDTO.getPhone());
         reservation.setEmail(reservationDTO.getEmail());
         reservation.setCreatedBy(employeeMngr.find(reservationDTO.getCreatedByEmployeeId()));
-        reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).toList());
-        reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).toList());
+        reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).collect(Collectors.toList()));
+        reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).collect(Collectors.toList()));
         Reservation savedReservation = reservationMngr.create(reservation);
         URI uri = UriBuilder.fromPath("/reservations/{id}").build(savedReservation.getId());
-        return Response.created(uri).entity(new ReservationDTO(savedReservation)).build();
+        return Response.created(uri).entity(new ReservationResponseDTO(savedReservation)).build();
     }
 
     @PUT
@@ -82,10 +81,10 @@ public class Reservations {
         reservation.setPhone(reservationDTO.getPhone());
         reservation.setEmail(reservationDTO.getEmail());
         reservation.setCreatedBy(employeeMngr.find(reservationDTO.getCreatedByEmployeeId()));
-        reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).toList());
-        reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).toList());
+        reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).collect(Collectors.toList()));
+        reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).collect(Collectors.toList()));
         Reservation updatedReservation = reservationMngr.update(reservation);
-        return Response.ok(new ReservationDTO(updatedReservation)).build();
+        return Response.ok(new ReservationResponseDTO(updatedReservation)).build();
     }
 
     @DELETE
@@ -97,17 +96,17 @@ public class Reservations {
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("Reservation not found")).build();
         }
         reservationMngr.remove(reservation);
-        return Response.ok().build();
+        return Response.status(Response.Status.OK).build();
     }
 
     @GET
     @Path("/reservationstime")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationDTO> getReservationTime(ReservationDTO reservationDTO) {
+    public List<ReservationResponseDTO> getReservationTime(ReservationDTO reservationDTO) {
         Date at = reservationDTO.getAt();
         Date until = reservationDTO.getUntil();
         List<Reservation> reservations = reservationMngr.findByDateRange(at, until);
-        return reservations.stream().map(r -> new ReservationDTO(r)).toList();
+        return reservations.stream().map(r -> new ReservationResponseDTO(r)).toList();
     }
 }

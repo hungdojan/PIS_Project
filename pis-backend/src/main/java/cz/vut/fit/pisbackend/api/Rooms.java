@@ -7,15 +7,10 @@ import java.util.List;
 
 import cz.vut.fit.pisbackend.api.dto.*;
 import cz.vut.fit.pisbackend.data.*;
-import cz.vut.fit.pisbackend.data.EmployeeManager;
 import jakarta.inject.Inject;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import cz.vut.fit.pisbackend.service.RoomManager;
-
-import java.util.List;
 
 @Path("/rooms")
 public class Rooms {
@@ -87,7 +82,7 @@ public class Rooms {
         Room r = roomMngr.find(id);
         if (r != null){
             roomMngr.remove(r);
-            return Response.ok().build();
+            return Response.status(Response.Status.OK).build();
         }
         else{
             return Response.status(Response.Status.NOT_FOUND).entity(new ErrorDTO("not found")).build();
