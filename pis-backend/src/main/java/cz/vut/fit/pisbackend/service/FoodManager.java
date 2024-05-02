@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,8 +40,11 @@ public class FoodManager {
     }
 
     public List<Food> findByIds(List<Long> ids) {
+        if (ids.isEmpty()) {
+            return new ArrayList<Food>();
+        }
         String jpql = "SELECT f FROM Food f WHERE f.id IN :ids";
-        return em.createQuery(jpql)
+        return em.createQuery(jpql, Food.class)
                     .setParameter("ids", ids)
                     .getResultList();
     }
