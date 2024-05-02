@@ -29,19 +29,24 @@ public class JwtTokenUtils {
         appProps.load(new FileInputStream(appConfigPath));
         return appProps.getProperty("secret_key");
     }
+
     public static SignedJWT generateASignedJwt(Employee employee) throws IOException, JOSEException {
+        return generateASignedJwt(employee.getLogin(), employee.getRole());
+    }
+
+    public static SignedJWT generateASignedJwt(String login, String role) throws IOException, JOSEException {
         final JWSSigner singer = new MACSigner(getSecretKey());
         final JWSHeader.Builder headerBuilder = new JWSHeader.Builder(JWSAlgorithm.HS256);
 
         final long currTime = System.currentTimeMillis();
         final long expirationTime = currTime + (1000 * 3600);   // 1 hour
         final var clamsSetBuilder = new JWTClaimsSet.Builder()
-            .subject(employee.getLogin())
+            .subject(login)
             .issuer("RestauraceStaryPivovar")
             .issueTime(new Date(currTime))
             .expirationTime(new Date(expirationTime))
-            .claim("role", employee.getRole())
-            .claim("login", employee.getLogin());
+            .claim("role", role)
+            .claim("login", login);
 
         final SignedJWT signedJWT = new SignedJWT(
             headerBuilder.build(),
