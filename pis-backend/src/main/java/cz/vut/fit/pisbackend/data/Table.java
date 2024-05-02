@@ -15,7 +15,7 @@ public class Table {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int capacity;
-    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy="tables")
     private Collection<Reservation> reservations;
     @OneToMany(mappedBy = "toTable")
     private Collection<Order> orders;

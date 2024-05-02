@@ -27,8 +27,20 @@ public class Reservation {
     @ManyToOne
     private Employee createdBy;
     @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Reservation_Tablee",
+        joinColumns=
+        @JoinColumn(name="Reservation_id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="tables_id", referencedColumnName="id")
+    )
     private Collection<cz.vut.fit.pisbackend.data.Table> tables;
     @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Reservation_Room",
+        joinColumns=
+        @JoinColumn(name="Reservation_id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="rooms_id", referencedColumnName="id")
+    )
     private Collection<Room> rooms;
 
     public Reservation() {

@@ -15,7 +15,7 @@ public class Room{
     private long id;
     private int capacity;
     private String description;
-    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy="rooms")
     private Collection<Reservation> reservations;
     @OneToMany(mappedBy = "toRoom")
     private Collection<Order> orders;
