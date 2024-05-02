@@ -1,15 +1,14 @@
 package cz.vut.fit.pisbackend.api;
 
 import cz.vut.fit.pisbackend.api.dto.FoodDTO;
+import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
+import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.service.FoodManager;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.UriInfo;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.*;
 
+import java.net.URI;
 import java.util.List;
 
 @Path("foods")
