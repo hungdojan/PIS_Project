@@ -43,7 +43,6 @@ public class Rooms {
         Room existing = roomMngr.find(roomDTO.getId());
         if (existing == null){
             Room p = new Room();
-            p.setId(roomDTO.getId());
             p.setCapacity(roomDTO.getCapacity());
             p.setDescription(roomDTO.getDescription());
             Room savedRoom = roomMngr.create(p);
