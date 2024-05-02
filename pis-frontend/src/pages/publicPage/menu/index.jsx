@@ -9,26 +9,16 @@ const MenuPage = () => {
   useEffect(() => {
     document.title = 'Menu Page';
     // Simulate fetching menu data when component mounts
-    axios
-      .get('/api/foods')
-      .then((response) => {
-        const foods = response.data;
-        setMenuData([...menuData, ...foods]);
+    axios.all([axios.get('/api/foods'), axios.get('/api/drinks')]).then(
+      axios.spread((foodResp, drinkResp) => {
+        setMenuData([...menuData, ...foodResp.data, ...drinkResp.data]);
       })
-      .catch((error) => {
-        alert(error); // TODO: delete
-      });
-
-    axios
-      .get('/api/drinks')
-      .then((response) => {
-        const drinks = response.data;
-        setMenuData([...menuData, ...drinks]);
-      })
-      .catch((error) => {
-        alert(error); // TODO: delete
-      });
+    );
   }, []);
+
+  const capitalToUpperCase = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   const renderMenu = () => {
     // Group menu items by food categories
@@ -43,7 +33,7 @@ const MenuPage = () => {
     // Render each category with its items
     return Object.entries(groupedMenu).map(([category, items]) => (
       <div>
-        <h2 className="category">{category}</h2>
+        <h2 className="category">{capitalToUpperCase(category)}</h2>
         {items.map((item) => (
           <Card className="mb-2 card-food">
             <Card.Body>
@@ -56,7 +46,10 @@ const MenuPage = () => {
                 </Col>
                 <Col md={2} className="right-info">
                   <Card.Text className="food-price">{item.price} €</Card.Text>
-                  <Card.Text className="food-text">{item.grams}</Card.Text>
+                  <Card.Text className="food-text">
+                    {item.grams !== undefined && `${item.grams} g`}
+                    {item.volume !== undefined && `${item.volume / 1000} l`}
+                  </Card.Text>
                   {/* item.allergens */}
                 </Col>
               </Row>
