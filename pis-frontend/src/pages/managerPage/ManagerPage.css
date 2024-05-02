@@ -1,13 +1,6 @@
-/* .container {
-    border: 1px solid black;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
-    /* grid-auto-flow: row; */
-/* } */
-#root > div > div > div.main-dashboard-content.col > div:nth-child(2) > div{
+.table-management-container {
     border: 1px solid black;
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* 3 columns with equal width */
     grid-auto-flow: row;
-
 }
