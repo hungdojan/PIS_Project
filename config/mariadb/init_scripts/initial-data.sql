@@ -4,12 +4,16 @@ INSERT INTO Company (name, phone, owner) VALUES ('Company3', '+420876543212', 'O
 INSERT INTO Company (name, phone, owner) VALUES ('Company4', '+420654321003', 'Owner4');
 INSERT INTO Company (name, phone, owner) VALUES ('Company5', '+420123456789', 'Owner5');
 
-INSERT INTO Employee (login, password, role) VALUES ('xholte00', 'password', 'MANAGER');
-INSERT INTO Employee (login, password, role) VALUES ('xhillm00', 'password', 'CHEF');
-INSERT INTO Employee (login, password, role) VALUES ('xdornm00', 'password', 'STAFF');
-INSERT INTO Employee (login, password, role) VALUES ('xgrand00', 'password', 'STAFF');
-INSERT INTO Employee (login, password, role) VALUES ('xjohns00', 'password123', 'MANAGER');
-INSERT INTO Employee (login, password, role) VALUES ('xdoej00', 'password123', 'CHEF');
+INSERT INTO Employee (login, password, role)
+VALUES ('admin', 'PBKDF2WithHmacSHA256:2048:gFe9I2e2FuHQrHRh9PwwAI3m7pFhBwT7KBC2eE/RaDY=:W2AjzchF+/FNzBh3vkIMjT5T8gFK0toujhfwWnl5cyQ=', 'admin');
+INSERT INTO Employee (login, password, role)
+VALUES ('staff', 'PBKDF2WithHmacSHA256:2048:Py9QrwH45pw6XY18Yuk5wUGwPs/0MqgP05TJNSCLEes=:XHxl4E7nSoqlwDklWdweoqtBHIYLUDk4n5snxxtSPJE=', 'staff');
+INSERT INTO Employee (login, password, role)
+VALUES ('manager', 'PBKDF2WithHmacSHA256:2048:Dtck1ffPQBmFvdX8WtozZZGACiLIiw/1GpLY776o5hQ=:ICyw0IHXxH+iDvKD29UnHnckw44ksZG29LY/NNjOruQ=', 'manager');
+INSERT INTO Employee (login, password, role)
+VALUES ('waiter', 'PBKDF2WithHmacSHA256:2048:FxV5+y6XJN5bbdTr++CV9kUsokDC3ze6vw07sNNjgHc=:PTRKVjhmT7ZjR5vEQqA+U/ImkYDgaqzJ27eIjBUI/0w=', 'staff');
+INSERT INTO Employee (login, password, role)
+VALUES ('cleaner', 'PBKDF2WithHmacSHA256:2048:apXcPbjiq/zXZJAuaMC8d2Qg/Jrnkor7K03Ol63Klro=:N299/acqytYmr8FnZkLzmKPlMBv2esjuYWMszUj+K1Y=', 'cleaner');
 
 INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id) VALUES ('2024-06-27 20:00:00','2024-06-27 22:00:00', 'Jan Holter', 2, '+420651651144', 'jan@gmail.com', 1);
 INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id) VALUES ('2024-06-28 16:00:00','2024-06-28 18:00:00', 'Marina Hill', 3, '+420298413154', 'marina.hill@gmail.com', 1);
