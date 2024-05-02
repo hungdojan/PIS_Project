@@ -148,12 +148,22 @@
     - **Parameters**: None
     - **Output**: List of `FoodDTO`
 
+- **POST /foods**
+    - **Name**: Create a new food
+    - **Parameters**: `FoodDTO`
+    - **Output**: `Food`
+
 # Drink
 
 - **GET /drinks**
     - **Name**: Retrieve all drinks
     - **Parameters**: None
     - **Output**: List of `DrinkDTO`
+
+- **POST /drinks**
+    - **Name**: Create a new drink
+    - **Parameters**: `DrinkDTO`
+    - **Output**: `Drink`
 
 # Menu
 - **GET /menus**
@@ -175,4 +185,3 @@
     - **Name**: Delete a menu by ID
     - **Parameters**: `id` (Menu ID)
     - **Output**: Confirmation (e.g., HTTP 200 status)
-
