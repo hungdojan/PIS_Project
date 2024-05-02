@@ -6,6 +6,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { FaHamburger } from 'react-icons/fa';
 import { FaRightFromBracket } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const PrivateHeaderBar = () => {
   const location = useLocation();
@@ -36,10 +37,18 @@ const PrivateHeaderBar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleLogOut = () => {
-    localStorage.setItem('role', 'user');
-    alert('TODO log out');
-    navigate('/');
+  const handleLogOut = (event) => {
+    axios
+      .get('/api/employees/logout')
+      .then((_) => {
+        localStorage.removeItem('username');
+        localStorage.setItem('role', 'user');
+        navigate('/');
+      })
+      .catch((error) => {
+        alert(error);
+        event.preventDefault();
+      });
   };
 
   return (
