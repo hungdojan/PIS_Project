@@ -43,6 +43,9 @@ function SelectRooms() {
       .get('/api/rooms')
       .then((response) => {
         setRooms(response.data);
+        if (response.data.length > 0) {
+          setSelectedRoomDescription(response.data[0].description); // Initialize with the first room description
+        }
       })
       .catch((error) => {
         console.error('Error fetching rooms:', error);
@@ -71,7 +74,7 @@ function SelectRooms() {
         </Col>
       </Row>
       <Row>
-        <TableManagement2 />
+        <TablesLayout />
       </Row>
       <Row>
         <Col className="bottom-row">All tables count</Col>
@@ -81,14 +84,14 @@ function SelectRooms() {
   );
 }
 
-function TableManagement2() {
+function TablesLayout() {
   const [selectedTable, setSelectedTable] = useState(null);
 
   const handleTableClick = (table) => {
-    setSelectedTable(table);
+    setSelectedTable(selectedTable === table ? null : table);
+    console.log('You clicked on', table.name);
   };
 
-  // Assuming data is an array of table objects with id and name properties
   const tables = [
     { id: 1, name: 'Table 1' },
     { id: 2, name: 'Table 2' },
@@ -100,7 +103,7 @@ function TableManagement2() {
       {tables.map((table) => (
         <div
           key={table.id}
-          className={`row ${selectedTable && selectedTable.id === table.id ? 'selected' : ''}`}
+          className={`table-row ${selectedTable && selectedTable.id === table.id ? 'selected' : ''}`}
           onClick={() => handleTableClick(table)}
         >
           {table.name}

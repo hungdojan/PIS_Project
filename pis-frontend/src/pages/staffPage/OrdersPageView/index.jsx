@@ -16,7 +16,7 @@ import PrivateHeaderBar from '../../../components/privateHeaderBar';
 const OrdersPageView = () => {
   const [navbarHeight, setNavbarHeight] = useState(0);
   // Ordered food items
-  const [orderedFood, setOrderedFood] = useState({});
+  const [orders, setOrders] = useState([]);
   // Table number list
   const [tables, setTables] = useState([]);
   // Predicate to show the default food order list, not the add-list
@@ -33,6 +33,8 @@ const OrdersPageView = () => {
   const [checkedSumPrice, setCheckedSumPrice] = useState(0);
   const [allDrink, setAllDrink] = useState([]);
   const [allFood, setAllFood] = useState([]);
+  const [orderedItems, setOrderedItems] = useState([]);
+  const [allFoodItems, setAllFoodItems] = useState([]);
 
   useEffect(() => {
     document.title = 'Orders Page';
@@ -70,33 +72,45 @@ const OrdersPageView = () => {
   };
 
   const fetchAllMenuItems = () => {
-    // load food
-    axios
-      .get('/api/foods')
-      .then((resp) => {
-        setAllFood(resp.data);
+    axios.all([axios.get('/api/foods'), axios.get('/api/drinks')]).then(
+      axios.spread((foodResp, drinkResp) => {
+        setAllFoodItems([...foodResp.data, ...drinkResp.data]);
       })
-      .catch((err) => {
-        alert(err); // TODO: delete this
-      });
+    );
+    // // load food
+    // axios
+    //   .get('/api/foods')
+    //   .then((resp) => {
+    //     setAllFood(resp.data);
+    //   })
+    //   .catch((err) => {
+    //     alert(err); // TODO: delete this
+    //   });
 
-    // load drinks
-    axios
-      .get('/api/drinks')
-      .then((resp) => {
-        setAllDrink(resp.data);
-      })
-      .catch((err) => {
-        alert(err); // TODO: delete this
-      });
+    // // load drinks
+    // axios
+    //   .get('/api/drinks')
+    //   .then((resp) => {
+    //     setAllDrink(resp.data);
+    //   })
+    //   .catch((err) => {
+    //     alert(err); // TODO: delete this
+    //   });
   };
 
   const fetchOrderForTable = (table) => {
     axios
       .get(`/api/tables/${table.id}/orders`)
       .then((resp) => {
-        console.log(resp.data);
-        setOrderedFood(resp.data);
+        setOrders(resp.data);
+        // list of ordered items
+        const foodItems = resp.data
+          .map((order) => {
+            return [...order.foods, ...order.drinks];
+          })
+          .flat();
+        setOrderedItems(foodItems);
+        updateSumOfOrder(resp.data);
       })
       .catch((err) => alert(err));
   };
@@ -204,58 +218,69 @@ const OrdersPageView = () => {
 
   // Add food to list and go back to a previous window
   const handleFoodClick = (food) => {
-    const updatedOrderedFood = { ...orderedFood };
-    if (!updatedOrderedFood[selectedTable]) {
-      updatedOrderedFood[selectedTable] = [];
-    }
-
-    updatedOrderedFood[selectedTable].push(food);
-    setOrderedFood(updatedOrderedFood);
-    setShowAddFoodForm(true);
-    setSumPrice(calcSumPrice(updatedOrderedFood[selectedTable]));
+    // const updatedOrderedFood = { ...orderedFood };
+    // if (!updatedOrderedFood[selectedTable]) {
+    //   updatedOrderedFood[selectedTable] = [];
+    // }
+    // updatedOrderedFood[selectedTable].push(food);
+    // setOrderedFood(updatedOrderedFood);
+    // setShowAddFoodForm(true);
+    // setSumPrice(calcSumPrice(updatedOrderedFood[selectedTable]));
   };
 
   const handleCheckboxChange = (index) => {
-    setCheckedItems((prevItems) => {
-      const updatedItems = {
-        ...prevItems,
-        [index]: !prevItems[index],
-      };
-
-      // Calculate sum price of checked items based on updated checkedItems
-      const checkedIndexes = Object.keys(updatedItems).filter(
-        (index) => updatedItems[index]
-      );
-      const allSelectedFood = checkedIndexes.map(
-        (index) => orderedFood[selectedTable][index]
-      );
-      const checkedSumPrice = calcSumPrice(allSelectedFood);
-
-      // Update state with checked sum price
-      setCheckedSumPrice(checkedSumPrice);
-
-      return updatedItems;
-    });
+    // setCheckedItems((prevItems) => {
+    //   const updatedItems = {
+    //     ...prevItems,
+    //     [index]: !prevItems[index],
+    //   };
+    //   // Calculate sum price of checked items based on updated checkedItems
+    //   const checkedIndexes = Object.keys(updatedItems).filter(
+    //     (index) => updatedItems[index]
+    //   );
+    //   const allSelectedFood = checkedIndexes.map(
+    //     (index) => orderedFood[selectedTable][index]
+    //   );
+    //   const checkedSumPrice = calcSumPrice(allSelectedFood);
+    //   // Update state with checked sum price
+    //   setCheckedSumPrice(checkedSumPrice);
+    //   return updatedItems;
+    // });
   };
 
   // Checkout checked food items
   const handleCheckout = () => {
-    const checkedIndexes = Object.keys(checkedItems).filter(
-      (index) => checkedItems[index]
-    );
-    const allSelectedFood = checkedIndexes.map(
-      (index) => orderedFood[selectedTable][index]
-    );
-    setCheckedItems([]);
-    alert(
-      'Food to checkout: ' + allSelectedFood.map((food) => food.name).join(', ')
+    // const checkedIndexes = Object.keys(checkedItems).filter(
+    //   (index) => checkedItems[index]
+    // );
+    // const allSelectedFood = checkedIndexes.map(
+    //   (index) => orderedFood[selectedTable][index]
+    // );
+    // setCheckedItems([]);
+    // alert(
+    //   'Food to checkout: ' + allSelectedFood.map((food) => food.name).join(', ')
+    // );
+  };
+
+  const updateSumOfOrder = (orders) => {
+    // retrieve prices
+    const foodPrices = orders
+      .map((order) => {
+        return [
+          ...order.foods.map((i) => i.price),
+          ...order.drinks.map((i) => i.price),
+        ];
+      })
+      .flat();
+    setSumPrice(
+      (Math.round(foodPrices.reduce((a, b) => a + b, 0) * 100) / 100).toFixed(2)
     );
   };
 
   const handleCheckAll = () => {
     // Set/check all element indexes to true
-    const allChecked = orderedFood[selectedTable].map(() => true);
-    setCheckedItems(allChecked);
+    // const allChecked = orderedFood[selectedTable].map(() => true);
+    // setCheckedItems(allChecked);
   };
 
   const handleUncheckAll = () => {
@@ -264,15 +289,15 @@ const OrdersPageView = () => {
 
   // Remove food from the list
   const handleRemove = () => {
-    const updatedOrderedFood = orderedFood[selectedTable].filter(
-      (food, index) => !checkedItems[index]
-    );
-    setOrderedFood({
-      ...orderedFood,
-      [selectedTable]: updatedOrderedFood,
-    });
-    setCheckedItems([]);
-    setSumPrice(calcSumPrice(updatedOrderedFood));
+    // const updatedOrderedFood = orderedFood[selectedTable].filter(
+    //   (food, index) => !checkedItems[index]
+    // );
+    // setOrderedFood({
+    //   ...orderedFood,
+    //   [selectedTable]: updatedOrderedFood,
+    // });
+    // setCheckedItems([]);
+    // setSumPrice(calcSumPrice(updatedOrderedFood));
   };
 
   const calcSumPrice = (o) => {
@@ -285,6 +310,32 @@ const OrdersPageView = () => {
     return total;
   };
 
+  const renderOrderedFoodItem = () => {
+    console.log(orderedItems);
+    return orderedItems.map((item, index) => {
+      return (
+        <ListGroup.Item
+          key={index}
+          action
+          onClick={() => handleCheckboxChange(index)}
+          // active={index}
+        >
+          <Row>
+            <Col md={6}>{item.name}</Col>
+            <Col md={3} className="text-end">
+              {item.allergens !== undefined
+                ? `${item.grams} g`
+                : `${item.volume / 1000} l`}
+            </Col>
+            <Col md={3} className="text-end">
+              {item.price} EUR
+            </Col>
+          </Row>
+        </ListGroup.Item>
+      );
+    });
+  };
+
   const renderAddFoodForm = () => {
     return (
       <>
@@ -294,33 +345,14 @@ const OrdersPageView = () => {
         </h2>
         <div className="order-list-box">
           <div className="order-list">
-            <ListGroup>
-              {orderedFood.map((food, index) => (
-                <ListGroup.Item
-                  key={index}
-                  action
-                  onClick={() => handleCheckboxChange(index)}
-                  active={checkedItems[index]}
-                >
-                  <Row>
-                    <Col md={6}>{food.name}</Col>
-                    <Col md={3} className="text-end">
-                      {food.weight}
-                    </Col>
-                    <Col md={3} className="text-end">
-                      {food.price} CZK
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+            <ListGroup>{renderOrderedFoodItem()}</ListGroup>
           </div>
         </div>
 
         <div className="box-summary">
-          <span className="checked-sum-price">{checkedSumPrice}&nbsp;CZK</span>
+          <span className="checked-sum-price">{checkedSumPrice}&nbsp;EUR</span>
           &nbsp;/&nbsp;
-          <span className="sum-price">{sumPrice}&nbsp;CZK</span>
+          <span className="sum-price">{sumPrice}&nbsp;EUR</span>
         </div>
 
         {/* Right bottom buttons */}
@@ -387,7 +419,7 @@ const OrdersPageView = () => {
           <>
             <div className="box-food-items">
               <Row>
-                {foodList.map((food, index) => (
+                {allFoodItems.map((food, index) => (
                   <Col key={index} md={6} lg={4} xl={3} className="mb-3">
                     {/* Food item */}
                     <Card
@@ -397,10 +429,12 @@ const OrdersPageView = () => {
                       <Card.Body>
                         <Card.Title>{food.name}</Card.Title>
                         <Card.Body className="p-0 text-end">
-                          {food.weight}
+                          {food.allergens !== undefined
+                            ? `${food.grams} g`
+                            : `${food.volume / 1000} l`}
                         </Card.Body>
                         <Card.Body className="p-0 text-end">
-                          <b>{food.price} CZK</b>
+                          <b>{food.price} EUR</b>
                         </Card.Body>
                       </Card.Body>
                     </Card>

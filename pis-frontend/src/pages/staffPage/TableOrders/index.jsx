@@ -143,7 +143,7 @@ const OrdersTable = ({ orders }) => {
           </Dropdown>
         </Col>
         <Col>
-          <h1></h1>
+          <h1>Name</h1>
         </Col>
         {/* Date and time filtering */}
         {/* Additional filtering options */}

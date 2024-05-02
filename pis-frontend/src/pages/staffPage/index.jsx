@@ -117,7 +117,7 @@ const StaffSidebar = ({
         </Nav.Item>
       </Nav>
       <hr />
-      <DropdownButton
+      {/* <DropdownButton
         id="dropdownUser2"
         title={
           <img
@@ -134,7 +134,7 @@ const StaffSidebar = ({
         <Dropdown.Item href="#">Profile</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item href="#">Sign out</Dropdown.Item>
-      </DropdownButton>
+      </DropdownButton> */}
     </div>
   );
 };

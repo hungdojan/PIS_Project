@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Projekt PIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body data-new-gr-c-s-check-loaded="8.912.0" data-gr-ext-installed="">
+
+<!-- Nahraďte prosím názvem tématu -->
+<h1>Informační systém restaurace</h1>
+
+<!-- Editujte jména a maily autorů a jejich činnost -->
+<dl>
+	<dt>Autoři</dt>
+	<dd>Magdaléna Bellayová (xbella01)
+	    <a href="mailto:xbella@stud.fit.vutbr.cz">xbella01@stud.fit.vutbr.cz</a> -
+		Tvorba databázového systému a inicializačních dat, vývoj aplikační vrstvy aplikace.
+	</dd>
+	<dd>Filip Bučko (xbucko05)
+	    <a href="mailto:xbucko05@stud.fit.vutbr.cz">xbucko05@stud.fit.vutbr.cz</a> -
+		Tvorba mockupu a vývoj uživatelského rozhraní aplikace
+	</dd>
+	<dd>Hung Do (xdohun00)
+	    <a href="mailto:xdohun00@stud.fit.vutbr.cz">xdohun00@stud.fit.vutbr.cz</a> -
+		Manažer týmu, DevOps.
+	</dd>
+	<dd>David Kedra (xkedra00)
+	    <a href="mailto:xkedra00@stud.fit.vutbr.cz">xkedra00@stud.fit.vutbr.cz</a> -
+		Tvorba mockupu a vývoj uživatelského rozhraní aplikace.
+	</dd>
+	<dd>Matěj Matuška (xmatus36)
+	    <a href="mailto:xmatus36@stud.fit.vutbr.cz">xmatus36@stud.fit.vutbr.cz</a> -
+		Správa databázového systému a vývoj aplikační vrstvy aplikace.
+	</dd>
+</dl>
+
+<!-- uživatelské účty -->
+<h2>Uživatelé systému pro testování</h2>
+<p>Uveďte prosím existující zástupce <strong>všech rolí uživatelů</strong>.</p>
+<table>
+<tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td></td><td></td><td>Nepřihlášený uživatel</td></tr>
+<tr><td>admin</td><td>admin</td><td>Administrátor</td></tr>
+<tr><td>staff</td><td>staff</td><td>Zaměstnanec</td></tr>
+<tr><td>cleaner</td><td>cleaner</td><td>Zaměstnanec</td></tr>
+<tr><td>waiter</td><td>waiter</td><td>Zaměstnanec</td></tr>
+<tr><td>manager</td><td>manager</td><td>Manažer</td></tr>
+</tbody></table>
+
+<h2>Postup instalace</h2>
+<p>Instalace programu je trochu obtížnější. Je potřeba, aby uživatel měl na systému nainstalované <b>Podman</b>, <b>Podman-compose</b> a <b>make</b> programy.
+Instalace a rozjetí se skládá ze 3 částí: stažení kontejnerových obrazů, spuštění pro naplnění tabulek a opětovné spuštění jako finální verze.</p>
+<p>V první části je potřeba stáhnout obrazy kontejnerů. Na to stačí použít příkaz <b>make build</b>. Skript stahuje Node, MariaDB, Maven a Nginx obrazy.</p>
+<p>Následně je potřeba nainstalovat balíčky potřebné pro rozjetí prezentační vrstvy a to zapoužití příkazu <b>make update_fe</b>. Tento příkaz stačí zavolat jenom jednou
+při instalaci systému. Po dokončení stažení všech balíčků může uživatel rozjet systém přes <b>make up</b>. Při prvotním rozjetí systém vytvoří tabulky databáze, nicméně je potřeba,
+aby uživatel ještě dodatečně dodal data do databáze. Uživatel proto musí počkat, dokud se plně nezapne <em>backend</em>. Poté, co bude systém připraven naslouchat,
+může uživatel zavolat příkaz <b>make db_preload</b>.
+<p>Instalace aplikace je tímto dokončena. Doporučujeme ještě naposledy vypnout a zapnout systém, aby se aplikační a datová vrstva spolu synchronizovala (<b>make down</b> a <b>make up</b>).
+
+<h4>Známé problémy</h4>
+<a href="https://github.com/containers/podman-compose/issues/752">CNI version wrong on Ubuntu</a><br/>
+
+
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
