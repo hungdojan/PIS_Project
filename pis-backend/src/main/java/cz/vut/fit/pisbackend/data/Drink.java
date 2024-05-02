@@ -20,9 +20,9 @@ public class Drink {
     private float price;
     private String type;
     private int volume;
-    @ManyToMany
+    @ManyToMany(mappedBy="drinks")
     private Collection<Order> orders;
-    @ManyToMany
+    @ManyToMany(mappedBy="drinks")
     private Collection<Menu> menus;
     public Drink(){
         orders = new ArrayList<>();

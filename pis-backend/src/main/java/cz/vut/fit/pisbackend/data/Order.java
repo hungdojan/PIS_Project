@@ -27,9 +27,21 @@ public class Order {
     private Room toRoom;
     @ManyToOne
     private cz.vut.fit.pisbackend.data.Table toTable;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Order__Food",
+        joinColumns=
+        @JoinColumn(name="Order__id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="foods_id", referencedColumnName="id")
+    )
     private Collection<Food> foods;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Order__Drink",
+        joinColumns=
+        @JoinColumn(name="Order__id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="drinks_id", referencedColumnName="id")
+    )
     private Collection<Drink> drinks;
 
     public Order() {
