@@ -1,22 +1,24 @@
 package cz.vut.fit.pisbackend.api;
 
+import com.nimbusds.jose.JOSEException;
 import cz.vut.fit.pisbackend.api.dto.EmployeeDTO;
-import cz.vut.fit.pisbackend.api.dto.ErrorDTO;
-import cz.vut.fit.pisbackend.api.dto.JwtDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Employee;
 import cz.vut.fit.pisbackend.data.EmployeeManager;
-import jakarta.annotation.security.DeclareRoles;
-import jakarta.annotation.security.RolesAllowed;
+import cz.vut.fit.pisbackend.service.JwtTokenUtils;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
+import java.util.Objects;
 
+@ApplicationScoped
 @Path("employee")
-@DeclareRoles("Admin")
 public class EmployeeAPI {
     @Inject
     private EmployeeManager employeeManager;
@@ -31,20 +33,28 @@ public class EmployeeAPI {
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response validate(Employee e) {
+    public Response login(Employee e) throws IOException, JOSEException {
         Employee employee = employeeManager.getUser(e.getLogin());
-        if (employee == null)
+        if (employee == null) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(new ResponseMessageDTO("Login Failed")).build();
+        }
         if (!pbkdf2PasswordHash.verify(e.getPassword().toCharArray(), employee.getPassword())) {
             return Response.status(Response.Status.UNAUTHORIZED).entity(new ResponseMessageDTO("Login Failed")).build();
         }
-        return Response.status(Response.Status.OK).entity(new JwtDTO("TODO")).build();
+
+        var token = JwtTokenUtils.generateASignedJwt(employee);
+        NewCookie cookie = new NewCookie.Builder("jwt").value(JwtTokenUtils.signedJwtToString(token)).build();
+        return Response.status(Response.Status.OK).entity(new EmployeeDTO(employee)).cookie(cookie).build();
     }
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response create(Employee e) {
+    public Response create(@CookieParam("jwt") String jwt, Employee e) throws ParseException {
+        if (jwt == null || !Objects.equals(JwtTokenUtils.jwtGetRoleValue(jwt), "admin")) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         if (!e.createRequestValidation()) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!"))
@@ -61,15 +71,17 @@ public class EmployeeAPI {
         newEmployee.setRole(e.getRole());
         newEmployee.setPassword(pbkdf2PasswordHash.generate(e.getPassword().toCharArray()));
 
-        employeeManager.update(newEmployee);
+        employeeManager.create(newEmployee);
         return Response.status(Response.Status.CREATED).entity(new EmployeeDTO(newEmployee)).build();
     }
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("Admin")
-    public Response update(Employee e) {
+    public Response update(@QueryParam("jwt") String jwt, Employee e) throws ParseException {
+        if (jwt == null || !Objects.equals(JwtTokenUtils.jwtGetRoleValue(jwt), "admin")) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         if (!e.createRequestValidation()) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!"))
@@ -91,8 +103,11 @@ public class EmployeeAPI {
     @DELETE
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("Admin")
-    public Response delete(@PathParam("id") long id) {
+    public Response delete(@QueryParam("jwt") String jwt, @PathParam("id") long id) throws ParseException {
+        if (jwt == null || !Objects.equals(JwtTokenUtils.jwtGetRoleValue(jwt), "admin")) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
         Employee employee = employeeManager.find(id);
         if (employee == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User not found!")).build();
@@ -104,9 +119,24 @@ public class EmployeeAPI {
     @GET
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-//    @RolesAllowed("Admin")
-    public List<EmployeeDTO> get() {
-        return employeeManager.getAll().stream().map(EmployeeDTO::new).toList();
+    public Response get(@QueryParam("jwt") String jwt) throws ParseException {
+        if (jwt == null || !Objects.equals(JwtTokenUtils.jwtGetRoleValue(jwt), "admin")) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+
+        List<EmployeeDTO> employees = employeeManager.getAll().stream().map(EmployeeDTO::new).toList();
+        return Response.status(Response.Status.OK).entity(employees).build();
+    }
+
+    @Path("logout")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response logout(@CookieParam("jwt") String jwt) {
+        if (!jwt.isEmpty()) {
+            NewCookie cookie = new NewCookie.Builder("jwt").maxAge(0).build();
+            return Response.ok(new ResponseMessageDTO("User logged out")).cookie(cookie).build();
+        }
+        return Response.ok(new ResponseMessageDTO("No user was logged in.")).build();
     }
 
 }

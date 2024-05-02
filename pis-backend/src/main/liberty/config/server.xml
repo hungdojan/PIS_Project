@@ -14,9 +14,9 @@
 
     <webApplication location="pis-backend.war" contextRoot="/"/>
 
-         <library id="jdbcLib">
-    <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
-</library>
+    <library id="jdbcLib">
+        <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
+    </library>
 
     <dataSource jndiName="jdbc/demo">
         <jdbcDriver libraryRef="jdbcLib"/>
