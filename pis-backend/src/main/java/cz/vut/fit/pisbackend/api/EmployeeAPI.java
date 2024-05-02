@@ -17,8 +17,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 
-@ApplicationScoped
-@Path("employee")
+@Path("employees")
 public class EmployeeAPI {
     @Inject
     private EmployeeManager employeeManager;
@@ -132,7 +131,7 @@ public class EmployeeAPI {
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response logout(@CookieParam("jwt") String jwt) {
-        if (!jwt.isEmpty()) {
+        if (jwt != null) {
             NewCookie cookie = new NewCookie.Builder("jwt").maxAge(0).build();
             return Response.ok(new ResponseMessageDTO("User logged out")).cookie(cookie).build();
         }

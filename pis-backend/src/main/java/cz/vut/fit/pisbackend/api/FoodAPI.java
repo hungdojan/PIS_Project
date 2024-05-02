@@ -12,7 +12,7 @@ import jakarta.ws.rs.core.UriInfo;
 
 import java.util.List;
 
-@Path("food")
+@Path("foods")
 public class FoodAPI {
 
     @Inject
