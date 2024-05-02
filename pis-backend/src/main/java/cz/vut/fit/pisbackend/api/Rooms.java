@@ -92,12 +92,12 @@ public class Rooms {
     @Path("/{id}/reservations")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ReservationDTO> getRoomReservations(@PathParam("id") Long id)
+    public List<ReservationResponseDTO> getRoomReservations(@PathParam("id") Long id)
     {
         Room r = roomMngr.find(id);
-        List<ReservationDTO> reservations = new ArrayList<>();
+        List<ReservationResponseDTO> reservations = new ArrayList<>();
         if (r != null){
-            reservations = r.getReservations().stream().map(re -> new ReservationDTO(re)).toList();
+            reservations = r.getReservations().stream().map(re -> new ReservationResponseDTO(re)).toList();
         }
         return reservations;
     }
