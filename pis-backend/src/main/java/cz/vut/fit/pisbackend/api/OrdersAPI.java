@@ -12,6 +12,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -48,8 +49,12 @@ public class OrdersAPI {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<OrderResponseDTO> orders() {
-        return orderMgr.findAll().stream().map(x -> new OrderResponseDTO(x)).toList();
+    public List<OrderResponseDTO> orders(@QueryParam("paid") Boolean paid) {
+        if (paid == null) {
+            return orderMgr.findAll().stream().map(OrderResponseDTO::new).toList();
+        } else {
+            return orderMgr.findByPaidState(paid).stream().map(OrderResponseDTO::new).toList();
+        }
     }
 
     @POST
