@@ -12,7 +12,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import './ManagerPage.css';
-import {FaTrash} from "react-icons/fa";
+import { FaTrash } from 'react-icons/fa';
 
 // =========== MAIN MANAGER VIEW ===========
 const ManagerDahsboard = () => {
@@ -87,11 +87,13 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link eventKey="manager-expenses-pricing">Manage food & prices</Nav.Link>
+          <Nav.Link eventKey="manager-expenses-pricing">
+            Manage food & prices
+          </Nav.Link>
         </Nav.Item>
       </Nav>
       <hr />
-      <DropdownButton
+      {/* <DropdownButton
         id="dropdownUser2"
         title={
           <img
@@ -108,7 +110,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
         <Dropdown.Item href="#">Profile</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item href="#">Sign out</Dropdown.Item>
-      </DropdownButton>
+      </DropdownButton> */}
     </div>
   );
 };
@@ -131,7 +133,7 @@ function ManageRoomsDashboard() {
         <ManageRooms />
       </Col>
       <Col md={3} className="editing-tool">
-        <TableEditForm onDelete={handleDelete} onSave={onSave}/>
+        <TableEditForm onDelete={handleDelete} onSave={onSave} />
       </Col>
     </Row>
   );
@@ -143,9 +145,27 @@ function ManageRooms() {
   const [reservationTime, setReservationTime] = useState(null);
   // TODO load and remove room reservations
   const rooms = [
-    { id: 1, name: 'Room 1', description: 'Description for Room 1', reservationDate: '2024-05-20', reservationTime: '10:00' }, // Example reservation date and time
-    { id: 2, name: 'Room 2', description: 'Description for Room 2', reservationDate: null, reservationTime: null },
-    { id: 3, name: 'Room 3', description: 'Description for Room 3', reservationDate: '2024-06-10', reservationTime: '14:00' }, // Example reservation date and time
+    {
+      id: 1,
+      name: 'Room 1',
+      description: 'Description for Room 1',
+      reservationDate: '2024-05-20',
+      reservationTime: '10:00',
+    }, // Example reservation date and time
+    {
+      id: 2,
+      name: 'Room 2',
+      description: 'Description for Room 2',
+      reservationDate: null,
+      reservationTime: null,
+    },
+    {
+      id: 3,
+      name: 'Room 3',
+      description: 'Description for Room 3',
+      reservationDate: '2024-06-10',
+      reservationTime: '14:00',
+    }, // Example reservation date and time
   ];
 
   const handleRoomSelect = (room) => {
@@ -167,16 +187,22 @@ function ManageRooms() {
         <h4>Room reservations</h4>
         <Col className="d-flex align-items-center">
           {/* Dropdown */}
-          <DropdownButton id="dropdown-basic-button" title={selectedRoom ? selectedRoom.name : "Select Room"}>
+          <DropdownButton
+            id="dropdown-basic-button"
+            title={selectedRoom ? selectedRoom.name : 'Select Room'}
+          >
             {rooms.map((room) => (
-              <Dropdown.Item key={room.id} onClick={() => handleRoomSelect(room)}>
+              <Dropdown.Item
+                key={room.id}
+                onClick={() => handleRoomSelect(room)}
+              >
                 Room {room.name}
               </Dropdown.Item>
             ))}
           </DropdownButton>
         </Col>
         <Col className="text-danger">
-          {reservationDate && reservationTime? "The room is reserved": ""}
+          {reservationDate && reservationTime ? 'The room is reserved' : ''}
         </Col>
         <Col>
           <Form.Control
@@ -197,7 +223,7 @@ function ManageRooms() {
       </Row>
       <h4 className="mt-5 pt-4">Table overview</h4>
       <Row className="pe-3">
-        <TableManagement/>
+        <TableManagement />
       </Row>
     </>
   );
@@ -216,7 +242,7 @@ function TableManagement() {
       { id: 2, capacity: 6 },
       { id: 3, capacity: 2 },
       { id: 4, capacity: 8 },
-      { id: 5, capacity: 3 }
+      { id: 5, capacity: 3 },
     ];
     setTables(initialTables);
   }, []);
@@ -226,29 +252,38 @@ function TableManagement() {
     const id = tables.length + 1;
     const capacity = 4;
 
-    setTables((prevTables) => [
-      ...prevTables,
-      { id: id, capacity: capacity }
-    ]);
+    setTables((prevTables) => [...prevTables, { id: id, capacity: capacity }]);
   };
 
   const handleRemoveTable = (table_id) => {
     // TODO
-    setTables(prevTables => prevTables.filter(table => table.id !== table_id));
+    setTables((prevTables) =>
+      prevTables.filter((table) => table.id !== table_id)
+    );
   };
 
   return (
     <>
       <Container fluid className="container-tables mt-2">
-        <Button onClick={addTable} className="btn-add-table">Add Table</Button>
+        <Button onClick={addTable} className="btn-add-table">
+          Add Table
+        </Button>
         <Row className="table-management-container">
           {tables.map((table, index) => (
             <Col key={index} xs={12} sm={6} md={4} lg={2} className="mt-4">
               <div className="table">
-                <div className="table-id">Table <b className="text-primary">{table.id}</b></div>
-                <div>Capacity:&nbsp;<span className="text-danger fw-bold">{table.capacity}</span></div>
-                <button className="btn-trash text-danger" onClick={() => handleRemoveTable(table.id)}>
-                  <FaTrash/>
+                <div className="table-id">
+                  Table <b className="text-primary">{table.id}</b>
+                </div>
+                <div>
+                  Capacity:&nbsp;
+                  <span className="text-danger fw-bold">{table.capacity}</span>
+                </div>
+                <button
+                  className="btn-trash text-danger"
+                  onClick={() => handleRemoveTable(table.id)}
+                >
+                  <FaTrash />
                 </button>
               </div>
             </Col>
@@ -259,7 +294,7 @@ function TableManagement() {
   );
 }
 
-const TableEditForm = ({onSave, onDelete, table= {}, room = {} }) => {
+const TableEditForm = ({ onSave, onDelete, table = {}, room = {} }) => {
   // const [roomName, setRoomName] = useState(room.roomName || '');
   const [tableName, setTableName] = useState(table.name || '');
   const [capacity, setCapacity] = useState(table.capacity || '');
@@ -294,33 +329,36 @@ const TableEditForm = ({onSave, onDelete, table= {}, room = {} }) => {
 
   return (
     <div className="p-4">
-        <h4>Edit table</h4>
-        <div>
-          <input
-            type="text"
-            placeholder="Table ID"
-            value={tableName}
-            className="input-field m-0 mb-2"
-            onChange={(e) => setTableName(e.target.value)}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Capacity"
-            value={capacity}
-            className="input-field m-0"
-            onChange={(e) => setCapacity(e.target.value)}
-          />
-        </div>
-        <div className="pt-3">
-          <Button onClick={handleSave} className="me-2">Save</Button>
-          <Button onClick={handleDelete} variant="danger" >Delete</Button>
-        </div>
+      <h4>Edit table</h4>
+      <div>
+        <input
+          type="text"
+          placeholder="Table ID"
+          value={tableName}
+          className="input-field m-0 mb-2"
+          onChange={(e) => setTableName(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Capacity"
+          value={capacity}
+          className="input-field m-0"
+          onChange={(e) => setCapacity(e.target.value)}
+        />
+      </div>
+      <div className="pt-3">
+        <Button onClick={handleSave} className="me-2">
+          Save
+        </Button>
+        <Button onClick={handleDelete} variant="danger">
+          Delete
+        </Button>
+      </div>
     </div>
   );
 };
-
 
 function ElementForm({ onSave, onDelete }) {
   const [name, setName] = useState('');
@@ -400,7 +438,9 @@ function ElementForm({ onSave, onDelete }) {
         onChange={(e) => setCategory(e.target.value)}
       />
       <div className="button-row mx-auto">
-        <button className="save-button text-bg-primary" onClick={handleSave}>Save</button>
+        <button className="save-button text-bg-primary" onClick={handleSave}>
+          Save
+        </button>
         {/*<button className=" delete-button" onClick={onDelete}>Delete</button>*/}
       </div>
     </div>
@@ -437,9 +477,9 @@ const Expenses = () => {
 const FoodPricing = () => {
   // Sample data for food items
   const foodItems = [
-    {id: 1, name: 'Food 1', type: "todo", grams: '250g', price: '$10'},
-    {id: 2, name: 'Food 2', grams: '50g', price: '$15'},
-    {id: 3, name: 'Food 3', grams: '100g', price: '$8' },
+    { id: 1, name: 'Food 1', type: 'todo', grams: '250g', price: '$10' },
+    { id: 2, name: 'Food 2', grams: '50g', price: '$15' },
+    { id: 3, name: 'Food 3', grams: '100g', price: '$8' },
     // Add more food items as needed
   ];
 
@@ -468,7 +508,10 @@ const FoodPricing = () => {
           <Row>
             <Col>
               {/* Dropdown for filtering food categories */}
-              <DropdownButton title={`Filter by Category: ${selectedCategory}`} className="mb-3">
+              <DropdownButton
+                title={`Filter by Category: ${selectedCategory}`}
+                className="mb-3"
+              >
                 {categories.map((category) => (
                   <Dropdown.Item
                     key={category}

@@ -59,7 +59,7 @@ public class TablesAPI {
     @GET
     @Path("{id}/orders")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<OrderResponseDTO> getOrders(@PathParam("table_id") long tableId) {
+    public List<OrderResponseDTO> getOrders(@PathParam("id") long tableId) {
         return orderMgr.findByTableId(tableId).stream().map(t -> new OrderResponseDTO(t)).toList();
     }
 
