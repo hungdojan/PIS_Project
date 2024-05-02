@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import { PrivateHeaderBar } from '../../components';
+import axios from 'axios';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -25,17 +26,22 @@ const LoginPage = () => {
     setPassword(event.target.value);
   };
 
-  const validate = () => {
-    return username === 'admin' && password === 'admin';
-  };
-
   const handleSubmit = (event) => {
-    if (validate() === false) {
-      event.preventDefault();
-      setError(true);
-    } else {
-      navigate('/');
-    }
+    event.preventDefault();
+    axios
+      .post('/api/employees/login', {
+        login: username,
+        password: password,
+      })
+      .then((response) => {
+        localStorage.setItem('username', response.data.login);
+        localStorage.setItem('role', response.data.role);
+        navigate('/');
+      })
+      .catch((err) => {
+        alert(err);
+        setError(true);
+      });
   };
   return (
     <>

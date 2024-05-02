@@ -12,6 +12,9 @@ public class FoodDTO {
     private String allergens;
     private int grams;
 
+    public FoodDTO() {
+    }
+
     public FoodDTO(Food food) {
         this.id = food.getId();
         this.name = food.getName();

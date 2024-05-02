@@ -89,6 +89,18 @@
     - `allergens`: `String`
     - `grams`: `Integer`
 
+### Food
+- **Fields**:
+    - `id`: `long`
+    - `name`: `String`
+    - `description`: `String`
+    - `price`: `float`
+    - `type`: `String`
+    - `allergens`: `String`
+    - `grams`: `int`
+    - `orders`: `Collection<Order>`
+    - `menus`: `Collection<Menu>`
+
 ### DrinkDTO
 - **Fields**:
     - `id`: `Long`
@@ -98,6 +110,17 @@
     - `type`: `String`
     - `volume`: `Integer`
 
+### Drink
+- **Fields**:
+    - `id`: `long`
+    - `name`: `String`
+    - `description`: `String`
+    - `price`: `float`
+    - `type`: `String`
+    - `volume`: `int`
+    - `orders`: `Collection<Order>`
+    - `menus`: `Collection<Menu>`
+
 ### MenuResponseDTO
 - **Fields**:
     - `id`: `Long`
@@ -105,8 +128,3 @@
     - `description`: `String`
     - `foods`: `Collection<FoodDTO>`
     - `drinks`: `Collection<DrinkDTO>`
-
-
-
-
-
