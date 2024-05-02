@@ -13,9 +13,11 @@ import java.util.Date;
 public class Reservation {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date at;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date until;
     private String name;
 

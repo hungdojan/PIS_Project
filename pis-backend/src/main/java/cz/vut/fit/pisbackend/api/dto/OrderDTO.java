@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.api.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.data.Room;
@@ -12,25 +13,12 @@ public class OrderDTO {
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
+    private long toRoom;
+    private long toTable;
+    private List<Long> foods;
+    private List<Long> drinks;
 
     public OrderDTO() {}
-
-    public OrderDTO(Order order) {
-        this.id = order.getId();
-        this.atTime = order.getAtTime();
-        this.prepared = order.getPrepared();
-        this.preparedTime = order.getPreparedTime();
-        this.payed = order.getPayed();
-    }
-
-    public Order toEntity() {
-        Order order = new Order();
-        order.setAtTime(atTime);
-        order.setPrepared(prepared);
-        order.setPreparedTime(preparedTime);
-        order.setPayed(payed);
-        return order;
-    }
 
     public long getId() {
         return id;
@@ -70,6 +58,38 @@ public class OrderDTO {
 
     public void setPayed(Boolean payed) {
         this.payed = payed;
+    }
+
+    public long getToRoom() {
+        return toRoom;
+    }
+
+    public void setToRoom(long room) {
+        this.toRoom = room;
+    }
+
+    public long getToTable() {
+        return toTable;
+    }
+
+    public void setToTable(long table) {
+        this.toTable = table;
+    }
+
+    public List<Long> getFoods() {
+        return this.foods;
+    }
+
+    public void setFoods(List<Long> foods) {
+        this.foods = foods;
+    }
+
+    public List<Long> getDrinks() {
+        return this.drinks;
+    }
+
+    public void setDrinks(List<Long> drinks) {
+        this.drinks = drinks;
     }
 
 }

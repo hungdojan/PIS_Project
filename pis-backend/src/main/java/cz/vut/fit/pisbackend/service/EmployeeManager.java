@@ -18,9 +18,9 @@ public class EmployeeManager {
     public EmployeeManager() {}
 
     @Transactional
-    public Employee create(Employee p) {
+    public void create(Employee p) {
         em.persist(p);
-        return p;
+        em.flush();
     }
 
     @Transactional

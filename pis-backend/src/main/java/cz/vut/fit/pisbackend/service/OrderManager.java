@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
 import cz.vut.fit.pisbackend.data.Order;
@@ -21,22 +22,30 @@ public class OrderManager {
     }
 
     @Transactional
-    public Order save(Order p) {
-        return em.merge(p);
+    public Order create(Order o) {
+        em.persist(o);
+        return o;
     }
 
     @Transactional
-    public void remove(Order p) {
-        em.remove(em.merge(p));
+    public void remove(Order o) {
+        em.remove(em.merge(o));
     }
 
     @Transactional
-    public void addOrder(Order p) {
-        save(p);
+    public Order update(Order o) {
+        return em.merge(o);
     }
 
     public Order find(long id) {
         return em.find(Order.class, id);
+    }
+
+    public List<Order> findByTableId(long tableId) {
+        String jpql = "SELECT o FROM Order_ o JOIN o.toTable t WHERE t.id = :tableId";
+        return em.createQuery(jpql, Order.class)
+                    .setParameter("tableId", tableId)
+                    .getResultList();
     }
 
     public List<Order> findAll() {

@@ -1,12 +1,6 @@
 package cz.vut.fit.pisbackend.data;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.NamedQueries;
-import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +12,7 @@ import java.util.Collection;
 @jakarta.persistence.Table(name = "Tablee")
 public class Table {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int capacity;
     @ManyToMany

@@ -15,10 +15,12 @@ import java.util.Date;
 public class Order {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date atTime;
     private Boolean prepared;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date preparedTime;
     private Boolean payed;
     @ManyToOne

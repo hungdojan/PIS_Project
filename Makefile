@@ -83,7 +83,10 @@ status:
 .PHONY: db_cli gen_mvnw update_fe
 
 db_cli:
-	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pisdb -uroot -p
+	$(ENGINE) exec -it $(PREFIX)_database_1 mariadb pis-db -uroot -p
+
+db_preload:
+	$(ENGINE) exec -it $(PREFIX)_database_1 bash -c "mariadb pis-db -uroot -p < /initial-data.sql"
 
 # generate maven-wrapper to run backend locally without maven
 get_mvnw:

@@ -11,7 +11,7 @@ import java.util.Collection;
 public class Room{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private int capacity;
     private String description;
