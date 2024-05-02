@@ -108,7 +108,6 @@ public class ReservationResource {
         Date at = reservationDTO.getAt();
         Date until = reservationDTO.getUntil();
         List<Reservation> reservations = reservationMngr.findByDateRange(at, until);
-
         return reservations.stream().map(r -> new ReservationDTO(r)).toList();
     }
 }
