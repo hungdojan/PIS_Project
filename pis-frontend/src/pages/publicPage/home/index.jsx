@@ -20,36 +20,55 @@ const HomePage = () => {
       });
   }, []);
 
+  const capitalToUpperCase = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   const renderMenuOffers = () => {
-    // TODO:
+      // build description string
+      const desc = {};
+      menuOffers.forEach((menu) => {
+        desc[menu.id] = "";
+        menu.foods.forEach((food) => {
+            desc[menu.id] += food.name;
+            desc[menu.id] += " ";
+            desc[menu.id] += food.grams;
+            desc[menu.id] += "g (";
+            desc[menu.id] += food.allergens;
+            desc[menu.id] += "), ";
+        });
+        menu.drinks.forEach((drink) => {
+            desc[menu.id] += drink.name;
+            desc[menu.id] += " ";
+            desc[menu.id] += drink.volume / 1000;
+            desc[menu.id] += "L, ";
+        });
+        // strip the last comma and space
+        desc[menu.id] = desc[menu.id].substring(0, desc[menu.id].length - 2);
+      });
+
+    return (
+      <div>
+        {menuOffers.map((item) => (
+          <Card className="mb-2 card-food">
+            <Card.Body>
+              <Row>
+                  <Card.Title className="food-name">{item.name}</Card.Title>
+                  <Card.Text className="food-text">{item.description}</Card.Text>
+                  <Card.Text className="food-text">{desc[item.id]}</Card.Text>
+              </Row>
+            </Card.Body>
+          </Card>
+        ))}
+      </div>
+    );
   };
 
   return (
     <Container className="main-container">
       <h1>Welcome to our Restaurant!</h1>
-      <Row className="mt-5">
-        <Col>
-          <Card className="card-daily-offer">
-            <Card.Body>
-              <Card.Title>Daily Offer</Card.Title>
-              <Card.Text>
-                <Row>
-                  <Col md={3}>Menu 1:</Col>
-                  <Col md={9}>Fried Chicken with Caesar Salad</Col>
-                </Row>
-                <Row>
-                  <Col md={3}>Menu 2:</Col>
-                  <Col md={9}>Spaghetti Carbonara with Garlic Bread</Col>
-                </Row>
-                <Row>
-                  <Col md={3}>Today's Special:</Col>
-                  <Col md={9}>Grilled Salmon with Seasonal Vegetables</Col>
-                </Row>
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+      <h2>Check out our menu :)</h2>
+        {renderMenuOffers()}
 
       <a
         href="/reservation"
