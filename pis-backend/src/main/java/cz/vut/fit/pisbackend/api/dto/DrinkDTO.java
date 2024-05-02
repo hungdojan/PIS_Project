@@ -11,6 +11,9 @@ public class DrinkDTO {
     private String type;
     private int volume;
 
+    public DrinkDTO(){
+    }
+
     public DrinkDTO(long id, String name, String description, float price, String type, int volume) {
         this.id = id;
         this.name = name;
