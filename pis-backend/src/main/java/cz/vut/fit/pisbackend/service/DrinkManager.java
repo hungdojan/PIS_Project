@@ -1,15 +1,12 @@
 package cz.vut.fit.pisbackend.service;
 
-import java.util.Date;
-import java.util.List;
-
+import cz.vut.fit.pisbackend.data.Drink;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
 
-import cz.vut.fit.pisbackend.data.Drink;
+import java.util.List;
 
 
 @RequestScoped

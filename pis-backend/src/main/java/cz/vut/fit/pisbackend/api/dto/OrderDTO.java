@@ -3,10 +3,6 @@ package cz.vut.fit.pisbackend.api.dto;
 import java.util.Date;
 import java.util.List;
 
-import cz.vut.fit.pisbackend.data.Order;
-import cz.vut.fit.pisbackend.data.Room;
-import cz.vut.fit.pisbackend.data.Table;
-
 public class OrderDTO {
     private long id;
     private Date  atTime;

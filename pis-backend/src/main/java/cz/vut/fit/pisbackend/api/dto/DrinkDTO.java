@@ -1,7 +1,5 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-import java.util.Collection;
-
 import cz.vut.fit.pisbackend.data.Drink;
 
 public class DrinkDTO {

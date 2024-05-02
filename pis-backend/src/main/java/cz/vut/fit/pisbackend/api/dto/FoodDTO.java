@@ -1,8 +1,5 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
 import cz.vut.fit.pisbackend.data.Food;
 
 public class FoodDTO {

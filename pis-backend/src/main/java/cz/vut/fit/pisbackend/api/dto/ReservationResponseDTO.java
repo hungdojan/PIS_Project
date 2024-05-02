@@ -1,9 +1,12 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+import cz.vut.fit.pisbackend.data.Reservation;
+
 import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
-public class ReservationDTO {
+public class ReservationResponseDTO {
     private long id;
     private Date at;
     private Date until;
@@ -12,10 +15,29 @@ public class ReservationDTO {
     private String phone;
     private String email;
     private long createdByEmployeeId;
-    private Collection<Long> tableIds;
-    private Collection<Long> roomIds;
+    private Collection<TableDTO> tables;
+    private Collection<RoomDTO> rooms;
 
-    public ReservationDTO() {
+    public ReservationResponseDTO() {
+    }
+
+    public ReservationResponseDTO(Reservation reservation) {
+        this.id = reservation.getId();
+        this.at = reservation.getAt();
+        this.until = reservation.getUntil();
+        this.name = reservation.getName();
+        this.count = reservation.getCount();
+        this.phone = reservation.getPhone();
+        this.email = reservation.getEmail();
+        this.createdByEmployeeId = reservation.getCreatedBy().getId();
+        this.tables = reservation.getTables()
+            .stream()
+            .map(TableDTO::new)
+            .collect(Collectors.toList());
+        this.rooms = reservation.getRooms()
+            .stream()
+            .map(RoomDTO::new)
+            .collect(Collectors.toList());
     }
 
     public long getId() {
@@ -82,20 +104,20 @@ public class ReservationDTO {
         this.createdByEmployeeId = createdByEmployeeId;
     }
 
-    public Collection<Long> getTableIds() {
-        return tableIds;
+    public Collection<TableDTO> getTables() {
+        return tables;
     }
 
-    public void setTableIds(Collection<Long> tableIds) {
-        this.tableIds = tableIds;
+    public void setTables(Collection<TableDTO> tables) {
+        this.tables = tables;
     }
 
-    public Collection<Long> getRoomIds() {
-        return roomIds;
+    public Collection<RoomDTO> getRoomIds() {
+        return rooms;
     }
 
-    public void setRoomIds(Collection<Long> roomIds) {
-        this.roomIds = roomIds;
+    public void setRoomIds(Collection<RoomDTO> rooms) {
+        this.rooms = rooms;
     }
 }
 

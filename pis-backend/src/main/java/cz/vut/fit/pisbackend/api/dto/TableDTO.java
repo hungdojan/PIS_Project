@@ -1,10 +1,5 @@
 package cz.vut.fit.pisbackend.api.dto;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-import cz.vut.fit.pisbackend.data.Order;
-import cz.vut.fit.pisbackend.data.Reservation;
 import cz.vut.fit.pisbackend.data.Table;
 
 public class TableDTO {
