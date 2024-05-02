@@ -109,7 +109,7 @@ public class Rooms {
         Room r = roomMngr.find(id);
         List<OrderDTO> orders = new ArrayList<>();
         if (r != null){
-            orders = r.getOrders().stream().map(o -> new OrderDTO(o)).toList();
+            orders = r.getOrders().stream().map(o -> new OrderResponseDTO(o)).toList();
         }
         return orders;
     }
