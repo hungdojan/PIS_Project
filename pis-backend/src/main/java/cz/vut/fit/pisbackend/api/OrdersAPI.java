@@ -62,19 +62,27 @@ public class OrdersAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(OrderDTO order)
     {
-        Collection<Food> food = foodMgr.findByIds(order.getFoods());
-        Collection<Drink> drinks = drinkMgr.findByIds(order.getDrinks());
+        Food food = foodMgr.find(order.getFood());
+        Drink drink = drinkMgr.find(order.getDrink());
+        if(food != null && drink != null){
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Cannot add order with drink and food"))
+                .build();
+        }
+        if(food == null && drink == null){
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Cannot add order with drink and food"))
+                .build();
+        }
         Table table = tableMgr.find(order.getToTable());
-
         Order o = new Order();
         o.setAtTime(order.getAtTime());
         o.setPrepared(order.getPrepared());
         o.setPreparedTime(order.getPreparedTime());
         o.setPayed(order.getPayed());
         o.setToTable(table);
-        o.setFoods(food);
-        o.setDrinks(drinks);
-
+        o.setDrink(drink);
+        o.setFood(food);
         Order saved = orderMgr.create(o);
         return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
     }
@@ -90,15 +98,15 @@ public class OrdersAPI {
                            .entity(new ResponseMessageDTO("Cannot update non-existing order"))
                            .build();
         }
-        Collection<Food> food = foodMgr.findByIds(order.getFoods());
-        Collection<Drink> drinks = drinkMgr.findByIds(order.getDrinks());
+        Food food = foodMgr.find(order.getFood());
+        Drink drink = drinkMgr.find(order.getDrink());
 
         found.setAtTime(order.getAtTime());
         found.setPrepared(order.getPrepared());
         found.setPreparedTime(order.getPreparedTime());
         found.setPayed(order.getPayed());
-        found.setFoods(food);
-        found.setDrinks(drinks);
+        found.setFood(food);
+        found.setDrink(drink);
 
         Order saved = orderMgr.update(found);
         return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
@@ -118,6 +126,17 @@ public class OrdersAPI {
         }
         orderMgr.remove(found);
         return Response.status(Response.Status.OK).build();
+    }
+
+    @GET
+    @Path("payed/{table_id}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public List<OrderResponseDTO> orders(@PathParam("table_id") long table_id, @QueryParam("paid") Boolean paid) {
+        if (paid == null) {
+            return orderMgr.findByTableId(table_id).stream().map(OrderResponseDTO::new).toList();
+        } else {
+            return orderMgr.findByTableIdAndPaidState(table_id,paid).stream().map(OrderResponseDTO::new).toList();
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+import cz.vut.fit.pisbackend.data.Drink;
+import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Order;
 
 import java.util.Collection;
@@ -14,8 +16,8 @@ public class OrderResponseDTO {
     private Boolean payed;
     // TODO private Room toRoom;
     private TableDTO toTable;
-    private Collection<FoodDTO> foods;
-    private Collection<DrinkDTO> drinks;
+    private FoodDTO food;
+    private DrinkDTO drink;
 
     public OrderResponseDTO() {}
 
@@ -25,14 +27,8 @@ public class OrderResponseDTO {
         this.prepared = order.getPrepared();
         this.preparedTime = order.getPreparedTime();
         this.payed = order.getPayed();
-        this.foods = order.getFoods()
-                            .stream()
-                            .map(FoodDTO::new)
-                            .collect(Collectors.toList());
-        this.drinks = order.getDrinks()
-                            .stream()
-                            .map(DrinkDTO::new)
-                            .collect(Collectors.toList());
+        this.food = new FoodDTO(order.getFood());
+        this.drink = new DrinkDTO(order.getDrink());
         this.toTable = new TableDTO(order.getToTable());
     }
 
@@ -84,20 +80,19 @@ public class OrderResponseDTO {
         this.toTable = table;
     }
 
-    public Collection<FoodDTO> getFoods() {
-        return foods;
+    public FoodDTO getFood() {
+        return food;
     }
 
-    public void setFoods(Collection<FoodDTO> foods) {
-        this.foods = foods;
+    public void setFood(FoodDTO food) {
+        this.food = food;
     }
 
-    public Collection<DrinkDTO> getDrinks() {
-        return drinks;
+    public DrinkDTO getDrink() {
+        return drink;
     }
 
-    public void setDrinks(Collection<DrinkDTO> drinks) {
-        this.drinks = drinks;
+    public void setDrink(DrinkDTO drink) {
+        this.drink = drink;
     }
-
 }

@@ -22,7 +22,7 @@ public class Food {
     private String type;
     private String allergens;
     private int grams;
-    @ManyToMany(mappedBy="foods")
+    @OneToMany(mappedBy = "food")
     private Collection<Order> orders;
     @ManyToMany(mappedBy="foods")
     private Collection<Menu> menus;
