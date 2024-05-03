@@ -17,9 +17,21 @@ public class Menu {
     private long id;
     private String name;
     private String description;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Menu_Food",
+        joinColumns=
+        @JoinColumn(name="Menu_id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="foods_id", referencedColumnName="id")
+    )
     private Collection<Food> foods;
-    @ManyToMany
+    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinTable(name="Menu_Drink",
+        joinColumns=
+        @JoinColumn(name="Menu_id", referencedColumnName="id"),
+        inverseJoinColumns=
+        @JoinColumn(name="drinks_id", referencedColumnName="id")
+    )
     private Collection<Drink> drinks;
 
     public Menu(){

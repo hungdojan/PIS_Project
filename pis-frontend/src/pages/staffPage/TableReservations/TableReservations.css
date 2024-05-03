@@ -1,0 +1,15 @@
+.table-management-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.table-row {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: lightblue; /* Example of visual indication for selected table */
+}

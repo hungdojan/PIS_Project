@@ -48,4 +48,11 @@ public class OrderManager {
     public List<Order> findAll() {
         return em.createNamedQuery("Order_.findAll", Order.class).getResultList();
     }
+
+    public List<Order> findByPaidState(boolean paid) {
+        String jpql = "SELECT o FROM Order_ o WHERE o.payed = :paid";
+        return em.createQuery(jpql, Order.class)
+                    .setParameter("paid", paid)
+                    .getResultList();
+    }
 }
