@@ -94,5 +94,5 @@ get_mvnw:
 		bash -c "cd /tmp/data && mvn -N wrapper:wrapper"
 
 # update frontend
-update_fe: ./pis-frontend/node_modules/
-	$(ENGINE) run -it --rm localhost/pis-project_frontend npm install
+update_fe:
+	$(ENGINE) run -it --rm -v ./pis-frontend/:/opt/pis-frontend:z localhost/pis-project_frontend npm install
