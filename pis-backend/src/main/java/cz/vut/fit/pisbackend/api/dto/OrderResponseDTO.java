@@ -3,6 +3,7 @@ package cz.vut.fit.pisbackend.api.dto;
 import cz.vut.fit.pisbackend.data.Drink;
 import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Order;
+import cz.vut.fit.pisbackend.data.Room;
 
 import java.util.Collection;
 import java.util.Date;
@@ -14,7 +15,7 @@ public class OrderResponseDTO {
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
-    // TODO private Room toRoom;
+    private RoomDTO toRoom;
     private TableDTO toTable;
     private FoodDTO food;
     private DrinkDTO drink;
@@ -30,6 +31,7 @@ public class OrderResponseDTO {
         this.food = new FoodDTO(order.getFood());
         this.drink = new DrinkDTO(order.getDrink());
         this.toTable = new TableDTO(order.getToTable());
+        this.toRoom = new RoomDTO(order.getToRoom());
     }
 
     public long getId() {
@@ -78,6 +80,14 @@ public class OrderResponseDTO {
 
     public void setToTable(TableDTO table) {
         this.toTable = table;
+    }
+
+    public RoomDTO getToRoom() {
+        return toRoom;
+    }
+
+    public void setToRoom(RoomDTO toRoom) {
+        this.toRoom = toRoom;
     }
 
     public FoodDTO getFood() {

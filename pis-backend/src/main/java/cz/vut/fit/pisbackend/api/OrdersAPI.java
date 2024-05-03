@@ -3,6 +3,8 @@ package cz.vut.fit.pisbackend.api;
 import java.util.Collection;
 import java.util.List;
 
+import cz.vut.fit.pisbackend.data.*;
+import cz.vut.fit.pisbackend.service.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -17,15 +19,6 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
-
-import cz.vut.fit.pisbackend.data.Drink;
-import cz.vut.fit.pisbackend.data.Food;
-import cz.vut.fit.pisbackend.data.Order;
-import cz.vut.fit.pisbackend.data.Table;
-import cz.vut.fit.pisbackend.service.DrinkManager;
-import cz.vut.fit.pisbackend.service.FoodManager;
-import cz.vut.fit.pisbackend.service.OrderManager;
-import cz.vut.fit.pisbackend.service.TableManager;
 
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.api.dto.OrderDTO;
@@ -43,6 +36,8 @@ public class OrdersAPI {
     private DrinkManager drinkMgr;
     @Inject
     private TableManager tableMgr;
+    @Inject
+    private RoomManager roomMngr;
 
     @Context
     private UriInfo context;
@@ -62,8 +57,23 @@ public class OrdersAPI {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addOrder(OrderDTO order)
     {
-        Food food = foodMgr.find(order.getFood());
-        Drink drink = drinkMgr.find(order.getDrink());
+        Food food = null;
+        Drink drink = null;
+        Table table = null;
+        Room room = null;
+        if (order.getFood() > 0) {
+            food = foodMgr.find(order.getFood());
+        }
+
+        if (order.getDrink() > 0) {
+            drink = drinkMgr.find(order.getDrink());
+        }
+        if (order.getToRoom() > 0) {
+            room = roomMngr.find(order.getToRoom());
+        }
+        if (order.getToTable() > 0) {
+            table = tableMgr.find(order.getToTable());
+        }
         if(food != null && drink != null){
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ResponseMessageDTO("Cannot add order with drink and food"))
@@ -74,13 +84,23 @@ public class OrdersAPI {
                 .entity(new ResponseMessageDTO("Cannot add order with drink and food"))
                 .build();
         }
-        Table table = tableMgr.find(order.getToTable());
+        if(table != null && room != null){
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Cannot add order with table and room"))
+                .build();
+        }
+        if(table == null && room == null){
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new ResponseMessageDTO("Cannot add order with table and room"))
+                .build();
+        }
         Order o = new Order();
         o.setAtTime(order.getAtTime());
         o.setPrepared(order.getPrepared());
         o.setPreparedTime(order.getPreparedTime());
         o.setPayed(order.getPayed());
         o.setToTable(table);
+        o.setToRoom(room);
         o.setDrink(drink);
         o.setFood(food);
         Order saved = orderMgr.create(o);
