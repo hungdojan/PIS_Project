@@ -64,7 +64,6 @@ public class OrdersAPI {
         if (order.getFood() > 0) {
             food = foodMgr.find(order.getFood());
         }
-
         if (order.getDrink() > 0) {
             drink = drinkMgr.find(order.getDrink());
         }
@@ -81,7 +80,7 @@ public class OrdersAPI {
         }
         if(food == null && drink == null){
             return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ResponseMessageDTO("Cannot add order with drink and food"))
+                .entity(new ResponseMessageDTO("Cannot add order without drink and food"))
                 .build();
         }
         if(table != null && room != null){
@@ -91,7 +90,7 @@ public class OrdersAPI {
         }
         if(table == null && room == null){
             return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new ResponseMessageDTO("Cannot add order with table and room"))
+                .entity(new ResponseMessageDTO("Cannot add order without table and room"))
                 .build();
         }
         Order o = new Order();
