@@ -3,32 +3,37 @@
 - **POST /employees/login**
     - **Name**: Employee login
     - **Parameters**: `Employee` (with `login` and `password`)
-    - **Output**: `EmployeeDTO` with a JWT cookie on success
+    - **Output**: `JwtDTO`
 
 - **POST /employees**
     - **Name**: Create a new employee
     - **Parameters**: `Employee` (with `login`, `password`, and `role`)
+    - **RolesAllowed**: `Admin`
     - **Output**: `EmployeeDTO` (requires admin privileges via JWT)
 
 - **PUT /employees**
     - **Name**: Update an existing employee
-    - **Parameters**: `Employee` (with `id`, `login`, `password`, `role`) and `jwt` query parameter
+    - **Parameters**: `Employee` (with `id`, `login`, `password`, `role`)
+    - **RolesAllowed**: `Admin`
     - **Output**: `EmployeeDTO` (requires admin privileges via JWT)
 
 - **DELETE /employees/{id}**
     - **Name**: Delete an employee by ID
-    - **Parameters**: `id` (Employee ID) and `jwt` query parameter
+    - **Parameters**: `id` (Employee ID)
+    - **RolesAllowed**: `Admin`
     - **Output**: Confirmation message (requires admin privileges via JWT)
 
 - **GET /employees**
     - **Name**: Retrieve all employees
-    - **Parameters**: `jwt` query parameter
+    - **Parameters**: None
+    - **RolesAllowed**: `Admin`
     - **Output**: List of `EmployeeDTO` (requires admin privileges via JWT)
 
-- **GET /employees/logout**
-    - **Name**: Logout current user
-    - **Parameters**: `jwt` cookie parameter
-    - **Output**: Logout confirmation message
+- **GET /employees/validate**
+    - **Name**: Validate JWT
+    - **Parameters**: None
+    - **RolesAllowed**: All
+    - **Output**: `Unauthorized` or a new `JwtDTO` to use
 
 # Reservations
 - **GET /reservations**
