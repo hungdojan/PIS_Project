@@ -28,10 +28,10 @@ public class OrderResponseDTO {
         this.prepared = order.getPrepared();
         this.preparedTime = order.getPreparedTime();
         this.payed = order.getPayed();
-        this.food = new FoodDTO(order.getFood());
-        this.drink = new DrinkDTO(order.getDrink());
-        this.toTable = new TableDTO(order.getToTable());
-        this.toRoom = new RoomDTO(order.getToRoom());
+        this.food = order.getFood() != null ? new FoodDTO(order.getFood()):null;
+        this.drink = order.getDrink() != null ? new DrinkDTO(order.getDrink()):null;
+        this.toTable = order.getToTable() != null ? new TableDTO(order.getToTable()):null;
+        this.toRoom = order.getToRoom() != null ? new RoomDTO(order.getToRoom()):null;
     }
 
     public long getId() {

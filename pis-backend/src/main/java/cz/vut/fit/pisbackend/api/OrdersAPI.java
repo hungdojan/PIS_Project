@@ -59,7 +59,7 @@ public class OrdersAPI {
     {
         Food food = null;
         Drink drink = null;
-        Table table = null;
+        cz.vut.fit.pisbackend.data.Table table = null;
         Room room = null;
         if (order.getFood() > 0) {
             food = foodMgr.find(order.getFood());
