@@ -17,6 +17,10 @@ import {
 import { FaPlus, FaTrash } from 'react-icons/fa';
 import { FaRegCircleXmark, FaRegCircleCheck } from 'react-icons/fa6';
 import PrivateHeaderBar from '../../components/privateHeaderBar';
+import FoodOrders from './FoodOrders';
+import OrdersPageView from './OrdersPageView';
+import { CreateTableReservations } from './TableReservations';
+import {TableReservationsList} from './TableReservationList' ;
 
 // =========== MAIN STUFF VIEW ===========
 const StaffPage = () => {
@@ -38,9 +42,9 @@ const StaffPage = () => {
       case 'staff-get-food-reservations':
         return <FoodOrders />;
       case 'staff-get-table-reservations':
-        return <TableReservations reservations={sampleReservations} />;
+        return <TableReservationsList />;
       case 'staff-create-table-reservations':
-        return <CreateTableReservations2 />;
+        return <CreateTableReservations />;
       default:
         return null;
     }
