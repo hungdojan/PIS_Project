@@ -37,18 +37,8 @@ const PrivateHeaderBar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleLogOut = (event) => {
-    axios
-      .get('/api/employees/logout')
-      .then((_) => {
-        localStorage.removeItem('username');
-        localStorage.setItem('role', 'user');
-        navigate('/');
-      })
-      .catch((error) => {
-        alert(error);
-        event.preventDefault();
-      });
+  const handleLogOut = (_) => {
+    navigate('/logout');
   };
 
   return (

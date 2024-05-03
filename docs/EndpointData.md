@@ -128,3 +128,9 @@
     - `description`: `String`
     - `foods`: `Collection<FoodDTO>`
     - `drinks`: `Collection<DrinkDTO>`
+
+### JwtDTO
+- **Fields**:
+    - `user`: `String`
+    - `role`: `String`
+    - `token`: `String`
