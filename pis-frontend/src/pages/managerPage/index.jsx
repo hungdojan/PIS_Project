@@ -53,67 +53,77 @@ const ManagerDahsboard = () => {
   );
 };
 
-const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
-  return (
-    <div
-      className="d-flex flex-column flex-shrink-0 p-3 bg-light"
-      style={{ width: '280px', height: '100vh' }}
-    >
-      <a
-        href="/"
-        className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+  const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
+    const handleLogout = () => {
+      // Add your logout logic here
+      // For example, redirect the user to the logout endpoint
+      window.location.href = '/logout';
+    };
+  
+    return (
+      <div
+        className="d-flex flex-column flex-shrink-0 p-3 bg-light"
+        style={{ width: '280px', height: '100vh' }}
       >
-        <svg className="bi me-2" width="40" height="32">
-          <use xlinkHref="#bootstrap"></use>
-        </svg>
-        <span className="fs-4">Manager</span>
-      </a>
-      <hr />
+        <a
+          href="/"
+          className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
+        >
+          <svg className="bi me-2" width="40" height="32">
+            <use xlinkHref="#bootstrap"></use>
+          </svg>
+          <span className="fs-4">Manager</span>
+        </a>
+        <hr />
 
-      <Nav
-        variant="pills"
-        defaultActiveKey={activeNavItem}
-        className="mt-3"
-        onSelect={handleNavItemClick}
-      >
-        <Nav.Item>
-          <Nav.Link eventKey="manager-room-reservations">
-            Room reservations & tables
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="manager-expenses-dashboard">
-            Expenses Dashboard
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="manager-expenses-pricing">
-            Manage food & prices
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-      <hr />
-      {/* <DropdownButton
-        id="dropdownUser2"
-        title={
-          <img
-            src="https://github.com/mdo.png"
-            alt=""
-            width="32"
-            height="32"
-            className="rounded-circle me-2"
-          />
-        }
-      >
-        <Dropdown.Item href="#">New project...</Dropdown.Item>
-        <Dropdown.Item href="#">Settings</Dropdown.Item>
-        <Dropdown.Item href="#">Profile</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item href="#">Sign out</Dropdown.Item>
-      </DropdownButton> */}
-    </div>
-  );
-};
+        <Nav
+          variant="pills"
+          defaultActiveKey={activeNavItem}
+          className="mt-3"
+          onSelect={handleNavItemClick}
+        >
+          <Nav.Item>
+            <Nav.Link eventKey="manager-room-reservations">
+              Room reservations & tables
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="manager-expenses-dashboard">
+              Expenses Dashboard
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="manager-expenses-pricing">
+              Manage food & prices
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <hr />
+        <Button variant="danger" onClick={handleLogout}>
+          Logout
+        </Button>
+
+        {/* <DropdownButton
+          id="dropdownUser2"
+          title={
+            <img
+              src="https://github.com/mdo.png"
+              alt=""
+              width="32"
+              height="32"
+              className="rounded-circle me-2"
+            />
+          }
+        >
+          <Dropdown.Item href="#">New project...</Dropdown.Item>
+          <Dropdown.Item href="#">Settings</Dropdown.Item>
+          <Dropdown.Item href="#">Profile</Dropdown.Item>
+          <Dropdown.Divider />
+          <Dropdown.Item href="#">Sign out</Dropdown.Item>
+        </DropdownButton> */}
+      </div>
+    );
+  };
 
 // =========== VIEW 1 ===========
 function ManageRoomsDashboard() {

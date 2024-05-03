@@ -1,22 +1,22 @@
+import { Row, Col, Form, Button, Table, Container } from 'react-bootstrap'; // Import `ListGroup, Button, and Card
 import {
-  Row,
-  Col,
-} from 'react-bootstrap'; // Import `ListGroup, Button, and Card
-import { ReservationEditPanel } from './components/reservationEditPanel';
-import { SelectRooms } from './components/reservationSelectTables';
+  ReservationEditPanel,
+  ReservationForm,
+} from './components/tableReservationForm';
+import {SelectRooms} from './components/reservationSelectTables';
 
 function CreateTableReservations() {
   return (
     <Row>
       <Col className="rooms-reservation">
-        <SelectRooms/>
+        <SelectRooms />
       </Col>
       <Col md={3} className="editing-tool">
-        <ReservationEditPanel />
+        <ReservationForm/>
       </Col>
+      
     </Row>
   );
 }
-
 
 export { CreateTableReservations };

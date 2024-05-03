@@ -53,6 +53,7 @@ const StaffPage = () => {
   return (
     <>
       {/* <PrivateHeaderBar /> */}
+
       <Container fluid>
         <Row>
           <StaffSidebar
@@ -70,6 +71,11 @@ const StaffSidebar = ({
   handleNavItemClick = () => {},
   activeNavItem = '',
 }) => {
+  const handleLogout = () => {
+    // Add your logout logic here
+    // For example, redirect the user to the logout endpoint
+    window.location.href = '/logout';
+  };
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 bg-light"
@@ -114,6 +120,9 @@ const StaffSidebar = ({
         </Nav.Item>
       </Nav>
       <hr />
+      <Button variant="danger" onClick={handleLogout}>
+        Logout
+      </Button>
       {/* <DropdownButton
         id="dropdownUser2"
         title={
