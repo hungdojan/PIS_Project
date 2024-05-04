@@ -7,6 +7,7 @@ import { ReservationForm } from '../tableReservationForm';
 function SelectRooms() {
   // =========== CLICK EVENTS ===========
   const [selectedRoomDescription, setSelectedRoomDescription] = useState('');
+  const [selectedTableId, setSelectedTableId] = useState(null);
 
   const handleRoomSelect = (room) => {
     setSelectedRoomDescription(room.description);
@@ -28,6 +29,7 @@ function SelectRooms() {
         setRooms(response.data);
         if (response.data.length > 0) {
           setSelectedRoomDescription(response.data[0].description); // Initialize with the first room description
+          setSelectedRoom(response.data[0]); // Initialize with the first room
         }
       })
       .catch((error) => {
@@ -69,29 +71,28 @@ function SelectRooms() {
 
         <Row>
           {/* Room reservation form */}
-          <RoomReservationForm />
+          <RoomReservationForm selectedRoom={selectedRoom} />
         </Row>
       </Row>
       <Row>
         <Col>
           <Row>
             <h2>Table Reservation</h2>
-            <DisplayTables />
+            <DisplayTables setSelectedTableId={setSelectedTableId} selectedTableId={selectedTableId}/>
           </Row>
         </Col>
         <Col>
           {/* Table reservation form */}
-          <ReservationForm />
+          <ReservationForm selectedTableId={selectedTableId}/>
         </Col>
       </Row>
     </>
   );
 }
 
-const DisplayTables = () => {
+const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
   const [tables, setTables] = useState([]);
-  const [selectedTableId, setSelectedTableId] = useState(null);
-
+  
   useEffect(() => {
     const fetchTables = async () => {
       try {

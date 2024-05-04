@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 
-const RoomReservationForm = () => {
+const RoomReservationForm = ({ selectedRoom }) => {
   // State to manage form inputs
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -11,24 +11,28 @@ const RoomReservationForm = () => {
   const [guestsCount, setNumberOfGuests] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [reservationStatus, setReservationStatus] = useState('');
-
   // const [selectedTables, setSelectedTables] = useState([]);
   // const [selectedRoom, setSelectedRoom] = useState(null);
 
+  
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const checkInDate =
       date && timeFrom ? new Date(`${date}T${timeFrom}`) : null;
     const checkOutDate = date && timeTo ? new Date(`${date}T${timeTo}`) : null;
-
+    console.log(checkInDate);
+      console.log(checkOutDate);
     if (!checkInDate || !checkOutDate) {
       console.log(checkInDate);
       console.log(checkOutDate);
       console.error('Invalid date format');
       return;
     }
-
+    if (!selectedRoom.id){
+      console.log("Select the room");
+      return;
+    }
     try {
       const response = await fetch('/api/reservations', {
         method: 'POST',
@@ -42,9 +46,9 @@ const RoomReservationForm = () => {
           until: checkOutDate,
           count: parseInt(guestsCount),
           phone: phoneNumber,
-          createdByEmployeeId: 1, // Example employee ID
+          createdByEmployee: localStorage.getItem('user'), // Example employee ID
           tableIds: [],
-          roomIds: [1],
+          roomIds: [selectedRoom.id],
         }),
       });
       if (response.ok) {
