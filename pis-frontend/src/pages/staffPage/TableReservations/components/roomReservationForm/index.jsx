@@ -15,6 +15,18 @@ const RoomReservationForm = () => {
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const checkInDate = formData.checkInDate
+      ? new Date(formData.checkInDate)
+      : null;
+    const checkOutDate = formData.checkOutDate
+      ? new Date(formData.checkOutDate)
+      : null;
+
+    if (!checkInDate || !checkOutDate) {
+      console.error('Invalid date format');
+      return;
+    }
+
     try {
       const response = await fetch('/api/room-reservation', {
         method: 'POST',
@@ -24,8 +36,8 @@ const RoomReservationForm = () => {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          at: new Date(formData.checkInDate),
-          until: new Date(formData.checkOutDate),
+          at: checkInDate,
+          until: checkOutDate,
           count: parseInt(formData.count),
           phone: formData.phone,
           createdByEmployeeId: 123, // Example employee ID
@@ -65,7 +77,7 @@ const RoomReservationForm = () => {
 
   return (
     <Container>
-      <h2>Room Registrati on Form</h2>
+      <h2>Room Registration Form</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col>
@@ -94,6 +106,21 @@ const RoomReservationForm = () => {
               />
             </Form.Group>
           </Col>
+          <Col>
+            <Form.Group controlId="formPhone">
+              <Form.Label>Phone:</Form.Label>
+              <Form.Control
+                type="tel"
+                placeholder="Enter your phone number"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // Example phone number pattern
+                required
+              />
+              <Form.Text className="text-muted">Format: 123-456-7890</Form.Text>
+            </Form.Group>
+          </Col>
         </Row>
 
         <Row>
@@ -110,12 +137,24 @@ const RoomReservationForm = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="formCheckOut">
-              <Form.Label>Check-out Date:</Form.Label>
+            <Form.Group controlId="formCheckInTimeFrom">
+              <Form.Label>Check-in Time From:</Form.Label>
               <Form.Control
-                type="date"
-                name="checkOutDate"
-                value={formData.checkOutDate}
+                type="time"
+                name="checkInTimeFrom"
+                value={formData.checkInTimeFrom}
+                onChange={handleChange}
+                required
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="formCheckInTimeTo">
+              <Form.Label>Check-in Time To:</Form.Label>
+              <Form.Control
+                type="time"
+                name="checkInTimeTo"
+                value={formData.checkInTimeTo}
                 onChange={handleChange}
                 required
               />
@@ -135,22 +174,6 @@ const RoomReservationForm = () => {
                 onChange={handleChange}
                 required
               />
-            </Form.Group>
-          </Col>
-
-          <Col>
-            <Form.Group controlId="formPhone">
-              <Form.Label>Phone:</Form.Label>
-              <Form.Control
-                type="tel"
-                placeholder="Enter your phone number"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // Example phone number pattern
-                required
-              />
-              <Form.Text className="text-muted">Format: 123-456-7890</Form.Text>
             </Form.Group>
           </Col>
         </Row>
