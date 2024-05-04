@@ -57,7 +57,7 @@ public class ReservationsAPI {
         reservation.setCount(reservationDTO.getCount());
         reservation.setPhone(reservationDTO.getPhone());
         reservation.setEmail(reservationDTO.getEmail());
-        reservation.setCreatedBy(employeeMngr.find(reservationDTO.getCreatedByEmployeeId()));
+        reservation.setCreatedBy(employeeMngr.getUser(reservationDTO.getCreatedByEmployee()));
         reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).collect(Collectors.toList()));
         reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).collect(Collectors.toList()));
         Reservation savedReservation = reservationMngr.create(reservation);
@@ -80,7 +80,7 @@ public class ReservationsAPI {
         reservation.setCount(reservationDTO.getCount());
         reservation.setPhone(reservationDTO.getPhone());
         reservation.setEmail(reservationDTO.getEmail());
-        reservation.setCreatedBy(employeeMngr.find(reservationDTO.getCreatedByEmployeeId()));
+        reservation.setCreatedBy(employeeMngr.getUser(reservationDTO.getCreatedByEmployee()));
         reservation.setTables(reservationDTO.getTableIds().stream().map(r->tableMngr.find(r)).collect(Collectors.toList()));
         reservation.setRooms(reservationDTO.getRoomIds().stream().map(r->roomMngr.find(r)).collect(Collectors.toList()));
         Reservation updatedReservation = reservationMngr.update(reservation);

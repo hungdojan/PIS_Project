@@ -11,7 +11,7 @@ public class ReservationDTO {
     private int count;
     private String phone;
     private String email;
-    private long createdByEmployeeId;
+    private String createdByEmployee;
     private Collection<Long> tableIds;
     private Collection<Long> roomIds;
 
@@ -74,12 +74,12 @@ public class ReservationDTO {
         this.email = email;
     }
 
-    public long getCreatedByEmployeeId() {
-        return createdByEmployeeId;
+    public String getCreatedByEmployee() {
+        return createdByEmployee;
     }
 
-    public void setCreatedByEmployeeId(long createdByEmployeeId) {
-        this.createdByEmployeeId = createdByEmployeeId;
+    public void setCreatedByEmployee(String createdByEmployee) {
+        this.createdByEmployee = createdByEmployee;
     }
 
     public Collection<Long> getTableIds() {
