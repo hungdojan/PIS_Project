@@ -47,4 +47,42 @@ public class DrinksAPI {
         }
     }
 
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateDrink(DrinkDTO drink)
+    {
+        Drink found = drinkMgr.find(drink.getId());
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ResponseMessageDTO("Cannot update non-existing drink"))
+                           .build();
+        }
+        found.setName(drink.getName());
+        found.setDescription(drink.getDescription());
+        found.setPrice(drink.getPrice());
+        found.setType(drink.getType());
+        found.setVolume(drink.getVolume());
+
+        Drink saved = drinkMgr.update(found);
+        return Response.status(Response.Status.OK).entity(new DrinkDTO(saved)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteDrink(@PathParam("id") long id)
+    {
+        Drink found = drinkMgr.find(id);
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ResponseMessageDTO("Cannot delete non-existing drink"))
+                           .build();
+        }
+        drinkMgr.remove(found);
+        return Response.status(Response.Status.OK).build();
+    }
+
 }

@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.api;
 
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import cz.vut.fit.pisbackend.data.*;
@@ -115,6 +116,7 @@ public class OrdersAPI {
     }
 
     @PUT
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateOrder(OrderDTO order)
@@ -139,6 +141,36 @@ public class OrdersAPI {
         return Response.status(Response.Status.OK).entity(new OrderResponseDTO(saved)).build();
     }
 
+    @PUT
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateOrders(List<OrderDTO> orders)
+    {
+        List<OrderResponseDTO> updated = new ArrayList<OrderResponseDTO>();
+        for (OrderDTO order : orders) {
+            Order found = orderMgr.find(order.getId());
+            if (found == null) {
+                //return Response.status(Response.Status.BAD_REQUEST)
+                //               .entity(new ResponseMessageDTO("Cannot update non-existing order"))
+                //               .build();
+                continue;
+            }
+            Food food = foodMgr.find(order.getFood());
+            Drink drink = drinkMgr.find(order.getDrink());
+
+            found.setAtTime(order.getAtTime());
+            found.setPrepared(order.getPrepared());
+            found.setPreparedTime(order.getPreparedTime());
+            found.setPayed(order.getPayed());
+            found.setFood(food);
+            found.setDrink(drink);
+
+            Order saved = orderMgr.update(found);
+            updated.add(new OrderResponseDTO(saved));
+        }
+        return Response.status(Response.Status.OK).entity(updated).build();
+    }
+
     @DELETE
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -152,6 +184,19 @@ public class OrdersAPI {
                            .build();
         }
         orderMgr.remove(found);
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteOrders(List<Long> ids)
+    {
+        if (ids.isEmpty()) {
+            Response.status(Response.Status.OK).build();
+        }
+        orderMgr.removeByIds(ids);
         return Response.status(Response.Status.OK).build();
     }
 

@@ -7,10 +7,6 @@ function CreateTableReservations() {
       <Col className="rooms-reservation">
         <SelectRooms />
       </Col>
-      {/* <Col md={3} className="editing-tool">
-        <ReservationForm/>
-      </Col> */}
-      
     </Row>
   );
 }

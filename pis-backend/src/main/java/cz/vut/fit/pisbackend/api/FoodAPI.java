@@ -47,4 +47,45 @@ public class FoodAPI {
             return Response.status(Response.Status.CONFLICT).entity(new ResponseMessageDTO("duplicate id")).build();
         }
     }
+
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateFood(FoodDTO food)
+    {
+        Food found = foodMgr.find(food.getId());
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ResponseMessageDTO("Cannot update non-existing food"))
+                           .build();
+        }
+        found.setName(food.getName());
+        found.setDescription(food.getDescription());
+        found.setPrice(food.getPrice());
+        found.setType(food.getType());
+        found.setAllergens(food.getAllergens());
+        found.setGrams(food.getGrams());
+
+        Food saved = foodMgr.update(found);
+        return Response.status(Response.Status.OK).entity(new FoodDTO(saved)).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteFood(@PathParam("id") long id)
+    {
+        Food found = foodMgr.find(id);
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ResponseMessageDTO("Cannot delete non-existing food"))
+                           .build();
+        }
+        foodMgr.remove(found);
+        return Response.status(Response.Status.OK).build();
+    }
+
+
 }

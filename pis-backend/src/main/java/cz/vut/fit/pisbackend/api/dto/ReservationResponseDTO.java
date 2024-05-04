@@ -14,7 +14,7 @@ public class ReservationResponseDTO {
     private int count;
     private String phone;
     private String email;
-    private long createdByEmployeeId;
+    private Long createdByEmployeeId;
     private Collection<TableDTO> tables;
     private Collection<RoomDTO> rooms;
 
@@ -29,7 +29,8 @@ public class ReservationResponseDTO {
         this.count = reservation.getCount();
         this.phone = reservation.getPhone();
         this.email = reservation.getEmail();
-        this.createdByEmployeeId = reservation.getCreatedBy().getId();
+        var employee = reservation.getCreatedBy();
+        this.createdByEmployeeId = employee != null ? employee.getId() : null;
         this.tables = reservation.getTables()
             .stream()
             .map(TableDTO::new)
@@ -96,11 +97,11 @@ public class ReservationResponseDTO {
         this.email = email;
     }
 
-    public long getCreatedByEmployeeId() {
+    public Long getCreatedByEmployeeId() {
         return createdByEmployeeId;
     }
 
-    public void setCreatedByEmployeeId(long createdByEmployeeId) {
+    public void setCreatedByEmployeeId(Long createdByEmployeeId) {
         this.createdByEmployeeId = createdByEmployeeId;
     }
 

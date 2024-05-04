@@ -63,4 +63,12 @@ public class OrderManager {
             .setParameter("paid", paid)
             .getResultList();
     }
+
+    @Transactional
+    public long removeByIds(List<Long> ids) {
+        String jpql = "DELETE FROM Order_ WHERE id IN :ids";
+        return em.createQuery(jpql, Order.class)
+                    .setParameter("ids", ids)
+                    .executeUpdate();
+    }
 }

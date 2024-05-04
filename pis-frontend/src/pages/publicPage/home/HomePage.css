@@ -26,3 +26,44 @@
 .btn-reservation:hover, .btn-reservation:active{
     background-color: var(--primary-color) !important;
 }
+
+.card-menu {
+    min-height: 115px;
+}
+
+.week-day {
+    font-family: monospace, 'Courier New', Courier;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-size: 3.5rem;
+    max-width: 100%;
+    white-space: nowrap;
+    padding: 0;
+    color: #555;
+    border-radius: 5px;
+}
+
+.food-units {
+    text-align: left;
+    color: #ffffff60;
+}
+
+.price-units {
+    text-align: right;
+    color: #ffffff60;
+}
+
+.food-text {
+    margin: 0;
+}
+
+.food-menu-text {
+    font-size: 1.1rem !important;
+}
+
+.total-menu-price {
+    color: #ffffff85;
+    float: right;
+}

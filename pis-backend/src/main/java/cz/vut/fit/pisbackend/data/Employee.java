@@ -19,10 +19,10 @@ public class Employee {
 
     private String role;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy", cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Collection<Expenses>  expenses;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy", cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Collection<Reservation>  reservations;
 
     public Employee(){
@@ -66,7 +66,10 @@ public class Employee {
         this.reservations = reservations;
     }
 
-    public Boolean createRequestValidation() {
+    public Boolean createRequestValidation(boolean ignorePass) {
+        if (ignorePass) {
+            return Stream.of(login, role).allMatch(Objects::nonNull);
+        }
         return Stream.of(login, password, role).allMatch(Objects::nonNull);
     }
 }

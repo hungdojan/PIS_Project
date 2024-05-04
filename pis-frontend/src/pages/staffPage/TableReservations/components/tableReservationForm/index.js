@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import DatePicker from 'react-datepicker';
+
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 
 const ReservationForm = ({ selectedTableId }) => {
@@ -6,21 +9,34 @@ const ReservationForm = ({ selectedTableId }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
-  const [timeFrom, setTimeFrom] = useState('');
-  const [timeTo, setTimeTo] = useState('');
+  const [timeFrom, setTimeFrom] = useState(new Date());
+  const [timeTo, setTimeTo] = useState(
+    new Date(new Date().getTime() + 60 * 60 * 1000)
+  );
   const [guestsCount, setNumberOfGuests] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [reservationStatus, setReservationStatus] = useState('');
+  const [reservations, setReservations] = useState([]);
   // const [selectedTables, setSelectedTables] = useState([]);
   // const [selectedRoom, setSelectedRoom] = useState(null);
+  useEffect(() => {
+    fetchReservations();
+  }, [selectedTableId]);
 
-  
+  const fetchReservations = async () => {
+    try {
+      const response = await axios.get('/api/reservations');
+      setReservations(response.data); // Update reservations state
+    } catch (error) {
+      console.error('Error fetching reservations:', error);
+    }
+  };
+
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const checkInDate =
-      date && timeFrom ? new Date(`${date}T${timeFrom}`) : null;
-    const checkOutDate = date && timeTo ? new Date(`${date}T${timeTo}`) : null;
+    const checkInDate = timeFrom ? timeFrom.toISOString() : null;
+    const checkOutDate = timeTo ? timeTo.toISOString() : null;
 
     if (!checkInDate || !checkOutDate) {
       console.log(checkInDate);
@@ -28,38 +44,51 @@ const ReservationForm = ({ selectedTableId }) => {
       console.error('Invalid date format');
       return;
     }
-    if (!selectedTableId){
-      console.log("The table");
+
+    if (timeFrom > timeTo) {
+      console.log('Time from must be lower than time to');
+      return;
+    }
+
+    if (!selectedTableId) {
+      console.log('The table');
       return;
     }
     try {
-      const response = await fetch('/api/reservations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        '/api/reservations',
+        {
           name: name,
           email: email,
-          at: checkInDate,
-          until: checkOutDate,
+          at: timeFrom,
+          until: timeTo,
           count: parseInt(guestsCount),
           phone: phoneNumber,
           createdByEmployee: localStorage.getItem('user'), // Example employee ID
           tableIds: [selectedTableId],
           roomIds: [],
-        }),
-      });
-      if (response.ok) {
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (response.status === 201) {
         // Success
         console.log('Reservation successful');
         setReservationStatus('Reservation successful');
         // Reset form fields after submission
+        const newReservations = response.data;
+        console.log([...reservations, newReservations]);
+        setReservations([...reservations, newReservations]);
+
         setName('');
         setEmail('');
         setDate('');
-        setTimeFrom('');
-        setTimeTo('');
+        setTimeFrom(new Date());
+        setTimeTo(new Date(new Date().getTime() + 60 * 60 * 1000));
         setNumberOfGuests('');
         setPhoneNumber('');
       } else {
@@ -83,6 +112,70 @@ const ReservationForm = ({ selectedTableId }) => {
     }
     e.target.value = formattedValue;
     setPhoneNumber(formattedValue);
+  };
+  const handleTimeFromChange = (date) => {
+    setTimeFrom(date);
+    // Automatically adjust timeTo by adding one hour
+    const newTimeTo = new Date(date);
+    newTimeTo.setHours(newTimeTo.getHours() + 1);
+    setTimeTo(newTimeTo);
+  };
+  const handleTimeToChange = (date) => {
+    setTimeTo(date);
+  };
+
+  // Filter function to disable times earlier than timeFrom
+  const filterPassedTime = (time) => {
+    const selectedHour = timeFrom.getHours();
+    const selectedMinutes = timeFrom.getMinutes();
+    const hour = time.getHours();
+    const minutes = time.getMinutes();
+
+    return (
+      hour > selectedHour ||
+      (hour === selectedHour && minutes > selectedMinutes)
+    );
+  };
+
+  const timeSlotIsReserved = (time) => {
+    const selectedTime = time.toISOString();
+    const isReserved = reservations.some((reservation) => {
+      // Check if the reservation has tables
+      console.log(reservation.tables);
+      // Check if the reservation has table IDs
+      if (!reservation.tables || reservation.tables.length === 0) {
+        return false; // Skip reservations without tables
+      }
+
+      // Check if the selected table ID matches any of the reservation's table IDs
+      const reservationTableIds = reservation.tables.map((table) => table.id);
+      if (!reservationTableIds.includes(selectedTableId)) {
+        return false; // Skip reservations not for the selected table
+      }
+      // Extract the portion of the string without the [UTC] suffix
+      const isoString = reservation.at.split('[UTC]')[0];
+
+      // Create a new Date object from the ISO string
+      const reservationTime = new Date(isoString);
+
+      if (isNaN(reservationTime.getTime())) {
+        // Handle invalid date
+        console.error('Invalid date:', isoString);
+        return false;
+      }
+
+      // Subtract one minute from reservationTime
+      reservationTime.setMinutes(reservationTime.getMinutes() - 1);
+
+      // Convert reservationTime back to ISO string for comparison
+      const reservationTimeISO = reservationTime.toISOString();
+
+      // Compare selectedTime with reservationTime
+      return (
+        selectedTime >= reservationTimeISO && selectedTime <= reservation.until
+      );
+    });
+    return isReserved;
   };
 
   return (
@@ -133,38 +226,39 @@ const ReservationForm = ({ selectedTableId }) => {
         </Row>
 
         <Row>
+          {/* TIME FROM*/}
           <Col>
-            <Form.Group controlId="formCheckIn">
-              <Form.Label>Check-in Date:</Form.Label>
-              <Form.Control
-                type="date"
-                name="checkInDate"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+            <Form.Group controlId="form-TimeFrom">
+              <Form.Label>Time from:</Form.Label>
+              <DatePicker
+                selected={timeFrom}
+                onChange={(time) => handleTimeFromChange(time)}
+                className="form-control"
+                showTimeSelect
+                timeIntervals={30}
+                timeCaption="Time From"
+                dateFormat="yyyy MMMM d, HH:mm"
+                timeFormat="HH:mm"
+                filterTime={(time) => !timeSlotIsReserved(time)}
                 required
               />
             </Form.Group>
           </Col>
+          {/* TIME TO */}
           <Col>
-            <Form.Group controlId="formTimeFrom">
-              <Form.Label>Time From:</Form.Label>
-              <Form.Control
-                type="time"
-                name="TimeFrom"
-                value={timeFrom}
-                onChange={(e) => setTimeFrom(e.target.value)}
-                required
-              />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group controlId="formTimeTo">
+            <Form.Group controlId="form-TimeTo">
               <Form.Label>Time To:</Form.Label>
-              <Form.Control
-                type="time"
-                name="TimeTo"
-                value={timeTo}
-                onChange={(e) => setTimeTo(e.target.value)}
+              <DatePicker
+                selected={timeTo}
+                onChange={(time) => handleTimeToChange(time)}
+                className="form-control"
+                showTimeSelect
+                timeIntervals={30}
+                timeCaption="Time To"
+                dateFormat="yyyy MMMM d, HH:mm"
+                timeFormat="HH:mm"
+                minDate={timeFrom}
+                filterTime={filterPassedTime}
                 required
               />
             </Form.Group>

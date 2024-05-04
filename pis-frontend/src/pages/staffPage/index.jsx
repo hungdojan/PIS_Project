@@ -1,25 +1,15 @@
 import './StaffPage.css';
 // import './OrdersPage.css';
-import axios from 'axios'; // Import Axios
 import React, { useEffect, useState } from 'react';
 import {
   Container,
   Row,
   Col,
   Nav,
-  DropdownButton,
-  Dropdown,
-  ListGroup,
   Button,
-  Card,
-  Form,
 } from 'react-bootstrap'; // Import ListGroup, Button, and Card
-import { FaPlus, FaTrash } from 'react-icons/fa';
-import { FaRegCircleXmark, FaRegCircleCheck } from 'react-icons/fa6';
-import PrivateHeaderBar from '../../components/privateHeaderBar';
 import FoodOrders from './FoodOrders';
 import OrdersPageView from './OrdersPageView';
-import TableOrders from './TableOrders';
 import { TableReservationsList } from './TableReservationList';
 import { CreateTableReservations } from './TableReservations';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +20,6 @@ const StaffPage = () => {
     document.title = 'Staff page';
   }, []);
 
-  const role = localStorage.getItem('role');
   const [activeNavItem, setActiveNavItem] = useState('staff-create-food-order');
 
   const handleNavItemClick = (eventKey) => {
