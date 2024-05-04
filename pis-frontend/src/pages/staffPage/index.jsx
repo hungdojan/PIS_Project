@@ -22,6 +22,8 @@ import OrdersPageView from './OrdersPageView';
 import TableOrders from './TableOrders';
 import { TableReservationsList } from './TableReservationList';
 import { CreateTableReservations } from './TableReservations';
+import { useNavigate } from 'react-router-dom';
+
 // =========== MAIN STUFF VIEW ===========
 const StaffPage = () => {
   useEffect(() => {
@@ -71,10 +73,11 @@ const StaffSidebar = ({
   handleNavItemClick = () => {},
   activeNavItem = '',
 }) => {
+  const navigate = useNavigate();
   const handleLogout = () => {
     // Add your logout logic here
     // For example, redirect the user to the logout endpoint
-    window.location.href = '/logout';
+    navigate('/logout');
   };
   return (
     <div
@@ -123,24 +126,6 @@ const StaffSidebar = ({
       <Button variant="danger" onClick={handleLogout}>
         Logout
       </Button>
-      {/* <DropdownButton
-        id="dropdownUser2"
-        title={
-          <img
-            src="https://github.com/mdo.png"
-            alt=""
-            width="32"
-            height="32"
-            className="rounded-circle me-2"
-          />
-        }
-      >
-        <Dropdown.Item href="#">New project...</Dropdown.Item>
-        <Dropdown.Item href="#">Settings</Dropdown.Item>
-        <Dropdown.Item href="#">Profile</Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item href="#">Sign out</Dropdown.Item>
-      </DropdownButton> */}
     </div>
   );
 };

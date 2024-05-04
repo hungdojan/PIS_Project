@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Row, Col, DropdownButton, Dropdown } from 'react-bootstrap'; // Import `ListGroup, Button, and Card
+import { Row, Col, Dropdown, Container, Button } from 'react-bootstrap'; // Import `ListGroup, Button, and Card
 import { RoomReservationForm } from '../roomReservationForm';
+import { ReservationForm } from '../tableReservationForm';
 
 function SelectRooms() {
   // =========== CLICK EVENTS ===========
@@ -62,51 +63,84 @@ function SelectRooms() {
         <Col>
           <h2> Capacity: {selectedRoom ? selectedRoom.capacity : '-'} </h2>
         </Col>
-          
+
         <Row>
           {/* Room reservation form */}
-          <RoomReservationForm/>
+          <RoomReservationForm />
         </Row>
-
       </Row>
       <Row>
-        <TablesLayout />
-      </Row>
-      <Row>
-        <Col className="bottom-row">All tables count</Col>
-        <Col className="bottom-row">Total capacity</Col>
+       <Col>
+       <Row>
+          <Col className="bottom-row">All tables count</Col>
+          <Col className="bottom-row">Total capacity</Col>
+        </Row>
+        <Row>
+          <DisplayTables />
+        </Row>
+        </Col>
+        <Col>
+          {/* Table reservation form */}
+          <ReservationForm/>
+        </Col>
       </Row>
     </>
   );
 }
 
-function TablesLayout() {
-  const [selectedTable, setSelectedTable] = useState(null);
+const DisplayTables = () => {
+  const [tables, setTables] = useState([]);
+  const [selectedTableId, setSelectedTableId] = useState(null);
 
-  const handleTableClick = (table) => {
-    setSelectedTable(selectedTable === table ? null : table);
-    console.log('You clicked on', table.name);
+  useEffect(() => {
+    const fetchTables = async () => {
+      try {
+        const response = await fetch('/api/tables');
+        if (response.ok) {
+          const tableData = await response.json();
+          setTables(tableData);
+        } else {
+          console.error('Failed to fetch tables');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchTables();
+  }, []);
+
+  const handleTableClick = (tableId) => {
+    setSelectedTableId(tableId);
   };
 
-  const tables = [
-    { id: 1, name: 'Table 1' },
-    { id: 2, name: 'Table 2' },
-    { id: 3, name: 'Table 3' },
-  ];
-
   return (
-    <div className="table-management-container">
-      {tables.map((table) => (
-        <div
-          key={table.id}
-          className={`table-row ${selectedTable && selectedTable.id === table.id ? 'selected' : ''}`}
-          onClick={() => handleTableClick(table)}
-        >
-          {table.name}
-        </div>
-      ))}
-    </div>
+    <Container>
+      <h2>Table Layout</h2>
+      <Row>
+        {tables.map((table) => (
+          <Col key={table.id}>
+            <div
+              style={{
+                width: '100px',
+                height: '100px',
+                backgroundColor: selectedTableId === table.id ? 'lightgreen' : 'lightblue',
+                border: '1px solid black',
+                textAlign: 'center',
+                lineHeight: '100px', // Center content vertically
+                cursor: 'pointer',
+              }}
+              onClick={() => handleTableClick(table.id)}
+            >
+              {`Table ${table.id}`}
+              <br />
+              {`Capacity: ${table.capacity}`}
+            </div>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
-}
+};
 
 export { SelectRooms };
