@@ -8,14 +8,14 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Employee;
+import jakarta.ws.rs.core.Response;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 public class JwtTokenUtils {
 
@@ -79,5 +79,41 @@ public class JwtTokenUtils {
 
     public static String jwtGetRoleValue(final String jwtToken) throws ParseException {
         return getClaimSet(stringToSignedJwt(jwtToken)).getStringClaim("value");
+    }
+
+    public static Response authValidation(String token, List<String> roles) {
+        if (token == null) {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
+
+        String tokenValue = token.replace("Bearer ", "");
+
+        try {
+            if (!validateJwt(tokenValue)) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ResponseMessageDTO("Invalid JWT"))
+                    .build();
+            }
+
+            var jwtClaims = getClaimSet(stringToSignedJwt(tokenValue));
+            Date expTime = jwtClaims.getExpirationTime();
+            if (!roles.isEmpty() && !roles.contains(jwtClaims.getStringClaim("role"))) {
+                return Response.status(Response.Status.FORBIDDEN)
+                    .entity(new ResponseMessageDTO("Not authorized to call this API"))
+                    .build();
+            }
+            long diff = expTime.getTime() - System.currentTimeMillis();
+            if (diff < 0) {
+                return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(new ResponseMessageDTO("Invalid JWT")).build();
+            }
+
+        } catch (ParseException | IOException | JOSEException e) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                .entity(new ResponseMessageDTO("Invalid JWT"))
+                .build();
+        }
+
+        return null;
     }
 }

@@ -7,16 +7,22 @@ import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import { PrivateHeaderBar } from '../../components';
 import axios from 'axios';
+import { useAuth } from '../../router/AuthProvider';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const navigate = useNavigate();
+  const { token, setToken } = useAuth();
 
   useEffect(() => {
     document.title = 'Login Page';
   }, []);
+
+  if (token) {
+    navigate('/staff', { replace: true });
+  }
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -26,22 +32,20 @@ const LoginPage = () => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    axios
-      .post('/api/employees/login', {
+    try {
+      const response = await axios.post('/api/employees/login', {
         login: username,
         password: password,
-      })
-      .then((response) => {
-        localStorage.setItem('username', response.data.login);
-        localStorage.setItem('role', response.data.role);
-        navigate('/');
-      })
-      .catch((err) => {
-        alert(err);
-        setError(true);
       });
+      setToken(response.data.token);
+      localStorage.setItem('user', response.data.user);
+      localStorage.setItem('role', response.data.role);
+      navigate('/staff', { replace: true });
+    } catch (err) {
+      setError(true);
+    }
   };
   return (
     <>
