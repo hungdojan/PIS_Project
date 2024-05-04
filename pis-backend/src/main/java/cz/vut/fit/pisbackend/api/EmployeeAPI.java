@@ -97,7 +97,7 @@ public class EmployeeAPI {
         }
 
         if (!e.createRequestValidation()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!")).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("Requires: `login` and `role` parameters!")).build();
         }
         Employee employee = employeeManager.find(e.getId());
         if (employee == null) {
@@ -105,8 +105,9 @@ public class EmployeeAPI {
         }
         employee.setRole(e.getRole());
         employee.setLogin(e.getLogin());
-        employee.setPassword(pbkdf2PasswordHash.generate(e.getPassword().toCharArray()));
-
+        if (e.getPassword() != null) {
+            employee.setPassword(pbkdf2PasswordHash.generate(e.getPassword().toCharArray()));
+        }
         employeeManager.update(employee);
         return Response.status(Response.Status.CREATED).entity(new EmployeeDTO(employee)).build();
     }
