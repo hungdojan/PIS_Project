@@ -55,4 +55,12 @@ public class OrderManager {
                     .setParameter("paid", paid)
                     .getResultList();
     }
+
+    public List<Order> findByTableIdAndPaidState(long tableId, boolean paid) {
+        String jpql = "SELECT o FROM Order_ o JOIN o.toTable t WHERE t.id = :tableId AND o.payed = :paid";
+        return em.createQuery(jpql, Order.class)
+            .setParameter("tableId", tableId)
+            .setParameter("paid", paid)
+            .getResultList();
+    }
 }

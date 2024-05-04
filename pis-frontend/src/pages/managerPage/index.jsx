@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
   Nav,
   NavItem,
@@ -15,13 +16,20 @@ import './ManagerPage.css';
 import { FaTrash } from 'react-icons/fa';
 
 // =========== MAIN MANAGER VIEW ===========
-const ManagerDahsboard = () => {
+const ManagerDashboard = () => {
   useEffect(() => {
     document.title = 'Manager page';
   }, []);
+
   const [activeNavItem, setActiveNavItem] = useState(
     'manager-room-reservations'
   );
+
+  // check role permissions
+  const role = localStorage.getItem('role');
+  if (role !== 'manager') {
+    return <Navigate to="/staff" />;
+  }
 
   const handleNavItemClick = (eventKey) => {
     setActiveNavItem(eventKey);
@@ -53,57 +61,57 @@ const ManagerDahsboard = () => {
   );
 };
 
-  const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
-    const handleLogout = () => {
-      // Add your logout logic here
-      // For example, redirect the user to the logout endpoint
-      window.location.href = '/logout';
-    };
-  
-    return (
-      <div
-        className="d-flex flex-column flex-shrink-0 p-3 bg-light"
-        style={{ width: '280px', height: '100vh' }}
+const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
+  const handleLogout = () => {
+    // Add your logout logic here
+    // For example, redirect the user to the logout endpoint
+    window.location.href = '/logout';
+  };
+
+  return (
+    <div
+      className="d-flex flex-column flex-shrink-0 p-3 bg-light"
+      style={{ width: '280px', height: '100vh' }}
+    >
+      <a
+        href="/"
+        className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
       >
-        <a
-          href="/"
-          className="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none"
-        >
-          <svg className="bi me-2" width="40" height="32">
-            <use xlinkHref="#bootstrap"></use>
-          </svg>
-          <span className="fs-4">Manager</span>
-        </a>
-        <hr />
+        <svg className="bi me-2" width="40" height="32">
+          <use xlinkHref="#bootstrap"></use>
+        </svg>
+        <span className="fs-4">Manager</span>
+      </a>
+      <hr />
 
-        <Nav
-          variant="pills"
-          defaultActiveKey={activeNavItem}
-          className="mt-3"
-          onSelect={handleNavItemClick}
-        >
-          <Nav.Item>
-            <Nav.Link eventKey="manager-room-reservations">
-              Room reservations & tables
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="manager-expenses-dashboard">
-              Expenses Dashboard
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="manager-expenses-pricing">
-              Manage food & prices
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
-        <hr />
-        <Button variant="danger" onClick={handleLogout}>
-          Logout
-        </Button>
+      <Nav
+        variant="pills"
+        defaultActiveKey={activeNavItem}
+        className="mt-3"
+        onSelect={handleNavItemClick}
+      >
+        <Nav.Item>
+          <Nav.Link eventKey="manager-room-reservations">
+            Room reservations & tables
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="manager-expenses-dashboard">
+            Expenses Dashboard
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="manager-expenses-pricing">
+            Manage food & prices
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <hr />
+      <Button variant="danger" onClick={handleLogout}>
+        Logout
+      </Button>
 
-        {/* <DropdownButton
+      {/* <DropdownButton
           id="dropdownUser2"
           title={
             <img
@@ -121,9 +129,9 @@ const ManagerDahsboard = () => {
           <Dropdown.Divider />
           <Dropdown.Item href="#">Sign out</Dropdown.Item>
         </DropdownButton> */}
-      </div>
-    );
-  };
+    </div>
+  );
+};
 
 // =========== VIEW 1 ===========
 function ManageRoomsDashboard() {
@@ -559,4 +567,4 @@ const FoodPricing = () => {
   );
 };
 
-export default ManagerDahsboard;
+export default ManagerDashboard;

@@ -38,11 +38,6 @@ INSERT INTO Menu (name, description) VALUES ('Menu3', 'Menu for Wednesday');
 INSERT INTO Menu (name, description) VALUES ('Menu4', 'Menu for Thursday');
 INSERT INTO Menu (name, description) VALUES ('Menu5', 'Menu for Friday');
 
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-27 10:22:56', FALSE, '2024-06-29 14:22:56', FALSE, 2, 1);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-28 11:22:56', FALSE, '2024-06-29 13:22:56', FALSE, 1, 1);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, 2, 3);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id) VALUES ('2024-06-30 15:22:56', FALSE, '2024-06-29 12:42:56', FALSE, 1, 4);
-
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Lemonade', NULL, 2.3, 'non-alcoholic',400);
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Cola',  NULL, 1.99, 'non-alcoholic', 500);
 INSERT INTO Drink (name, description, price, type, volume) VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 300);
@@ -63,17 +58,15 @@ INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (1, 1);
 INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (3, 3);
 INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (4, 4);
 
-INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (1, 1);
-INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (2, 1);
-INSERT INTO Order__Drink (Order__id, drinks_id) VALUES (1, 2);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-27 10:22:56', FALSE, '2024-06-29 14:22:56', FALSE, 2, 1, NULL, 1);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-28 11:22:56', FALSE, '2024-06-29 13:22:56', FALSE, 1, 1, NULL, 2);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, 2, 3, 1, NULL);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-30 15:22:56', FALSE, '2024-06-29 12:42:56', FALSE, 1, 4, 2, NULL);
+
 
 INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (1, 1);
 INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (1, 2);
 INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (3, 3);
-
-INSERT INTO Order__Food (Order__id, foods_id) VALUES (1, 1);
-INSERT INTO Order__Food (Order__id, foods_id) VALUES (2, 2);
-INSERT INTO Order__Food (Order__id, foods_id) VALUES (3, 3);
 
 INSERT INTO Menu_Food (Menu_id, foods_id) VALUES (1, 1);
 INSERT INTO Menu_Food (Menu_id, foods_id) VALUES (2, 1);

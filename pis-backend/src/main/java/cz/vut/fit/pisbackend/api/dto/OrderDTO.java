@@ -1,5 +1,8 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+import cz.vut.fit.pisbackend.data.Drink;
+import cz.vut.fit.pisbackend.data.Food;
+
 import java.util.Date;
 import java.util.List;
 
@@ -11,8 +14,8 @@ public class OrderDTO {
     private Boolean payed;
     private long toRoom;
     private long toTable;
-    private List<Long> foods;
-    private List<Long> drinks;
+    private long food;
+    private long drink;
 
     public OrderDTO() {}
 
@@ -72,20 +75,19 @@ public class OrderDTO {
         this.toTable = table;
     }
 
-    public List<Long> getFoods() {
-        return this.foods;
+    public long getFood() {
+        return food;
     }
 
-    public void setFoods(List<Long> foods) {
-        this.foods = foods;
+    public void setFood(long foods) {
+        this.food = foods;
     }
 
-    public List<Long> getDrinks() {
-        return this.drinks;
+    public long getDrink() {
+        return drink;
     }
 
-    public void setDrinks(List<Long> drinks) {
-        this.drinks = drinks;
+    public void setDrink(long drink) {
+        this.drink = drink;
     }
-
 }

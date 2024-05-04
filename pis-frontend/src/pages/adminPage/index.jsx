@@ -10,6 +10,7 @@ import {
   Form,
   ButtonGroup,
 } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const RegisteredWindow = (props) => {
   const [user, setUser] = useState({
@@ -149,6 +150,12 @@ const AdminPage = () => {
     password: '',
     role: 'staff',
   });
+  const navigate = useNavigate();
+  const role = localStorage.getItem('role');
+
+  if (role !== 'admin') {
+    navigate('/staff');
+  }
   const [lastID, setLastID] = useState(0);
 
   useEffect(() => {
