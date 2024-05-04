@@ -15,6 +15,7 @@ services:
       - "3306:3306"
     volumes:
       - db_volume:/var/lib/mysql:z  # persistent data
+      - ./config/mariadb/init_scripts/initial-data.sql:/initial-data.sql:z
       # non-persistent data
       # - ./config/mariadb/init_scripts/:/docker-entrypoint-initdb.d/:ro
 
