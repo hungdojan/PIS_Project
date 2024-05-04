@@ -187,6 +187,19 @@ public class OrdersAPI {
         return Response.status(Response.Status.OK).build();
     }
 
+    @POST
+    @Path("delete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteOrders(List<Long> ids)
+    {
+        if (ids.isEmpty()) {
+            Response.status(Response.Status.OK).build();
+        }
+        orderMgr.removeByIds(ids);
+        return Response.status(Response.Status.OK).build();
+    }
+
     @GET
     @Path("payed/{table_id}")
     @Produces({ MediaType.APPLICATION_JSON })
