@@ -1,24 +1,45 @@
 import './FoodOrders.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Row, Col, Button, Form } from 'react-bootstrap'; // Import ListGroup, Button, and Card
+import { Row, Col, Button, Form, Modal, Container } from 'react-bootstrap'; // Import ListGroup, Button, and Card
 
 const FoodOrders = () => {
-  const [orders, setOrders] = useState([]);
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState('');
-  const [timeFilter, setTimeFilter] = useState('');
+  const [orders, setOrders] = useState({});
+  const [filters, setFilters] = useState({
+    status: 'all',
+    type: 'all',
+    table: 'all',
+    date: '',
+    time: '',
+  });
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [tables, setTables] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDelete, setSelectedDelete] = useState();
 
   useEffect(() => {
     fetchFoodOrders(); // Call fetchTables when the component mounts
+    fetchTables();
   }, []); // Empty dependency array to mimic componentDidMount
 
   const fetchFoodOrders = () => {
     axios
       .get('/api/orders')
       .then((resp) => {
-        setOrders(resp.data); // Update the tables state with the fetched data
-        console.log(resp.data);
+        const _orders = {};
+        resp.data.forEach((item) => {
+          _orders[item.id] = {
+            ...item,
+            atTime: item.atTime
+              ? new Date(item.atTime.replace('[UTC]', ''))
+              : undefined,
+            preparedTime: item.preparedTime
+              ? new Date(item.preparedTime.replace('[UTC]', ''))
+              : undefined,
+          };
+        });
+        setOrders(_orders); // Update the tables state with the fetched data
+        applyFilters(Object.values(_orders), filters);
       })
       .catch((err) => {
         console.error('Error fetching food orders:', err);
@@ -26,246 +47,286 @@ const FoodOrders = () => {
       });
   };
 
-  const handleCategoryChange = (e) => {
-    setCategoryFilter(e.target.value);
+  const fetchTables = () => {
+    axios
+      .get('/api/tables')
+      .then((resp) => setTables(['all', ...resp.data.map((table) => table.id)]))
+      .catch((err) => alert(err));
   };
 
-  const handleDateChange = (e) => {
-    setDateFilter(e.target.value);
+  const handleStatusChange = (e) => {
+    const newFilterState = {
+      ...filters,
+      status: e.target.value,
+    };
+    setFilters(newFilterState);
+    applyFilters(Object.values(orders), newFilterState);
   };
 
-  const handleTimeChange = (e) => {
-    setTimeFilter(e.target.value);
+  const handleTypeChange = (e) => {
+    const newFilterState = {
+      ...filters,
+      type: e.target.value,
+    };
+    setFilters(newFilterState);
+    applyFilters(Object.values(orders), newFilterState);
+  };
+
+  const handleTableChange = (e) => {
+    const newFilterState = {
+      ...filters,
+      table: e.target.value,
+    };
+    setFilters(newFilterState);
+    applyFilters(Object.values(orders), newFilterState);
   };
 
   const handlePay = (orderId) => {
-    updateOrderPayment(orderId, 'payed');
+    const order = orders[orderId];
+    const modifiedOrder = {
+      ...order,
+      atTime: order.atTime ? order.atTime.toISOString() : undefined,
+      preparedTime: order.preparedTime
+        ? order.preparedTime.toISOString()
+        : undefined,
+      payed: true,
+      food: order.food ? order.food.id : undefined,
+      drink: order.drink ? order.drink.id : undefined,
+      toTable: order.toTable ? order.toTable.id : undefined,
+      toRoom: order.toRoom ? order.toRoom.id : undefined,
+    };
+
+    axios
+      .put(`/api/orders/${modifiedOrder.id}`, modifiedOrder)
+      .then(() => {
+        fetchFoodOrders();
+      })
+      .catch((err) => alert(err));
   };
 
   const handleServe = (orderId) => {
-    updateOrderServed(orderId, 'served');
-  };
-  const updateOrderPayment = (orderId, status) => {
-    // Find the order to update
-    const orderToUpdate = orders.find((order) => order.id === orderId);
-    const modifiedOrderToUpdate = {
-      ...orderToUpdate, // Keep all existing properties
-      drinks: orderToUpdate.drinks.map((drink) => drink.id), // Map drinks array to contain only IDs
-      foods: orderToUpdate.foods.map((food) => food.id),
-      // toTable: orderToUpdate.drinks.map(toTable => toTable.id),
-      toTable: orderToUpdate.toTable.id,
-      payed: true, // Map drinks array to contain only IDs
-      // Map drinks array to contain only IDs
+    const order = orders[orderId];
+    const modifiedOrder = {
+      ...order,
+      atTime: order.atTime ? order.atTime.toISOString() : undefined,
+      preparedTime: new Date().toISOString(),
+      prepared: true,
+      food: order.food ? order.food.id : undefined,
+      drink: order.drink ? order.drink.id : undefined,
+      toTable: order.toTable ? order.toTable.id : undefined,
+      toRoom: order.toRoom ? order.toRoom.id : undefined,
     };
-    console.log(modifiedOrderToUpdate);
-    // // Update the order status locally
-    // const updatedOrders = orders.map((order) => {
-    //   if (order.id === orderId) {
-    //     return { ...order, [status]: true };
-    //   }
-    //   return order;
-    // });
-    // setOrders(updatedOrders);
-    // console.log(updatedOrders);
-    // Send PUT request to update the order on the server
+
     axios
-      .put(`/api/orders/`, modifiedOrderToUpdate)
-      .then((resp) => {
-        // Handle success if needed
-        console.log(resp);
+      .put(`/api/orders/${modifiedOrder.id}`, modifiedOrder)
+      .then(() => {
+        fetchFoodOrders();
       })
-      .catch((err) => {
-        console.error('Error updating order:', err);
-        // Handle error if needed
-      });
+      .catch((err) => alert(err));
   };
 
-  const updateOrderServed = (orderId, status) => {
-    // Find the order to update
-    const orderToUpdate = orders.find((order) => order.id === orderId);
-    const modifiedOrderToUpdate = {
-      ...orderToUpdate, // Keep all existing properties
-      drinks: orderToUpdate.drinks.map((drink) => drink.id), // Map drinks array to contain only IDs
-      foods: orderToUpdate.foods.map((food) => food.id),
-      // toTable: orderToUpdate.drinks.map(toTable => toTable.id),
-      toTable: orderToUpdate.toTable.id,
-      prepared: true, // Map drinks array to contain only IDs
-      // Map drinks array to contain only IDs
-    };
-    console.log(modifiedOrderToUpdate);
-    // // Update the order status locally
-    // const updatedOrders = orders.map((order) => {
-    //   if (order.id === orderId) {
-    //     return { ...order, [status]: true };
-    //   }
-    //   return order;
-    // });
-    // setOrders(updatedOrders);
-    // console.log(updatedOrders);
-    // Send PUT request to update the order on the server
+  const handleDelete = () => {
     axios
-      .put(`/api/orders/`, modifiedOrderToUpdate)
-      .then((resp) => {
-        // Handle success if needed
-        console.log(resp);
+      .delete(`/api/orders/${selectedDelete.id}`)
+      .then(() => {
+        setShowModal(false);
+        fetchFoodOrders();
       })
-      .catch((err) => {
-        console.error('Error updating order:', err);
-        // Handle error if needed
-      });
+      .catch((err) => alert(err));
   };
 
-  const filteredOrders = orders.filter((order) => {
-    return (
-      (categoryFilter === '' ||
-        order.status.toLowerCase() === categoryFilter.toLowerCase()) &&
-      (dateFilter === '' || order.orderDate === dateFilter) &&
-      (timeFilter === '' || order.orderTime === timeFilter)
-    );
-  });
+  const applyFilters = (_data, _filters) => {
+    const _filteredItems = _data
+      // status
+      .filter((item) => {
+        if (_filters.status === 'pending' && !item.payed && !item.prepared) {
+          return true;
+        } else if (
+          _filters.status === 'prepared' &&
+          item.prepared &&
+          !item.payed
+        ) {
+          return true;
+        } else if (_filters.status === 'paid' && item.payed) {
+          return true;
+        } else if (_filters.status === 'all') {
+          return true;
+        }
+        return false;
+      })
+      // meal type
+      .filter((item) => {
+        return (
+          (_filters.type === 'food' && item.food) ||
+          (_filters.type === 'drink' && item.drink) ||
+          _filters.type === 'all'
+        );
+      })
+      // table
+      .filter((item) => {
+        return (
+          _filters.table === 'all' ||
+          parseInt(_filters.table) === item.toTable.id
+        );
+      });
+    setFilteredOrders(_filteredItems);
+  };
+
+  const renderOrderCard = () => {
+    return filteredOrders.map((order) => (
+      <div key={order.id} className="mb-3 border rounded p-3">
+        <Row>
+          <Col>
+            <strong>Order ID:</strong> {order.id}
+          </Col>
+          <Col>
+            <strong>Table ID:</strong> {order.toTable.id}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <strong>Order Time:</strong>{' '}
+            {order.atTime ? order.atTime.toUTCString() : 'Not ordered yet'}
+          </Col>
+          <Col>
+            <strong>Prepared Time:</strong>{' '}
+            {order.preparedTime
+              ? order.preparedTime.toUTCString()
+              : 'Not prepared yet'}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <strong>Prepared:</strong> {order.prepared ? 'Yes' : 'No'}
+          </Col>
+          <Col>
+            <strong>Payed:</strong> {order.payed ? 'Yes' : 'No'}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button
+              variant="info"
+              onClick={() => handleServe(order.id)}
+              disabled={order.prepared}
+            >
+              Served
+            </Button>{' '}
+            <Button
+              variant="success"
+              onClick={() => handlePay(order.id)}
+              disabled={order.payed}
+            >
+              Pay
+            </Button>{' '}
+            <Button
+              variant="danger"
+              onClick={() => {
+                setSelectedDelete(order);
+                setShowModal(true);
+              }}
+            >
+              Delete
+            </Button>
+          </Col>
+        </Row>
+      </div>
+    ));
+  };
 
   return (
     <>
       <Row className="mb-3">
         <Col md={2}>
-          <Form.Select value={categoryFilter} onChange={handleCategoryChange}>
-            <option value="">Filter by Category</option>
-            <option value="false">Pending</option>
-            <option value="true">Prepared</option>
+          <Form.Label>Status: </Form.Label>
+          <Form.Select value={filters.status} onChange={handleStatusChange}>
+            <option value="all">All</option>
+            <option value="pending">Pending</option>
+            <option value="prepared">Prepared</option>
+            <option value="paid">Paid</option>
           </Form.Select>
         </Col>
         <Col md={2}>
-          <Form.Control
-            type="date"
-            value={dateFilter}
-            onChange={handleDateChange}
-            placeholder="Filter by Date"
-          />
+          <Form.Label>Type of meal: </Form.Label>
+          <Form.Select value={filters.type} onChange={handleTypeChange}>
+            <option value="all">All</option>
+            <option value="food">Foods</option>
+            <option value="drink">Drinks</option>
+          </Form.Select>
         </Col>
         <Col md={2}>
-          <Form.Control
-            type="time"
-            value={timeFilter}
-            onChange={handleTimeChange}
-            placeholder="Filter by Time"
-          />
+          <Form.Label>Table: </Form.Label>
+          <Form.Select value={filters.table} onChange={handleTableChange}>
+            {tables.map((tableOpt) => {
+              return (
+                <option value={tableOpt}>
+                  {tableOpt === 'all' ? 'All' : tableOpt}
+                </option>
+              );
+            })}
+          </Form.Select>
         </Col>
       </Row>
       <Row>
         <Col>
-          <div className="d-flex flex-column">
-            {filteredOrders.map((order) => (
-              <div key={order.id} className="mb-3 border rounded p-3">
-                <Row>
-                  <Col>
-                    <strong>Order ID:</strong> {order.id}
-                  </Col>
-                  <Col>
-                    <strong>Table ID:</strong> {order.toTable.id}
-                  </Col>
-                  <Col>
-                    <strong>Order Time:</strong> {order.atTime}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <strong>Prepared:</strong> {order.prepared ? 'Yes' : 'No'}
-                  </Col>
-                  <Col>
-                    <strong>Payed:</strong> {order.payed ? 'Yes' : 'No'}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Button
-                      variant="info"
-                      onClick={() => handleServe(order.id)}
-                    >
-                      Served
-                    </Button>{' '}
-                    <Button variant="primary">Edit</Button>{' '}
-                    <Button
-                      variant="success"
-                      onClick={() => handlePay(order.id)}
-                    >
-                      Pay
-                    </Button>
-                  </Col>
-                </Row>
-              </div>
-            ))}
-          </div>
+          <div className="d-flex flex-column">{renderOrderCard()}</div>
         </Col>
       </Row>
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete an order</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <>
+            <div>Do you really want to delete this order?</div>
+            {selectedDelete && (
+              <Container className="mt-3">
+                <Row>
+                  <Col>
+                    <strong>Order ID:</strong> {selectedDelete.id}
+                  </Col>
+                  <Col>
+                    <strong>Table ID:</strong> {selectedDelete.toTable.id}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <strong>Order Time:</strong>{' '}
+                    {selectedDelete.atTime
+                      ? selectedDelete.atTime.toUTCString()
+                      : 'Not ordered yet'}
+                  </Col>
+                  <Col>
+                    <strong>Prepared Time:</strong>{' '}
+                    {selectedDelete.preparedTime
+                      ? selectedDelete.preparedTime.toUTCString()
+                      : 'Not prepared yet'}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <strong>Prepared:</strong>{' '}
+                    {selectedDelete.prepared ? 'Yes' : 'No'}
+                  </Col>
+                  <Col>
+                    <strong>Payed:</strong>{' '}
+                    {selectedDelete.payed ? 'Yes' : 'No'}
+                  </Col>
+                </Row>
+              </Container>
+            )}
+          </>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            No
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
-
-    // {/* <>
-    //   <Row className="mb-3">
-    //     <Col md={2}>
-    //       <Form.Select value={categoryFilter} onChange={handleCategoryChange}>
-    //         <option value="">Filter by Category</option>
-    //         <option value="pending">Pending</option>
-    //         <option value="served">Served</option>
-    //         <option value="paid">Paid</option>
-    //       </Form.Select>
-    //     </Col>
-    //     <Col md={2}>
-    //       <Form.Control
-    //         type="date"
-    //         value={dateFilter}
-    //         onChange={handleDateChange}
-    //         placeholder="Filter by Date"
-    //       />
-    //     </Col>
-    //     <Col md={2}>
-    //       <Form.Control
-    //         type="time"
-    //         value={timeFilter}
-    //         onChange={handleTimeChange}
-    //         placeholder="Filter by Time"
-    //       />
-    //     </Col>
-    //   </Row>
-    //   <Row>
-    //     <Col>
-    //       <div className="d-flex flex-column">
-    //         {filteredOrders.map((order) => (
-    //           <div key={order.orderId} className="mb-3 border rounded p-3">
-    //             <Row>
-    //               <Col>
-    //                 <strong>Order ID:</strong> {order.orderId}
-    //               </Col>
-    //               <Col>
-    //                 <strong>Table Name:</strong> {order.tableName}
-    //               </Col>
-    //               <Col>
-    //                 <strong>Order Date:</strong> {order.orderDate}
-    //               </Col>
-    //             </Row>
-    //             <Row>
-    //               <Col>
-    //                 <strong>Order Time:</strong> {order.orderTime}
-    //               </Col>
-    //               <Col>
-    //                 <strong>Status:</strong> {order.status}
-    //               </Col>
-    //               <Col>
-    //                 <strong>Total Summary:</strong> {order.totalSummary}
-    //               </Col>
-    //             </Row>
-    //             <Row>
-    //               <Col>
-    //                 <Button variant="danger">Delete</Button>{' '}
-    //                 <Button variant="primary">Edit</Button>{' '}
-    //                 <Button variant="success">Pay</Button>
-    //               </Col>
-    //             </Row>
-    //           </div>
-    //         ))}
-    //       </div>
-    //     </Col>
-    //   </Row>
-    // </> */}
   );
 };
 
