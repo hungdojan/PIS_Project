@@ -7,12 +7,7 @@ import cz.vut.fit.pisbackend.api.dto.ReservationResponseDTO;
 import cz.vut.fit.pisbackend.data.Room;
 import cz.vut.fit.pisbackend.data.Table;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -59,7 +54,11 @@ public class TablesAPI {
     @GET
     @Path("{id}/orders")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<OrderResponseDTO> getOrders(@PathParam("id") long tableId) {
+    public List<OrderResponseDTO> getOrders(@PathParam("id") long tableId, @QueryParam("paidFilter") boolean paidFilter) {
+        // display only unpaid orders
+        if (paidFilter) {
+            return orderMgr.findByTableIdAndPaidState(tableId, false).stream().map(OrderResponseDTO::new).toList();
+        }
         return orderMgr.findByTableId(tableId).stream().map(t -> new OrderResponseDTO(t)).toList();
     }
 

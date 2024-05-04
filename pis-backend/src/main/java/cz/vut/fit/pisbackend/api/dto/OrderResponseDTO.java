@@ -1,6 +1,9 @@
 package cz.vut.fit.pisbackend.api.dto;
 
+import cz.vut.fit.pisbackend.data.Drink;
+import cz.vut.fit.pisbackend.data.Food;
 import cz.vut.fit.pisbackend.data.Order;
+import cz.vut.fit.pisbackend.data.Room;
 
 import java.util.Collection;
 import java.util.Date;
@@ -12,10 +15,10 @@ public class OrderResponseDTO {
     private Boolean prepared;
     private Date preparedTime;
     private Boolean payed;
-    // TODO private Room toRoom;
+    private RoomDTO toRoom;
     private TableDTO toTable;
-    private Collection<FoodDTO> foods;
-    private Collection<DrinkDTO> drinks;
+    private FoodDTO food;
+    private DrinkDTO drink;
 
     public OrderResponseDTO() {}
 
@@ -25,15 +28,10 @@ public class OrderResponseDTO {
         this.prepared = order.getPrepared();
         this.preparedTime = order.getPreparedTime();
         this.payed = order.getPayed();
-        this.foods = order.getFoods()
-                            .stream()
-                            .map(FoodDTO::new)
-                            .collect(Collectors.toList());
-        this.drinks = order.getDrinks()
-                            .stream()
-                            .map(DrinkDTO::new)
-                            .collect(Collectors.toList());
-        this.toTable = new TableDTO(order.getToTable());
+        this.food = order.getFood() != null ? new FoodDTO(order.getFood()):null;
+        this.drink = order.getDrink() != null ? new DrinkDTO(order.getDrink()):null;
+        this.toTable = order.getToTable() != null ? new TableDTO(order.getToTable()):null;
+        this.toRoom = order.getToRoom() != null ? new RoomDTO(order.getToRoom()):null;
     }
 
     public long getId() {
@@ -84,20 +82,27 @@ public class OrderResponseDTO {
         this.toTable = table;
     }
 
-    public Collection<FoodDTO> getFoods() {
-        return foods;
+    public RoomDTO getToRoom() {
+        return toRoom;
     }
 
-    public void setFoods(Collection<FoodDTO> foods) {
-        this.foods = foods;
+    public void setToRoom(RoomDTO toRoom) {
+        this.toRoom = toRoom;
     }
 
-    public Collection<DrinkDTO> getDrinks() {
-        return drinks;
+    public FoodDTO getFood() {
+        return food;
     }
 
-    public void setDrinks(Collection<DrinkDTO> drinks) {
-        this.drinks = drinks;
+    public void setFood(FoodDTO food) {
+        this.food = food;
     }
 
+    public DrinkDTO getDrink() {
+        return drink;
+    }
+
+    public void setDrink(DrinkDTO drink) {
+        this.drink = drink;
+    }
 }

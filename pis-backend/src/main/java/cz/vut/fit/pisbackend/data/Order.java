@@ -27,26 +27,12 @@ public class Order {
     private Room toRoom;
     @ManyToOne
     private cz.vut.fit.pisbackend.data.Table toTable;
-    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name="Order__Food",
-        joinColumns=
-        @JoinColumn(name="Order__id", referencedColumnName="id"),
-        inverseJoinColumns=
-        @JoinColumn(name="foods_id", referencedColumnName="id")
-    )
-    private Collection<Food> foods;
-    @ManyToMany(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
-    @JoinTable(name="Order__Drink",
-        joinColumns=
-        @JoinColumn(name="Order__id", referencedColumnName="id"),
-        inverseJoinColumns=
-        @JoinColumn(name="drinks_id", referencedColumnName="id")
-    )
-    private Collection<Drink> drinks;
+    @ManyToOne
+    private Food food;
+    @ManyToOne
+    private Drink drink;
 
     public Order() {
-        foods = new ArrayList<>();
-        drinks = new ArrayList<>();
     }
 
     public long getId() {
@@ -105,19 +91,19 @@ public class Order {
         this.toTable = toTable;
     }
 
-    public Collection<Food> getFoods() {
-        return foods;
+    public Drink getDrink() {
+        return drink;
     }
 
-    public void setFoods(Collection<Food> foods) {
-        this.foods = foods;
+    public void setDrink(Drink drink) {
+        this.drink = drink;
     }
 
-    public Collection<Drink> getDrinks() {
-        return drinks;
+    public Food getFood() {
+        return food;
     }
 
-    public void setDrinks(Collection<Drink> drinks) {
-        this.drinks = drinks;
+    public void setFood(Food food) {
+        this.food = food;
     }
 }

@@ -20,7 +20,7 @@ public class Drink {
     private float price;
     private String type;
     private int volume;
-    @ManyToMany(mappedBy="drinks")
+    @OneToMany(mappedBy = "drink")
     private Collection<Order> orders;
     @ManyToMany(mappedBy="drinks")
     private Collection<Menu> menus;
