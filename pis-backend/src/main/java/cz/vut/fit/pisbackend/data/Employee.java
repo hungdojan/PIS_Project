@@ -66,7 +66,10 @@ public class Employee {
         this.reservations = reservations;
     }
 
-    public Boolean createRequestValidation() {
+    public Boolean createRequestValidation(boolean ignorePass) {
+        if (ignorePass) {
+            return Stream.of(login, role).allMatch(Objects::nonNull);
+        }
         return Stream.of(login, password, role).allMatch(Objects::nonNull);
     }
 }
