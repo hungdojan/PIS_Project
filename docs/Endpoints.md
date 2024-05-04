@@ -82,6 +82,11 @@
     - **Parameters**: `id` (Order ID)
     - **Output**: Confirmation (e.g., HTTP 200 status)
 
+- **GET /orders/{id}**
+    - **Name**: Retrieve orders for a table
+    - **Parameters**: `paid` to filter out paid/yet to paid orders for a table
+    - **Output**: List of `OrderResponseDTO`
+
 # Rooms
 - **GET /rooms**
     - **Name**: Retrieve all rooms
@@ -138,7 +143,7 @@
 
 - **GET /tables/{id}/orders**
     - **Name**: Retrieve all orders for a specific table
-    - **Parameters**: `table_id` (Table ID)
+    - **Parameters**: `table_id` (Table ID), `paidFilter` - returns nonPaid if set to true
     - **Output**: List of `OrderResponseDTO`
 
 # Food
