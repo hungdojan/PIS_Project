@@ -3,81 +3,87 @@ import { Form, Button, Container, Col, Row } from 'react-bootstrap';
 
 const RoomReservationForm = () => {
   // State to manage form inputs
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    checkInDate: '',
-    checkOutDate: '',
-    count: '',
-    phone: '',
-  });
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [date, setDate] = useState('');
+  const [timeFrom, setTimeFrom] = useState('');
+  const [timeTo, setTimeTo] = useState('');
+  const [guestsCount, setNumberOfGuests] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [reservationStatus, setReservationStatus] = useState('');
+
+  // const [selectedTables, setSelectedTables] = useState([]);
+  // const [selectedRoom, setSelectedRoom] = useState(null);
 
   // Handler for form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const checkInDate = formData.checkInDate
-      ? new Date(formData.checkInDate)
-      : null;
-    const checkOutDate = formData.checkOutDate
-      ? new Date(formData.checkOutDate)
-      : null;
+    const checkInDate =
+      date && timeFrom ? new Date(`${date}T${timeFrom}`) : null;
+    const checkOutDate = date && timeTo ? new Date(`${date}T${timeTo}`) : null;
 
     if (!checkInDate || !checkOutDate) {
+      console.log(checkInDate);
+      console.log(checkOutDate);
       console.error('Invalid date format');
       return;
     }
 
     try {
-      const response = await fetch('/api/room-reservation', {
+      const response = await fetch('/api/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
+          name: name,
+          email: email,
           at: checkInDate,
           until: checkOutDate,
-          count: parseInt(formData.count),
-          phone: formData.phone,
-          createdByEmployeeId: 123, // Example employee ID
+          count: parseInt(guestsCount),
+          phone: phoneNumber,
+          createdByEmployeeId: 1, // Example employee ID
           tableIds: [],
-          roomIds: [],
+          roomIds: [1],
         }),
       });
       if (response.ok) {
         // Success
         console.log('Reservation successful');
+        setReservationStatus('Reservation successful');
         // Reset form fields after submission
-        setFormData({
-          name: '',
-          email: '',
-          checkInDate: '',
-          checkOutDate: '',
-          count: '',
-          phone: '',
-        });
+        setName('');
+        setEmail('');
+        setDate('');
+        setTimeFrom('');
+        setTimeTo('');
+        setNumberOfGuests('');
+        setPhoneNumber('');
       } else {
         // Error handling
         console.error('Reservation failed');
+        setReservationStatus('Reservation failed');
       }
     } catch (error) {
       console.error('Error:', error);
+      setReservationStatus('Error occurred while making reservation');
     }
   };
 
-  // Handler for form input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handlePhoneNumberChange = (e) => {
+    let formattedValue = e.target.value;
+    // If the input is for phone number, format it with spaces after every three characters
+    if (e.target.name === 'phone') {
+      formattedValue = e.target.value
+        .replace(/\D/g, '')
+        .replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    }
+    e.target.value = formattedValue;
+    setPhoneNumber(formattedValue);
   };
 
   return (
     <Container>
-      <h2>Room Registration Form</h2>
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col>
@@ -87,8 +93,8 @@ const RoomReservationForm = () => {
                 type="text"
                 placeholder="Enter your name"
                 name="name"
-                value={formData.name}
-                onChange={handleChange}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </Form.Group>
@@ -100,8 +106,8 @@ const RoomReservationForm = () => {
                 type="email"
                 placeholder="Enter your email"
                 name="email"
-                value={formData.email}
-                onChange={handleChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </Form.Group>
@@ -113,8 +119,8 @@ const RoomReservationForm = () => {
                 type="tel"
                 placeholder="Enter your phone number"
                 name="phone"
-                value={formData.phone}
-                onChange={handleChange}
+                value={phoneNumber}
+                onChange={handlePhoneNumberChange}
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" // Example phone number pattern
                 required
               />
@@ -130,32 +136,32 @@ const RoomReservationForm = () => {
               <Form.Control
                 type="date"
                 name="checkInDate"
-                value={formData.checkInDate}
-                onChange={handleChange}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
                 required
               />
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="formCheckInTimeFrom">
-              <Form.Label>Check-in Time From:</Form.Label>
+            <Form.Group controlId="formTimeFrom">
+              <Form.Label>Time From:</Form.Label>
               <Form.Control
                 type="time"
-                name="checkInTimeFrom"
-                value={formData.checkInTimeFrom}
-                onChange={handleChange}
+                name="TimeFrom"
+                value={timeFrom}
+                onChange={(e) => setTimeFrom(e.target.value)}
                 required
               />
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group controlId="formCheckInTimeTo">
-              <Form.Label>Check-in Time To:</Form.Label>
+            <Form.Group controlId="formTimeTo">
+              <Form.Label>Time To:</Form.Label>
               <Form.Control
                 type="time"
-                name="checkInTimeTo"
-                value={formData.checkInTimeTo}
-                onChange={handleChange}
+                name="TimeTo"
+                value={timeTo}
+                onChange={(e) => setTimeTo(e.target.value)}
                 required
               />
             </Form.Group>
@@ -170,8 +176,8 @@ const RoomReservationForm = () => {
                 type="number"
                 placeholder="Enter number of guests"
                 name="count"
-                value={formData.count}
-                onChange={handleChange}
+                value={guestsCount}
+                onChange={(e) => setNumberOfGuests(e.target.value)}
                 required
               />
             </Form.Group>
@@ -181,6 +187,17 @@ const RoomReservationForm = () => {
         <Button variant="primary" type="submit">
           Submit
         </Button>
+        {reservationStatus && (
+          <p
+            className={
+              reservationStatus === 'Reservation successful'
+                ? 'text-success'
+                : 'text-danger'
+            }
+          >
+            {reservationStatus}
+          </p>
+        )}
       </Form>
     </Container>
   );

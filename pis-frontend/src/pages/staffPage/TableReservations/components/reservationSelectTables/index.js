@@ -38,6 +38,9 @@ function SelectRooms() {
   return (
     <>
       <Row>
+        <h2>Room Registration</h2>
+      </Row>
+      <Row>
         <Col className="d-flex align-items-center">
           {/* Dropdown */}
           <Dropdown>
@@ -70,18 +73,15 @@ function SelectRooms() {
         </Row>
       </Row>
       <Row>
-       <Col>
-       <Row>
-          <Col className="bottom-row">All tables count</Col>
-          <Col className="bottom-row">Total capacity</Col>
-        </Row>
-        <Row>
-          <DisplayTables />
-        </Row>
+        <Col>
+          <Row>
+            <h2>Table Reservation</h2>
+            <DisplayTables />
+          </Row>
         </Col>
         <Col>
           {/* Table reservation form */}
-          <ReservationForm/>
+          <ReservationForm />
         </Col>
       </Row>
     </>
@@ -116,7 +116,6 @@ const DisplayTables = () => {
 
   return (
     <Container>
-      <h2>Table Layout</h2>
       <Row>
         {tables.map((table) => (
           <Col key={table.id}>
@@ -124,7 +123,8 @@ const DisplayTables = () => {
               style={{
                 width: '100px',
                 height: '100px',
-                backgroundColor: selectedTableId === table.id ? 'lightgreen' : 'lightblue',
+                backgroundColor:
+                  selectedTableId === table.id ? 'lightgreen' : 'lightblue',
                 border: '1px solid black',
                 textAlign: 'center',
                 lineHeight: '100px', // Center content vertically

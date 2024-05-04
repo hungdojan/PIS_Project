@@ -188,15 +188,20 @@ const ReservationForm = () => {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
   const [guestsCount, setNumberOfGuests] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [selectedTables, setSelectedTables] = useState([]);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const handleSubmit = (event) => {
+    
+  
+  
     event.preventDefault();
     // Here you can handle the form submission, e.g., send data to a backend
     console.log('Name:', name);
     console.log('Email:', email);
     console.log('Date:', date);
     console.log('Time:', time);
+    console.log('Number:', phoneNumber);
     console.log('Selected Tables:', selectedTables);
     console.log('Selected Room:', selectedRoom);
 
@@ -206,6 +211,7 @@ const ReservationForm = () => {
     setDate('');
     setTime('');
     setNumberOfGuests('');
+    setPhoneNumber('');
     setSelectedTables([]);
     setSelectedRoom(null);
   };
@@ -278,70 +284,4 @@ const ReservationForm = () => {
   );
 };
 
-const ReservationForm2 = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Here you can handle the form submission, e.g., send data to a backend
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Date:', date);
-    console.log('Time:', time);
-    // Reset form fields
-    setName('');
-    setEmail('');
-    setDate('');
-    setTime('');
-  };
-
-  return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formName">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type="email"
-          placeholder="Enter email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formDate">
-        <Form.Label>Date</Form.Label>
-        <Form.Control
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </Form.Group>
-
-      <Form.Group controlId="formTime">
-        <Form.Label>Time</Form.Label>
-        <Form.Control
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-        />
-      </Form.Group>
-
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
-  );
-};
 export { ReservationEditPanel, ReservationForm };

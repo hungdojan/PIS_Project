@@ -1,7 +1,4 @@
 import { Row, Col } from 'react-bootstrap'; // Import `ListGroup, Button, and Card
-import {
-  ReservationForm,
-} from './components/tableReservationForm';
 import {SelectRooms} from './components/reservationSelectTables';
 
 function CreateTableReservations() {
