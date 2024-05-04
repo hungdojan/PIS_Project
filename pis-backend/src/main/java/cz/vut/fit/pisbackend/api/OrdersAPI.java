@@ -95,9 +95,17 @@ public class OrdersAPI {
         }
         Order o = new Order();
         o.setAtTime(order.getAtTime());
-        o.setPrepared(order.getPrepared());
+        if (order.getPrepared() == null) {
+            o.setPrepared(false);
+        } else {
+            o.setPrepared(order.getPrepared());
+        }
+        if (order.getPayed() == null) {
+            o.setPayed(false);
+        } else {
+            o.setPayed(order.getPayed());
+        }
         o.setPreparedTime(order.getPreparedTime());
-        o.setPayed(order.getPayed());
         o.setToTable(table);
         o.setToRoom(room);
         o.setDrink(drink);
