@@ -44,8 +44,8 @@
     - `prepared`: `Boolean`
     - `preparedTime`: `Date`
     - `payed`: `Boolean`
-    - `foods`: `List<Long>`
-    - `drinks`: `List<Long>`
+    - `food`: `Long`
+    - `drink`: `Long`
     - `toRoom`: `Long`
     - `toTable`: `Long`
 
