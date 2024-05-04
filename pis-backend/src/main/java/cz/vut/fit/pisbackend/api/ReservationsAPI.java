@@ -99,7 +99,7 @@ public class ReservationsAPI {
         return Response.status(Response.Status.OK).build();
     }
 
-    @GET
+    @POST
     @Path("/reservationstime")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
