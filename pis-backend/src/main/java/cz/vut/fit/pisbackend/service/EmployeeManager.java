@@ -28,8 +28,8 @@ public class EmployeeManager {
     }
 
     @Transactional
-    public void update(Employee p) {
-        em.merge(p);
+    public Employee update(Employee p) {
+        return em.merge(p);
     }
 
     public Employee find(long id) {

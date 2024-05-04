@@ -19,10 +19,10 @@ public class Employee {
 
     private String role;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy", cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Collection<Expenses>  expenses;
 
-    @OneToMany(mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy", cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Collection<Reservation>  reservations;
 
     public Employee(){

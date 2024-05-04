@@ -7,6 +7,8 @@ import cz.vut.fit.pisbackend.api.dto.EmployeeDTO;
 import cz.vut.fit.pisbackend.api.dto.JwtDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Employee;
+import cz.vut.fit.pisbackend.data.Expenses;
+import cz.vut.fit.pisbackend.data.Reservation;
 import cz.vut.fit.pisbackend.data.EmployeeManager;
 import cz.vut.fit.pisbackend.service.JwtTokenUtils;
 import jakarta.inject.Inject;
@@ -117,16 +119,24 @@ public class EmployeeAPI {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response delete(@PathParam("id") long id) throws ParseException {
-        String auth = httpHeaders.getHeaderString("Authorization");
-        Response response = JwtTokenUtils.authValidation(auth, roles);
-        if (response != null) {
-            return response;
-        }
+        //String auth = httpHeaders.getHeaderString("Authorization");
+        //Response response = JwtTokenUtils.authValidation(auth, roles);
+        //if (response != null) {
+        //    return response;
+        //}
 
         Employee employee = employeeManager.find(id);
         if (employee == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User not found!")).build();
         }
+
+        for (Reservation reservation : employee.getReservations()) {
+            reservation.setCreatedBy(null);
+        }
+        for (Expenses expense : employee.getExpenses()) {
+            expense.setCreatedBy(null);
+        }
+
         employeeManager.remove(employee);
         return Response.status(Response.Status.OK).entity(new ResponseMessageDTO("User `" + id + "` deleted!")).build();
     }
