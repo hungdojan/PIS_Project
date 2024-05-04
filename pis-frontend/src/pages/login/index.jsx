@@ -40,9 +40,22 @@ const LoginPage = () => {
         password: password,
       });
       setToken(response.data.token);
+      const role = response.data.role;
       localStorage.setItem('user', response.data.user);
       localStorage.setItem('role', response.data.role);
-      navigate('/staff', { replace: true });
+      switch (role) {
+        case 'admin':
+          navigate('/staff/admin', { replace: true });
+          break;
+        case 'manager':
+          navigate('/staff/manager', { replace: true });
+          break;
+        case 'staff':
+          navigate('/staff', { replace: true });
+          break;
+        default:
+          navigate('/', { replace: true });
+      }
     } catch (err) {
       setError(true);
     }

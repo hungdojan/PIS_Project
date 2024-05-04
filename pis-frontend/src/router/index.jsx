@@ -2,11 +2,7 @@
   This original source of this code is here:
   https://dev.to/sanjayttg/jwt-authentication-in-react-with-react-router-1d03
  */
-import {
-  Navigate,
-  RouterProvider,
-  createBrowserRouter,
-} from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useAuth } from './AuthProvider';
 import { ProtectedRoute } from './ProtectedRoute';
 import {
@@ -17,7 +13,7 @@ import {
   HomePage,
 } from '../pages/publicPage';
 import StaffPage from '../pages/staffPage';
-import ManagerPage from '../pages/managerPage';
+import ManagerDashboard from '../pages/managerPage';
 import AdminPage from '../pages/adminPage';
 import OrdersPage from '../pages/ordersPage';
 import LoginPage from '../pages/login';
@@ -62,7 +58,7 @@ const CustomRouter = () => {
         },
         {
           path: 'manager',
-          element: <ManagerPage />,
+          element: <ManagerDashboard />,
         },
         {
           path: 'admin',
@@ -76,11 +72,7 @@ const CustomRouter = () => {
     },
     {
       path: '/logout',
-      element: (
-        <ProtectedRoute>
-          <Logout />,
-        </ProtectedRoute>
-      ),
+      element: <Logout />,
     },
   ];
 
