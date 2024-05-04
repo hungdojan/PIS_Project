@@ -154,16 +154,13 @@ const OrdersPageView = () => {
         payed: true,
       };
     });
-    console.log(selectedItems);
 
-    // TODO: a list endpoint
-    selectedItems.forEach((item) => {
-      axios
-        .put('/api/orders', item)
-        .then((resp) => {})
-        .catch((err) => console.debug(err));
-    });
-    handleTableSelect(selectedTable);
+    axios
+      .put('/api/orders', selectedItems)
+      .then(() => {
+        handleTableSelect(selectedTable);
+      })
+      .catch((err) => alert(err));
   };
 
   const updateSumOfOrder = (orders) => {
@@ -180,7 +177,6 @@ const OrdersPageView = () => {
     const prices = Object.values(selectedItems).map((item) => {
       return item.food ? item.food.price : item.drink.price;
     });
-    console.log(prices);
 
     const totalPrice = (
       Math.round(prices.reduce((a, b) => a + b, 0) * 100) / 100
@@ -203,16 +199,12 @@ const OrdersPageView = () => {
   // Remove food from the list
   const handleRemove = () => {
     const selectedItems = Object.values(checkedItems).map((item) => item.id);
-    console.log(selectedItems);
-
-    // TODO: a list endpoint
-    selectedItems.forEach((id) => {
-      axios
-        .delete(`/api/orders/${id}`)
-        .then((resp) => {})
-        .catch((err) => console.debug(err));
-    });
-    handleTableSelect(selectedTable);
+    axios
+      .post('/api/orders/delete', selectedItems)
+      .then((resp) => {
+        handleTableSelect(selectedTable);
+      })
+      .catch((err) => console.debug(err));
   };
 
   const handleRenderOrderList = () => {
