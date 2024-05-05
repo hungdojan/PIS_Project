@@ -1,0 +1,8 @@
+.food-values {
+    cursor: pointer;
+    background-color: white;
+}
+
+.food-values.active {
+    background-color: #77dd77;
+}
