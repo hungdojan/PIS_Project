@@ -21,17 +21,38 @@ const RegisteredWindow = (props) => {
     password: '',
     role: 'staff',
   });
+  const [valid, setValid] = useState(false);
 
   useEffect(() => {
     setUser(props.selectedUser);
+    setValid(false);
   }, [props]);
 
   const handleClose = (event) => {
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
+    // close button
+    if (event.target.id === 'close') {
+      setUser({
+        id: 0,
+        login: '',
+        password: '',
+        role: 'staff',
+      });
+      props.setShow(false);
       return;
     }
-    props.onSave(event.target.id === 'save', user, user.id);
+
+    // form validation
+    const form =
+      event.currentTarget.parentElement.parentElement.children[1].children[0];
+    setValid(true);
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+      return;
+    }
+
+    // create/update action
+    props.onSave(user, user.id);
     setUser({
       id: 0,
       login: '',
@@ -74,7 +95,7 @@ const RegisteredWindow = (props) => {
           <Modal.Title>User info</Modal.Title>
         </Modal.Header>
         <Modal.Body key={'modal-body-' + user.id}>
-          <Form autoComplete="off">
+          <Form autoComplete="off" noValidate validated={valid}>
             <Form.Group className="mb-3" controlId="username-input">
               <Form.Label>Username</Form.Label>
               <Form.Control
@@ -82,12 +103,15 @@ const RegisteredWindow = (props) => {
                 placeholder="Username"
                 required
                 onChange={handleUsernameChange}
-                pattern="^[a-zA-Z][\w]+$"
+                pattern="^[a-zA-Z][\w]{4,}$"
                 value={user.login}
                 key={user.id + '-login'}
                 disabled={user.id !== -1}
               />
-              <Form.Control.Feedback type="invalid"></Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Username must be at least 5 characters long and must not contain
+                any special characters (apart from underscore symbol).
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="role-select">
               <Form.Label>Role</Form.Label>
@@ -101,19 +125,23 @@ const RegisteredWindow = (props) => {
             <Form.Group className="mb-3" controlId="password-input">
               <Form.Label>New password</Form.Label>
               <Form.Control
-                required
+                required={user.id === -1}
                 type="password"
                 placeholder="Password"
                 onChange={handlePasswordChange}
                 pattern={
                   user.id === -1
-                    ? '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$'
-                    : '^(?:|(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,})$'
+                    ? '^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&]).{8,}$'
+                    : '^(?:|(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*#?&]).{8,})$'
                 }
                 value={user.password}
                 key={user.id + '-password'}
               />
-              <Form.Control.Feedback type="valid"></Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                Password must contain at least one upper case, one lower case,
+                one special character, one digit and be at least 8 characters
+                long.
+              </Form.Control.Feedback>
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -220,10 +248,7 @@ const AdminPage = () => {
     setShow(true);
   };
 
-  const handleOnSave = (save, user, userId) => {
-    if (!save) {
-      return;
-    }
+  const handleOnSave = (user, userId) => {
     if (userId === -1) {
       addNewUser(user);
     } else {
