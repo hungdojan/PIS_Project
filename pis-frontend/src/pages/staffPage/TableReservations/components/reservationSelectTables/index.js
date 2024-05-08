@@ -7,6 +7,7 @@ import { ReservationForm } from '../tableReservationForm';
 function SelectRooms() {
   // =========== CLICK EVENTS ===========
   const [selectedRoomDescription, setSelectedRoomDescription] = useState('');
+  const [selectedTableId, setSelectedTableId] = useState(null);
 
   const handleRoomSelect = (room) => {
     setSelectedRoomDescription(room.description);
@@ -28,6 +29,7 @@ function SelectRooms() {
         setRooms(response.data);
         if (response.data.length > 0) {
           setSelectedRoomDescription(response.data[0].description); // Initialize with the first room description
+          setSelectedRoom(response.data[0]); // Initialize with the first room
         }
       })
       .catch((error) => {
@@ -37,6 +39,9 @@ function SelectRooms() {
   // 2. Get list of  tables
   return (
     <>
+      <Row>
+        <h2>Room Registration</h2>
+      </Row>
       <Row>
         <Col className="d-flex align-items-center">
           {/* Dropdown */}
@@ -66,32 +71,28 @@ function SelectRooms() {
 
         <Row>
           {/* Room reservation form */}
-          <RoomReservationForm />
+          <RoomReservationForm selectedRoom={selectedRoom} />
         </Row>
       </Row>
       <Row>
-       <Col>
-       <Row>
-          <Col className="bottom-row">All tables count</Col>
-          <Col className="bottom-row">Total capacity</Col>
-        </Row>
-        <Row>
-          <DisplayTables />
-        </Row>
+        <Col>
+          <Row>
+            <h2>Table Reservation</h2>
+            <DisplayTables setSelectedTableId={setSelectedTableId} selectedTableId={selectedTableId}/>
+          </Row>
         </Col>
         <Col>
           {/* Table reservation form */}
-          <ReservationForm/>
+          <ReservationForm selectedTableId={selectedTableId}/>
         </Col>
       </Row>
     </>
   );
 }
 
-const DisplayTables = () => {
+const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
   const [tables, setTables] = useState([]);
-  const [selectedTableId, setSelectedTableId] = useState(null);
-
+  
   useEffect(() => {
     const fetchTables = async () => {
       try {
@@ -116,7 +117,6 @@ const DisplayTables = () => {
 
   return (
     <Container>
-      <h2>Table Layout</h2>
       <Row>
         {tables.map((table) => (
           <Col key={table.id}>
@@ -124,7 +124,8 @@ const DisplayTables = () => {
               style={{
                 width: '100px',
                 height: '100px',
-                backgroundColor: selectedTableId === table.id ? 'lightgreen' : 'lightblue',
+                backgroundColor:
+                  selectedTableId === table.id ? 'lightgreen' : 'lightblue',
                 border: '1px solid black',
                 textAlign: 'center',
                 lineHeight: '100px', // Center content vertically
