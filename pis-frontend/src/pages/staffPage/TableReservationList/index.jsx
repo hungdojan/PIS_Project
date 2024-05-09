@@ -14,21 +14,26 @@ const TableReservationsList = () => {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
+        fetch();
+  }, []);
+
+    const fetch = () => {
       axios
           .get('/api/reservations')
           .then((resp) => {
               const data = resp.data;
-              setReservations([...reservations, ...data]);
-          })
+              setReservations([...data]);
+        })
           .catch((err) => {
               alert(err); // TODO: delete this?
-          });
-  }, []);
+        });
+    }
 
   const handleDelete = (id) => {
     axios
     .delete(`/api/reservations/${id}`)
     .then((response) => {
+        fetch();
     })
     .catch((err) => {
       alert(err);
