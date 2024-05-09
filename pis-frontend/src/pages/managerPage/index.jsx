@@ -14,8 +14,8 @@ import {
 } from 'react-bootstrap';
 import './ManagerPage.css';
 import { FaTrash } from 'react-icons/fa';
+import { Expenses } from './ExpensesDashboard';
 import FoodPricing from './FoodPricing';
-
 // =========== MAIN MANAGER VIEW ===========
 const ManagerDashboard = () => {
   useEffect(() => {
@@ -387,30 +387,5 @@ const TableEditForm = ({ onSave, onDelete, table = {}, room = {} }) => {
   );
 };
 
-// =========== VIEW 2 ===========
-const Expenses = () => {
-  return (
-    <Container fluid>
-      {/* First row with 4 elements */}
-      <Row className="mb-3">
-        <Col>Element 1</Col>
-        <Col>Element 2</Col>
-        <Col>Element 3</Col>
-        <Col>Element 4</Col>
-      </Row>
-      {/* Second row with 2 elements */}
-      <Row className="mb-3">
-        <Col md={9}>Element 5</Col>
-        <Col md={3}>Element 6</Col>
-      </Row>
-      {/* Third row with 3 elements */}
-      <Row>
-        <Col md={6}>Element 7</Col>
-        <Col md={3}>Element 8</Col>
-        <Col md={3}>Element 9</Col>
-      </Row>
-    </Container>
-  );
-};
 
 export default ManagerDashboard;
