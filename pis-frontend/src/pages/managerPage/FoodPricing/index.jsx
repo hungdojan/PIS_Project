@@ -53,12 +53,12 @@ const FoodItemRow = ({ item, onChange, selectable }) => {
 
   return (
     <Row key={item.controlID} className={cn} onClick={handleOnClick}>
-      <Col className="text-center">{item.category}</Col>
-      <Col className="text-center">{item.controlID}</Col>
-      <Col className="text-center">{item.name}</Col>
-      <Col className="text-center">{capitalToUpperCase(item.type)}</Col>
-      <Col className="text-center">{item.price}</Col>
-      <Col className="text-center">
+      <Col className="text-center my-auto">{item.category}</Col>
+      <Col className="text-center my-auto">{item.controlID}</Col>
+      <Col className="text-center my-auto">{item.name}</Col>
+      <Col className="text-center my-auto">{capitalToUpperCase(item.type)}</Col>
+      <Col className="text-center my-auto">{item.price}</Col>
+      <Col className="text-center my-auto">
         {/* TODO: */}
         {item.active ? 'Active' : 'Inactive'}
       </Col>
