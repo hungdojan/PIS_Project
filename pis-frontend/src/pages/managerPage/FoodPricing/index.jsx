@@ -1,170 +1,16 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Form,
-  InputGroup,
-  Button,
-  FormSelect,
-} from 'react-bootstrap';
+import { Container, Row, Col, FormSelect } from 'react-bootstrap';
 import { capitalToUpperCase } from '../../../utils/constants';
 import './FoodPricing.css';
+import FoodEditPanel from '../../../components/foodEditingPanel';
 
-function ElementForm({ onSave, onDelete, item }) {
-  const clearedItem = {
-    id: -1,
-    name: '',
-    description: '',
-    price: 0.0,
-    type: '',
-    allergens: '',
-    grams: 0,
-    volume: 0,
-    category: 'food',
-  };
-  const [foodItem, setFoodItem] = useState(structuredClone(clearedItem));
-  const [valid, setValid] = useState(false);
-  const [edit, setEdit] = useState(false);
-
-  useEffect(() => {
-    setFoodItem(item || defaultItem());
-    setValid(false);
-    setEdit(false);
-  }, [item]);
-
-  const defaultItem = () => {
-    return structuredClone(clearedItem);
-  };
-
-  const handleCategoryChange = (e) => {
-    const value = e.target.value;
-    setFoodItem({
-      ...foodItem,
-      category: value,
-    });
-  };
-
-  return (
-    <Container>
-      <Form noValidate validated={valid}>
-        <Form.Group>
-          <Form.Label>Item category:</Form.Label>
-          <Form.Select
-            onChange={handleCategoryChange}
-            value={foodItem.category}
-            disabled={foodItem.id !== -1}
-            key={foodItem.controlID}
-          >
-            <option value="food">Food</option>
-            <option value="drink">Drink</option>
-          </Form.Select>
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="mt-2">Name:</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Name"
-            value={foodItem.name}
-            key={foodItem.controlID}
-            required
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="mt-2">Description:</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Description"
-            value={foodItem.description}
-            key={foodItem.controlID}
-            required
-          />
-        </Form.Group>
-        <Form.Group>
-          <Form.Label className="mt-2">Type:</Form.Label>
-          {/* TODO: select from a list */}
-          <Form.Control
-            type="text"
-            placeholder="Type"
-            value={foodItem.type}
-            key={foodItem.controlID}
-            required
-          />
-        </Form.Group>
-        {foodItem.category === 'food' ? (
-          <>
-            <Form.Group>
-              <Form.Label className="mt-2">Allergens:</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Allergens"
-                value={foodItem.allergens}
-                key={foodItem.controlID}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label className="mt-2">Weight:</Form.Label>
-              {/* TODO: allow only numbers */}
-              <InputGroup>
-                <Form.Control
-                  type="text"
-                  placeholder="Weight"
-                  value={foodItem.grams}
-                  required
-                  key={foodItem.controlID}
-                />
-                <InputGroup.Text>g</InputGroup.Text>
-              </InputGroup>
-            </Form.Group>
-          </>
-        ) : (
-          <Form.Group>
-            <Form.Label className="mt-2">Volume:</Form.Label>
-            {/* TODO: select from a list */}
-            <InputGroup>
-              <Form.Control
-                type="text"
-                placeholder="Volume"
-                value={foodItem.volume}
-                required
-                key={foodItem.controlID}
-              />
-              <InputGroup.Text>ml</InputGroup.Text>
-            </InputGroup>
-          </Form.Group>
-        )}
-        <Form.Group>
-          <Form.Label className="mt-2">Price:</Form.Label>
-          {/* TODO: allow only numbers */}
-          <InputGroup>
-            <Form.Control
-              type="text"
-              placeholder="Price"
-              value={foodItem.price}
-              required
-              key={foodItem.controlID}
-            />
-            <InputGroup.Text>EUR</InputGroup.Text>
-          </InputGroup>
-          <Form.Control.Feedback type="invalid">
-            Missing price
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Button variant="secondary">Cancel</Button>{' '}
-        <Button variant="success">Create</Button>
-      </Form>
-    </Container>
-  );
-}
-
-const FilterPanel = ({ filter, filterVals, onUpdate, onAddNew }) => {
+const FilterPanel = ({ filter, filterVals, onUpdate }) => {
   const handleOnChange = () => {
     onUpdate(filter);
   };
   return (
     <Row className="my-3">
-      {/* Dropdown for filtering food categories */}
       {Object.keys(filterVals).map((_filterKey) => {
         return (
           <>
@@ -191,31 +37,31 @@ const FilterPanel = ({ filter, filterVals, onUpdate, onAddNew }) => {
           </>
         );
       })}
-      <Col>
-        <Button onClick={onAddNew}>Add new item</Button>
-      </Col>
     </Row>
   );
 };
 
-const FoodItemRow = ({ item, onChange }) => {
+const FoodItemRow = ({ item, onChange, selectable }) => {
   let cn = 'food-values border p-1 rounded my-1 ';
   cn += item.isActive ? 'active' : '';
 
+  const handleOnClick = () => {
+    if (!selectable) return;
+
+    onChange(item.controlID);
+  };
+
   return (
-    <Row
-      key={item.controlID}
-      className={cn}
-      onClick={() => onChange(item.controlID)}
-    >
+    <Row key={item.controlID} className={cn} onClick={handleOnClick}>
       <Col className="text-center">{item.category}</Col>
       <Col className="text-center">{item.controlID}</Col>
       <Col className="text-center">{item.name}</Col>
       <Col className="text-center">{capitalToUpperCase(item.type)}</Col>
-      <Col className="text-center">
-        {item.category === 'food' ? `${item.grams} g` : `${item.volume} ml`}
-      </Col>
       <Col className="text-center">{item.price}</Col>
+      <Col className="text-center">
+        {/* TODO: */}
+        {item.active ? 'Active' : 'Inactive'}
+      </Col>
     </Row>
   );
 };
@@ -223,20 +69,40 @@ const FoodItemRow = ({ item, onChange }) => {
 // =========== VIEW 3 ===========
 const FoodPricing = () => {
   const [foodItems, setFoodItems] = useState({});
-  const [selectedItem, setSelectedItem] = useState({});
-  const [filters, setFilters] = useState({
+  const [selectedItem, setSelectedItem] = useState();
+  const [filters] = useState({
     category: 'all',
     type: 'all',
-    priceLeftRange: 0,
-    priceRightRange: Infinity,
+    active: 'all',
+    sort: 'ID (Asc)',
   });
   const [filterValues, setFilterValues] = useState({
     category: ['all', 'food', 'drink'],
     type: ['all'],
+    active: ['all', 'active', 'inactive'],
+    sort: [
+      'Category (Asc)',
+      'Category (Desc)',
+      'ID (Asc)',
+      'ID (Desc)',
+      'Name (Asc)',
+      'Name (Desc)',
+      'Price (Asc)',
+      'Price (Desc)',
+      'Type (Asc)',
+      'Type (Desc)',
+      'Active (Asc)',
+      'Active (Desc)',
+    ],
   });
   const [foodToDisplay, setFoodToDisplay] = useState([]);
+  const [isSelectable, setIsSelectable] = useState(true);
 
   useEffect(() => {
+    fetchFoodItems();
+  }, []);
+
+  const fetchFoodItems = () => {
     axios.all([axios.get('/api/foods'), axios.get('/api/drinks')]).then(
       axios.spread((foodResp, drinkResp) => {
         const _foodItems = {};
@@ -259,40 +125,106 @@ const FoodPricing = () => {
         setFoodItems(_foodItems);
         applyFilters(Object.values(_foodItems), filters);
       })
-      // TODO: reset selected meal
     );
-    // TODO: fill food and drink types
-  }, []);
-
-  const resetSelectedItem = () => {
-    // TODO:
     setSelectedItem();
   };
 
   const setActiveItem = (itemID) => {
     const item = foodItems[itemID];
 
-    selectedItem.isActive = false;
-    if (selectedItem.controlID !== item.controlID) {
+    if (selectedItem) {
+      selectedItem.isActive = false;
+      if (selectedItem.controlID !== item.controlID) {
+        item.isActive = true;
+        setSelectedItem(item);
+      } else {
+        setSelectedItem();
+      }
+    } else {
       item.isActive = true;
       setSelectedItem(item);
+    }
+  };
+
+  const handleOnDelete = (foodItem) => {
+    const apiEndpoint =
+      foodItem.category === 'food' ? '/api/foods' : '/api/drinks';
+    axios.delete(`${apiEndpoint}/${foodItem.id}`).then(() => {
+      fetchFoodItems();
+    });
+  };
+
+  const handleOnFoodUpdate = (foodItem) => {
+    const apiEndpoint =
+      foodItem.category === 'food' ? '/api/foods' : '/api/drinks';
+    if (foodItem.id) {
+      axios.put(`${apiEndpoint}/${foodItem.id}`, foodItem).then(() => {
+        fetchFoodItems();
+      });
     } else {
-      setSelectedItem({});
+      axios.post(apiEndpoint, foodItem).then(() => {
+        fetchFoodItems();
+      });
+    }
+  };
+
+  const handleOnFoodCancel = () => {
+    if (selectedItem) {
+      selectedItem.isActive = false;
+      setSelectedItem();
     }
   };
 
   const applyFilters = (_data, _filters) => {
-    const filteredItems = Object.values(_data).filter((item) => {
-      return _filters.category === 'all' || _filters.category === item.category;
-    });
+    const filteredItems = Object.values(_data)
+      .filter((item) => {
+        return (
+          _filters.category === 'all' || _filters.category === item.category
+        );
+      })
+      .filter((item) => {
+        return (
+          _filters.active === 'all' ||
+          (_filters.active === 'active' && item.active) ||
+          (_filters.active === 'inactive' && !item.active)
+        );
+      })
+      .sort((a, b) => {
+        switch (_filters.sort) {
+          case 'Category (Desc)':
+            return a.category < b.category;
+          case 'Category (Asc)':
+            return a.category > b.category;
+          case 'ID (Desc)':
+            return a.controlID < b.controlID;
+          case 'ID (Asc)':
+            return a.controlID > b.controlID;
+          case 'Name (Desc)':
+            return a.name < b.name;
+          case 'Name (Asc)':
+            return a.name > b.name;
+          case 'Price (Desc)':
+            return a.price < b.price;
+          case 'Price (Asc)':
+            return a.price > b.price;
+          case 'Type (Desc)':
+            return a.type < b.type;
+          case 'Type (Asc)':
+            return a.type > b.type;
+          case 'Active (Desc)':
+            return a.active < b.active;
+          case 'Active (Asc)':
+            return a.active > b.active;
+          default:
+            return a.name > b.name;
+        }
+      });
     setFoodToDisplay(filteredItems);
   };
 
-  const handleOnUpdate = (_filter) => {
+  const handleOnFilterUpdate = (_filter) => {
     applyFilters(foodItems, _filter);
   };
-
-  const renderFoodItem = () => {};
 
   return (
     <Container fluid className="pl-3 pe-0 pt-0">
@@ -302,24 +234,32 @@ const FoodPricing = () => {
           <FilterPanel
             filter={filters}
             filterVals={filterValues}
-            onUpdate={handleOnUpdate}
+            onUpdate={handleOnFilterUpdate}
           />
           <Row className="food-headers mb-2">
             <Col className="text-center">Category</Col>
             <Col className="text-center">Control ID</Col>
             <Col className="text-center">Name</Col>
             <Col className="text-center">Type</Col>
-            <Col className="text-center">Weight/Volume</Col>
             <Col className="text-center">Price (EUR)</Col>
+            <Col className="text-center">Active</Col>
           </Row>
           {foodToDisplay.map((food) => (
-            <FoodItemRow item={food} onChange={setActiveItem} />
+            <FoodItemRow
+              item={food}
+              selectable={isSelectable}
+              onChange={setActiveItem}
+            />
           ))}
-          {renderFoodItem()}
         </Col>
         <Col sm={0} md={3} className="food-edit-panel p-3">
-          <h2>Food Editing Panel</h2>
-          <ElementForm item={selectedItem} />
+          <FoodEditPanel
+            item={selectedItem}
+            onUpdate={handleOnFoodUpdate}
+            onDelete={handleOnDelete}
+            onCancel={handleOnFoodCancel}
+            lockFunction={setIsSelectable}
+          />
         </Col>
       </Row>
     </Container>
