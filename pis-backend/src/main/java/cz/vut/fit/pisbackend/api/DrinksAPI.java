@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.api;
 
 import cz.vut.fit.pisbackend.api.dto.DrinkDTO;
+import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Drink;
 import cz.vut.fit.pisbackend.service.DrinkManager;
@@ -22,8 +23,12 @@ public class DrinksAPI {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<DrinkDTO> getAll() {
-        return drinkMgr.findAll().stream().map(x -> new DrinkDTO(x)).toList();
+    public List<DrinkDTO> getAll(@QueryParam("active") Boolean active) {
+        if (active == null) {
+            return drinkMgr.findAll().stream().map(DrinkDTO::new).toList();
+        } else {
+            return drinkMgr.findActive(active).stream().map(DrinkDTO::new).toList();
+        }
     }
 
     @POST
@@ -38,6 +43,7 @@ public class DrinksAPI {
             d.setPrice(drink.getPrice());
             d.setType(drink.getType());
             d.setVolume(drink.getVolume());
+            d.setActive(drink.isActive());
             Drink savedDrink = drinkMgr.create(d);
             final URI uri = UriBuilder.fromPath("/drinks/{resourceServerId}").build(savedDrink.getId());
             return Response.created(uri).entity(savedDrink).build();
@@ -64,6 +70,7 @@ public class DrinksAPI {
         found.setPrice(drink.getPrice());
         found.setType(drink.getType());
         found.setVolume(drink.getVolume());
+        found.setActive(drink.isActive());
 
         Drink saved = drinkMgr.update(found);
         return Response.status(Response.Status.OK).entity(new DrinkDTO(saved)).build();
