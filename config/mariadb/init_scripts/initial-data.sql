@@ -13,7 +13,7 @@ VALUES ('manager', 'PBKDF2WithHmacSHA256:2048:Dtck1ffPQBmFvdX8WtozZZGACiLIiw/1Gp
 INSERT INTO Employee (login, password, role)
 VALUES ('waiter', 'PBKDF2WithHmacSHA256:2048:FxV5+y6XJN5bbdTr++CV9kUsokDC3ze6vw07sNNjgHc=:PTRKVjhmT7ZjR5vEQqA+U/ImkYDgaqzJ27eIjBUI/0w=', 'staff');
 INSERT INTO Employee (login, password, role)
-VALUES ('cleaner', 'PBKDF2WithHmacSHA256:2048:apXcPbjiq/zXZJAuaMC8d2Qg/Jrnkor7K03Ol63Klro=:N299/acqytYmr8FnZkLzmKPlMBv2esjuYWMszUj+K1Y=', 'cleaner');
+VALUES ('cleaner', 'PBKDF2WithHmacSHA256:2048:apXcPbjiq/zXZJAuaMC8d2Qg/Jrnkor7K03Ol63Klro=:N299/acqytYmr8FnZkLzmKPlMBv2esjuYWMszUj+K1Y=', 'staff');
 
 INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id) VALUES ('2024-06-27 20:00:00','2024-06-27 22:00:00', 'Jan Holter', 2, '+420651651144', 'jan@gmail.com', 1);
 INSERT INTO Reservation (at, until, name, new_name_with_keywords, phone, email, createdBy_id) VALUES ('2024-06-28 16:00:00','2024-06-28 18:00:00', 'Marina Hill', 3, '+420298413154', 'marina.hill@gmail.com', 1);

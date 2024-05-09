@@ -13,10 +13,17 @@ const RegisteredWindow = (props) => {
     role: 'staff',
   });
   const [valid, setValid] = useState(false);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     setUser(props.selectedUser);
     setValid(false);
+    axios
+      .get('/api/employees/roles')
+      .then((resp) => {
+        setRoles(resp.data);
+      })
+      .catch((err) => alert(err));
   }, [props]);
 
   const handleClose = (event) => {
@@ -107,10 +114,9 @@ const RegisteredWindow = (props) => {
             <Form.Group className="mb-3" controlId="role-select">
               <Form.Label>Role</Form.Label>
               <Form.Select onChange={handleRoleChange} value={user.role}>
-                <option value="admin">admin</option>
-                <option value="manager">manager</option>
-                <option value="chef">chef</option>
-                <option value="staff">staff</option>
+                {roles.map((r) => {
+                  return <option value={r}>{r}</option>;
+                })}
               </Form.Select>
             </Form.Group>
             <Form.Group className="mb-3" controlId="password-input">
