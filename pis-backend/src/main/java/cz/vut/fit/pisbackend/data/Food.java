@@ -22,6 +22,7 @@ public class Food {
     private String type;
     private String allergens;
     private int grams;
+    private boolean active;
     @OneToMany(mappedBy = "food")
     private Collection<Order> orders;
     @ManyToMany(mappedBy="foods")
@@ -72,6 +73,15 @@ public class Food {
     public void setGrams(int grams){
         this.grams = grams;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public Collection<Order> getOrders(){
         return orders;
     }
