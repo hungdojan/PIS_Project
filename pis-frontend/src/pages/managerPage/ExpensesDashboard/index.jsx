@@ -5,6 +5,7 @@ import { AverageOrderCount } from './components/averageOrderCount';
 import { AverageRevenue } from './components/averageRevenue';
 import { RevenueLineChart } from './components/revenueLineChart';
 import { FoodDrinkPieChart } from './components/drinksFoodPieChart';
+import { OrdersLineChart } from './components/foodOrdersLineChart';
 // =========== VIEW 2 ===========
 const Expenses = () => {
   return (
@@ -29,13 +30,15 @@ const Expenses = () => {
         <Col md={9}>
           <RevenueLineChart />
         </Col>
-        <Col md={3}><FoodDrinkPieChart/></Col>
+        <Col md={3}>
+          <FoodDrinkPieChart />
+        </Col>
       </Row>
       {/* Third row with 3 elements */}
       <Row>
-        <Col md={6}>Element 7</Col>
-        <Col md={3}>Element 8</Col>
-        <Col md={3}>Element 9</Col>
+        <Col md={6}>
+          <OrdersLineChart />
+        </Col>
       </Row>
     </Container>
   );
