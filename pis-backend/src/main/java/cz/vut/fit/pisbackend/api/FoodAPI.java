@@ -1,5 +1,6 @@
 package cz.vut.fit.pisbackend.api;
 
+import cz.vut.fit.pisbackend.api.dto.DrinkDTO;
 import cz.vut.fit.pisbackend.api.dto.FoodDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Food;
@@ -22,8 +23,12 @@ public class FoodAPI {
 
     @GET
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<FoodDTO> getAll() {
-        return foodMgr.findAll().stream().map(x -> new FoodDTO(x)).toList();
+    public List<FoodDTO> getAll(@QueryParam("active") Boolean active) {
+        if (active == null) {
+            return foodMgr.findAll().stream().map(FoodDTO::new).toList();
+        } else {
+            return foodMgr.findActive(active).stream().map(FoodDTO::new).toList();
+        }
     }
 
     @POST
@@ -39,6 +44,7 @@ public class FoodAPI {
             f.setType(food.getType());
             f.setAllergens(food.getAllergens());
             f.setGrams(food.getGrams());
+            f.setActive(food.isActive());
             Food savedFood = foodMgr.create(f);
             final URI uri = UriBuilder.fromPath("/foods/{resourceServerId}").build(savedFood.getId());
             return Response.created(uri).entity(savedFood).build();
@@ -66,7 +72,7 @@ public class FoodAPI {
         found.setType(food.getType());
         found.setAllergens(food.getAllergens());
         found.setGrams(food.getGrams());
-
+        found.setActive(food.isActive());
         Food saved = foodMgr.update(found);
         return Response.status(Response.Status.OK).entity(new FoodDTO(saved)).build();
     }
@@ -87,5 +93,11 @@ public class FoodAPI {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("types")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<String> getTypes() {
+        return foodMgr.getAllUniqueTypes();
+    }
 
 }

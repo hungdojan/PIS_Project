@@ -45,4 +45,7 @@ public class EmployeeManager {
     public List<Employee> getAll() {
         return em.createQuery("Select e FROM Employee e", Employee.class).getResultList();
     }
+    public List<String> getAllUniqueRoles() {
+        return em.createQuery("SELECT DISTINCT e.role FROM Employee e", String.class).getResultList();
+    }
 }

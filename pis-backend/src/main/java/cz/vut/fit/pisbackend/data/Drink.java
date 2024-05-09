@@ -20,6 +20,7 @@ public class Drink {
     private float price;
     private String type;
     private int volume;
+    private boolean active;
     @OneToMany(mappedBy = "drink")
     private Collection<Order> orders;
     @ManyToMany(mappedBy="drinks")
@@ -64,6 +65,15 @@ public class Drink {
     public void setVolume(int volume){
         this.volume = volume;
     }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public Collection<Order> getOrders(){
         return orders;
     }

@@ -1,6 +1,7 @@
 package cz.vut.fit.pisbackend.service;
 
 import cz.vut.fit.pisbackend.data.Drink;
+import cz.vut.fit.pisbackend.data.Order;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -51,6 +52,17 @@ public class DrinkManager {
 
     public List<Drink> findAll() {
         return em.createNamedQuery("Drink.findAll", Drink.class).getResultList();
+    }
+
+    public List<Drink> findActive(boolean active) {
+        String jpql = "SELECT f FROM Drink f WHERE f.active = :active";
+        return em.createQuery(jpql, Drink.class)
+            .setParameter("active", active)
+            .getResultList();
+    }
+
+    public List<String> getAllUniqueTypes() {
+        return em.createQuery("SELECT DISTINCT d.type FROM Drink d", String.class).getResultList();
     }
 }
 
