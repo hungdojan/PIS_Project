@@ -10,17 +10,19 @@ public class DrinkDTO {
     private float price;
     private String type;
     private int volume;
+    private boolean active;
 
     public DrinkDTO(){
     }
 
-    public DrinkDTO(long id, String name, String description, float price, String type, int volume) {
+    public DrinkDTO(long id, String name, String description, float price, String type, int volume,boolean  active) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.type = type;
         this.volume = volume;
+        this.active = active;
     }
 
     public DrinkDTO(Drink drink) {
@@ -30,6 +32,7 @@ public class DrinkDTO {
         this.price = drink.getPrice();
         this.type = drink.getType();
         this.volume = drink.getVolume();
+        this.active = drink.isActive();
     }
 
     public long getId(){
@@ -67,5 +70,11 @@ public class DrinkDTO {
     }
     public void setVolume(int volume){
         this.volume = volume;
+    }
+    public boolean isActive() {
+        return active;
+    }
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

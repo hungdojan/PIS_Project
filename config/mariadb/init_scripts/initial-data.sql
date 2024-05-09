@@ -38,16 +38,16 @@ INSERT INTO Menu (name, description) VALUES ('Menu3', 'Menu for Wednesday');
 INSERT INTO Menu (name, description) VALUES ('Menu4', 'Menu for Thursday');
 INSERT INTO Menu (name, description) VALUES ('Menu5', 'Menu for Friday');
 
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Lemonade', NULL, 2.3, 'non-alcoholic',400);
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Cola',  NULL, 1.99, 'non-alcoholic', 500);
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 300);
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Beer', NULL, 2.5, 'alcoholic', 500);
-INSERT INTO Drink (name, description, price, type, volume) VALUES ('Coffee', NULL, 2.5, 'hot', 500);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Lemonade', NULL, 2.3, 'non-alcoholic',400, TRUE);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Cola',  NULL, 1.99, 'non-alcoholic', 500, TRUE);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 300, TRUE);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Beer', NULL, 2.5, 'alcoholic', 500, TRUE);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Coffee', NULL, 2.5, 'hot', 500, TRUE);
 
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500);
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('French Fries', 'Crispy and tasty', 3.50, 'side', '1,2', 200);
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('Chicken Salad', 'Grilled chicken with mixed greens', 8.99, 'meat', '1,2', 350);
-INSERT INTO Food (name, description, price, type, allergens, grams) VALUES ('Vegan Burger', 'Delicious plant-based burger', 7.99, 'vegetarian', '1', 400);
+INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500, TRUE);
+INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('French Fries', 'Crispy and tasty', 3.50, 'side', '1,2', 200, TRUE);
+INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Chicken Salad', 'Grilled chicken with mixed greens', 8.99, 'meat', '1,2', 350, TRUE);
+INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Vegan Burger', 'Delicious plant-based burger', 7.99, 'vegetarian', '1', 400, TRUE);
 
 INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id) VALUES (99, '2024-06-27 17:50:06', 'food', 'Importand food', 1, 2);
 INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id) VALUES (150, '2024-06-28 13:00:00', 'equipment', 'Kitchen maintenance', 1, 2);

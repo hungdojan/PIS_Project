@@ -11,6 +11,7 @@ public class FoodDTO {
     private String type;
     private String allergens;
     private int grams;
+    private boolean active;
 
     public FoodDTO() {
     }
@@ -23,6 +24,7 @@ public class FoodDTO {
         this.type = food.getType();
         this.allergens = food.getAllergens();
         this.grams = food.getGrams();
+        this.active = food.isActive();
     }
 
     public long getId() {
@@ -81,4 +83,11 @@ public class FoodDTO {
         this.grams = grams;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

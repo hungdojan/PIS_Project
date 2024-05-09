@@ -1,5 +1,6 @@
 package cz.vut.fit.pisbackend.service;
 
+import cz.vut.fit.pisbackend.data.Drink;
 import cz.vut.fit.pisbackend.data.Food;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -51,6 +52,17 @@ public class FoodManager {
 
     public List<Food> findAll() {
         return em.createNamedQuery("Food.findAll", Food.class).getResultList();
+    }
+
+    public List<Food> findActive(boolean active) {
+        String jpql = "SELECT f FROM Food f WHERE f.active = :active";
+        return em.createQuery(jpql, Food.class)
+            .setParameter("active", active)
+            .getResultList();
+    }
+
+    public List<String> getAllUniqueTypes() {
+        return em.createQuery("SELECT DISTINCT f.type FROM Food f", String.class).getResultList();
     }
 }
 

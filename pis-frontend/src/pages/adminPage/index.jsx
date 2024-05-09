@@ -1,16 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './AdminPage.css';
-import {
-  Container,
-  Button,
-  ListGroupItem,
-  ListGroup,
-  FormText,
-  Modal,
-  Form,
-  ButtonGroup,
-} from 'react-bootstrap';
+import { Container, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../router/AuthProvider';
 
@@ -163,24 +154,18 @@ const UserList = (props) => {
   const handleOnEdit = props.handleOnEdit;
   const handleOnDelete = props.handleOnDelete;
   return (
-    <ListGroup>
-      <ListGroupItem key={'item' + user.username}>
-        <div className="user-list-item">
-          <FormText autoFocus={true} autoComplete="false">
-            {user.login}
-          </FormText>
-          <FormText>{user.role}</FormText>
-          <ButtonGroup>
-            <Button id={user.id} onClick={handleOnEdit}>
-              Edit
-            </Button>
-            <Button id={user.id} onClick={handleOnDelete}>
-              Delete
-            </Button>
-          </ButtonGroup>
-        </div>
-      </ListGroupItem>
-    </ListGroup>
+    <Row className="border mb-1">
+      <Col className="text-center my-auto">{user.login}</Col>
+      <Col className="text-center my-auto">{user.role}</Col>
+      <Col className="float-end text-end">
+        <Button id={user.id} onClick={handleOnEdit} variant="success">
+          Edit
+        </Button>{' '}
+        <Button id={user.id} onClick={handleOnDelete} variant="danger">
+          Delete
+        </Button>
+      </Col>
+    </Row>
   );
 };
 
@@ -194,6 +179,7 @@ const AdminPage = () => {
     password: '',
     role: 'staff',
   });
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const navigate = useNavigate();
   const role = localStorage.getItem('role');
 
@@ -232,10 +218,9 @@ const AdminPage = () => {
 
   const handleOnDelete = (event) => {
     const userId = parseInt(event.target.id);
-    axios
-      .delete(`/api/employees/${userId}`)
-      .then(() => fetchUsers())
-      .catch((err) => alert(err));
+    const user = users[userId];
+    setSelectedUser(user);
+    setShowDeleteModal(true);
   };
 
   const registerUserButtonOnClick = (event) => {
@@ -272,24 +257,96 @@ const AdminPage = () => {
       .catch((err) => alert(err));
   };
 
+  const renderDeleteModal = () => {
+    const handleConfirm = () => {
+      axios
+        .delete(`/api/employees/${selectedUser.id}`)
+        .then(() => {
+          fetchUsers();
+          setShowDeleteModal(false);
+        })
+        .catch((err) => alert(err));
+    };
+
+    return (
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete user</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>Do you really want to delete this user?</div>
+          <Container className="mt-3 border rounded">
+            <Row>
+              <Col>
+                <strong>ID:</strong>
+              </Col>
+              <Col>{selectedUser.id}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <strong>Username:</strong>
+              </Col>
+              <Col>{selectedUser.login}</Col>
+            </Row>
+            <Row>
+              <Col>
+                <strong>Role:</strong>
+              </Col>
+              <Col>{selectedUser.role}</Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleConfirm}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+
   return (
-    <Container>
-      {Object.values(users).map((user) => (
-        <UserList
-          user={user}
-          handleOnEdit={handleOnEdit}
-          handleOnDelete={handleOnDelete}
-          key={user.id}
+    <>
+      <Row>
+        <Col></Col>
+        <Col>
+          <h1 className="text-center mb-3">Admin page</h1>
+        </Col>
+        <Col className="my-auto text-center">
+          <Button variant="danger" onClick={() => navigate('/logout')}>
+            Logout
+          </Button>
+        </Col>
+      </Row>
+      <Container>
+        <Row className="mb-3 border-bottom">
+          <Col className="text-center">Username</Col>
+          <Col className="text-center">Role</Col>
+          <Col></Col>
+        </Row>
+        {Object.values(users).map((user) => (
+          <UserList
+            user={user}
+            handleOnEdit={handleOnEdit}
+            handleOnDelete={handleOnDelete}
+            key={user.id}
+          />
+        ))}
+        <div className="text-end mt-3">
+          <Button onClick={registerUserButtonOnClick}>Add new user</Button>
+        </div>
+        <RegisteredWindow
+          show={show}
+          setShow={setShow}
+          onSave={handleOnSave}
+          selectedUser={selectedUser}
         />
-      ))}
-      <Button onClick={registerUserButtonOnClick}>Add new user</Button>
-      <RegisteredWindow
-        show={show}
-        setShow={setShow}
-        onSave={handleOnSave}
-        selectedUser={selectedUser}
-      />
-    </Container>
+        {renderDeleteModal()}
+      </Container>
+    </>
   );
 };
 
