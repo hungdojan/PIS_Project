@@ -60,6 +60,10 @@ public class DrinkManager {
             .setParameter("active", active)
             .getResultList();
     }
+
+    public List<String> getAllUniqueTypes() {
+        return em.createQuery("SELECT DISTINCT d.type FROM Drink d", String.class).getResultList();
+    }
 }
 
 

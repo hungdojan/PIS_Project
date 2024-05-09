@@ -60,5 +60,9 @@ public class FoodManager {
             .setParameter("active", active)
             .getResultList();
     }
+
+    public List<String> getAllUniqueTypes() {
+        return em.createQuery("SELECT DISTINCT f.type FROM Food f", String.class).getResultList();
+    }
 }
 

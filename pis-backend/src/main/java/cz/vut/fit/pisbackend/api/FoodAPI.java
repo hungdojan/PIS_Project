@@ -93,5 +93,11 @@ public class FoodAPI {
         return Response.status(Response.Status.OK).build();
     }
 
+    @Path("types")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<String> getTypes() {
+        return foodMgr.getAllUniqueTypes();
+    }
 
 }

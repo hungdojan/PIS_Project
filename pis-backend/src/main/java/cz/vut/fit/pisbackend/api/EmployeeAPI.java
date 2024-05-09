@@ -186,4 +186,11 @@ public class EmployeeAPI {
                 .entity(new ResponseMessageDTO("Failed to parse the token")).build();
         }
     }
+
+    @Path("roles")
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<String> getRoles() {
+        return employeeManager.getAllUniqueRoles();
+    }
 }
