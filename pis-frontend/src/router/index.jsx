@@ -15,7 +15,6 @@ import {
 import StaffPage from '../pages/staffPage';
 import ManagerDashboard from '../pages/managerPage';
 import AdminPage from '../pages/adminPage';
-import OrdersPage from '../pages/ordersPage';
 import LoginPage from '../pages/login';
 import Logout from '../pages/logout';
 
@@ -63,10 +62,6 @@ const CustomRouter = () => {
         {
           path: 'admin',
           element: <AdminPage />,
-        },
-        {
-          path: 'orders',
-          element: <OrdersPage />,
         },
       ],
     },

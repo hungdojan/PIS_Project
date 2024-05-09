@@ -14,6 +14,7 @@ import {
 } from 'react-bootstrap';
 import './ManagerPage.css';
 import { FaTrash } from 'react-icons/fa';
+import FoodPricing from './FoodPricing';
 
 // =========== MAIN MANAGER VIEW ===========
 const ManagerDashboard = () => {
@@ -378,93 +379,6 @@ const TableEditForm = ({ onSave, onDelete, table = {}, room = {} }) => {
   );
 };
 
-function ElementForm({ onSave, onDelete }) {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [amount, setAmount] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-
-  const handleSave = () => {
-    // Check if required fields are not empty
-    if (
-      name.trim() === '' ||
-      description.trim() === '' ||
-      amount.trim() === '' ||
-      price.trim() === '' ||
-      category.trim() === ''
-    ) {
-      alert('Please fill in all fields');
-      return;
-    }
-
-    // Create an object representing the element
-    const element = {
-      name: name.trim(),
-      description: description.trim(),
-      amount: amount.trim(),
-      price: price.trim(),
-      category: category.trim(),
-    };
-
-    // Call onSave function from parent component with the element object
-    onSave(element);
-
-    // Clear input fields
-    setName('');
-    setDescription('');
-    setAmount('');
-    setPrice('');
-    setCategory('');
-  };
-
-  return (
-    <div className="form-container">
-      <input
-        className="input-field"
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        className="input-field"
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <input
-        className="input-field"
-        type="text"
-        placeholder="Amount"
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <input
-        className="input-field"
-        type="text"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <input
-        className="input-field"
-        type="text"
-        placeholder="Category"
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      />
-      <div className="button-row mx-auto">
-        <button className="save-button text-bg-primary" onClick={handleSave}>
-          Save
-        </button>
-        {/*<button className=" delete-button" onClick={onDelete}>Delete</button>*/}
-      </div>
-    </div>
-  );
-}
-
 // =========== VIEW 2 ===========
 const Expenses = () => {
   return (
@@ -486,82 +400,6 @@ const Expenses = () => {
         <Col md={6}>Element 7</Col>
         <Col md={3}>Element 8</Col>
         <Col md={3}>Element 9</Col>
-      </Row>
-    </Container>
-  );
-};
-
-// =========== VIEW 3 ===========
-const FoodPricing = () => {
-  // Sample data for food items
-  const foodItems = [
-    { id: 1, name: 'Food 1', type: 'todo', grams: '250g', price: '$10' },
-    { id: 2, name: 'Food 2', grams: '50g', price: '$15' },
-    { id: 3, name: 'Food 3', grams: '100g', price: '$8' },
-    // Add more food items as needed
-  ];
-
-  // State for selected food category
-  const [selectedCategory, setSelectedCategory] = useState('All');
-
-  // Filtered food items based on selected category
-  const filteredFoodItems =
-    selectedCategory === 'All'
-      ? foodItems
-      : foodItems.filter((item) => item.category === selectedCategory);
-
-  // Sample categories for dropdown
-  const categories = ['All', 'Category 1', 'Category 2', 'Category 3']; // Add more categories as needed
-
-  // Handler for selecting a category
-  const handleCategorySelect = (category) => {
-    setSelectedCategory(category);
-  };
-
-  return (
-    <Container fluid className="pl-3 pe-0 pt-0">
-      <Row>
-        <Col sm={12} md={9} className="pt-3 pe-4">
-          <h2>Food Overview</h2>
-          <Row>
-            <Col>
-              {/* Dropdown for filtering food categories */}
-              <DropdownButton
-                title={`Filter by Category: ${selectedCategory}`}
-                className="mb-3"
-              >
-                {categories.map((category) => (
-                  <Dropdown.Item
-                    key={category}
-                    onClick={() => handleCategorySelect(category)}
-                  >
-                    {category}
-                  </Dropdown.Item>
-                ))}
-              </DropdownButton>
-            </Col>
-          </Row>
-          <Row className="food-headers mb-2">
-            <Col>ID</Col>
-            <Col>Name</Col>
-            <Col>Category type</Col>
-            <Col>Weight</Col>
-            <Col>Price per Portion</Col>
-          </Row>
-          {filteredFoodItems.map((food) => (
-            <Row key={food.id} className="food-values">
-              <Col>{food.id}</Col>
-              <Col>{food.name}</Col>
-              <Col>{food.type}</Col>
-              <Col>{food.grams}</Col>
-              <Col>{food.price}</Col>
-            </Row>
-          ))}
-        </Col>
-        <Col sm={0} md={3} className="food-edit-panel p-3">
-          <h2>Food Editing Panel</h2>
-          <ElementForm />
-        </Col>
       </Row>
     </Container>
   );
