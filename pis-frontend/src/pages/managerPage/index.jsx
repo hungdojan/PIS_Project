@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   Nav,
   NavItem,
@@ -68,6 +68,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
     // For example, redirect the user to the logout endpoint
     window.location.href = '/logout';
   };
+  const navigate = useNavigate();
 
   return (
     <div
@@ -108,6 +109,13 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
         </Nav.Item>
       </Nav>
       <hr />
+      <Button
+        className="mb-2"
+        variant="primary"
+        onClick={() => navigate('/staff')}
+      >
+        Staff page
+      </Button>
       <Button variant="danger" onClick={handleLogout}>
         Logout
       </Button>

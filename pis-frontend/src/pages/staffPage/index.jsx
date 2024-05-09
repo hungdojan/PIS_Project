@@ -1,13 +1,7 @@
 import './StaffPage.css';
 // import './OrdersPage.css';
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Nav,
-  Button,
-} from 'react-bootstrap'; // Import ListGroup, Button, and Card
+import { Container, Row, Col, Nav, Button } from 'react-bootstrap'; // Import ListGroup, Button, and Card
 import FoodOrders from './FoodOrders';
 import OrdersPageView from './OrdersPageView';
 import { TableReservationsList } from './TableReservationList';
@@ -68,6 +62,8 @@ const StaffSidebar = ({
     // For example, redirect the user to the logout endpoint
     navigate('/logout');
   };
+
+  const role = localStorage.getItem('role');
   return (
     <div
       className="d-flex flex-column flex-shrink-0 p-3 bg-light"
@@ -112,6 +108,15 @@ const StaffSidebar = ({
         </Nav.Item>
       </Nav>
       <hr />
+      {role === 'manager' && (
+        <Button
+          className="mb-2"
+          variant="primary"
+          onClick={() => navigate('/staff/manager')}
+        >
+          Manager page
+        </Button>
+      )}
       <Button variant="danger" onClick={handleLogout}>
         Logout
       </Button>
