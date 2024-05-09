@@ -59,7 +59,6 @@ const FoodItemRow = ({ item, onChange, selectable }) => {
       <Col className="text-center my-auto">{capitalToUpperCase(item.type)}</Col>
       <Col className="text-center my-auto">{item.price}</Col>
       <Col className="text-center my-auto">
-        {/* TODO: */}
         {item.active ? 'Active' : 'Inactive'}
       </Col>
     </Row>
@@ -97,7 +96,6 @@ const FoodPricing = () => {
   });
   const [foodToDisplay, setFoodToDisplay] = useState([]);
   const [isSelectable, setIsSelectable] = useState(true);
-  const [types, setTypes] = useState([]);
 
   useEffect(() => {
     fetchFoodItems();
