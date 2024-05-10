@@ -7,9 +7,12 @@ import OrdersPageView from './OrdersPageView';
 import { TableReservationsList } from './TableReservationList';
 import { CreateTableReservations } from './TableReservations';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../../router/AuthProvider';
 
 // =========== MAIN STUFF VIEW ===========
 const StaffPage = () => {
+  const { token } = useAuth();
   useEffect(() => {
     document.title = 'Staff page';
   }, []);
@@ -34,6 +37,7 @@ const StaffPage = () => {
         return null;
     }
   };
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
 
   return (
     <>

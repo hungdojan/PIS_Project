@@ -5,9 +5,12 @@ import './ManagerPage.css';
 import { Expenses } from './ExpensesDashboard';
 import FoodPricing from './FoodPricing';
 import ManageRoomsDashboard from './RoomReservation';
+import axios from 'axios';
+import { useAuth } from '../../router/AuthProvider';
 
 // =========== MAIN MANAGER VIEW ===========
 const ManagerDashboard = () => {
+  const { token } = useAuth();
   useEffect(() => {
     document.title = 'Manager page';
   }, []);
@@ -39,6 +42,7 @@ const ManagerDashboard = () => {
     }
   };
 
+  axios.defaults.headers.common['Authorization'] = 'Bearer ' + token;
   return (
     <Container fluid>
       <Row>
