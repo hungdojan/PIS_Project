@@ -1,7 +1,7 @@
 import { Row, Col } from 'react-bootstrap'; // Import `ListGroup, Button, and Card
-import {SelectRooms} from './components/reservationSelectTables';
+import { SelectRooms } from './components/reservationSelectTables';
 
-function CreateTableReservations() {
+const CreateTableReservations = () => {
   return (
     <Row>
       <Col className="rooms-reservation">
@@ -9,6 +9,6 @@ function CreateTableReservations() {
       </Col>
     </Row>
   );
-}
+};
 
 export { CreateTableReservations };

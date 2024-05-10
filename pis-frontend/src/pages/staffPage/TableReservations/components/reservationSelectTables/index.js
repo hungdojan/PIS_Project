@@ -95,29 +95,25 @@ function SelectRooms() {
 
 const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
   const [tables, setTables] = useState([]);
-  
-  useEffect(() => {
-    const fetchTables = async () => {
-      try {
-        const response = await fetch('/api/tables');
-        if (response.ok) {
-          const tableData = await response.json();
-          // Assuming the response data structure is an array of table objects with 'id' and 'capacity' properties
-          const tablesWithCapacity = tableData.map(table => ({
-            id: table.id,
-            capacity: table.capacity
-          }));
-          setTables(tablesWithCapacity);
-        } else {
-          console.error('Failed to fetch tables');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
 
+  useEffect(() => {
     fetchTables();
   }, []);
+
+  const fetchTables = () => {
+    axios
+      .get('/api/tables')
+      .then((resp) => {
+        const tableData = resp.data;
+        // Assuming the response data structure is an array of table objects with 'id' and 'capacity' properties
+        const tablesWithCapacity = tableData.map((table) => ({
+          id: table.id,
+          capacity: table.capacity,
+        }));
+        setTables(tablesWithCapacity);
+      })
+      .catch((err) => alert(err));
+  };
 
   const handleTableClick = (tableId) => {
     setSelectedTableId(tableId);
@@ -143,10 +139,17 @@ const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
               }}
               onClick={() => handleTableClick(table.id)}
             >
-              <div style={{ marginBottom: '-50px' }}>
-                {`Table ${table.id}`}
-              </div>
-              <div style={{ position: 'absolute', bottom: '0  px', left: '0', right: '0' }}> {/* Adjust position of capacity text */}
+              <div style={{ marginBottom: '-50px' }}>{`Table ${table.id}`}</div>
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '0  px',
+                  left: '0',
+                  right: '0',
+                }}
+              >
+                {' '}
+                {/* Adjust position of capacity text */}
                 {`Capacity: ${table.capacity}`}
               </div>
             </div>
