@@ -3,6 +3,7 @@ package cz.vut.fit.pisbackend.api;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.EmployeeDTO;
 import cz.vut.fit.pisbackend.api.dto.JwtDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
@@ -59,15 +60,10 @@ public class EmployeeAPI {
     }
 
     @POST
+    @JwtRoles({"admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response create(Employee e) throws ParseException {
-        String auth = httpHeaders.getHeaderString("Authorization");
-        Response response = JwtTokenUtils.authValidation(auth, roles);
-        if (response != null) {
-            return response;
-        }
-
         if (!e.createRequestValidation(false)) {
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(new ResponseMessageDTO("Requires: `login`, `password` and `role` parameters!")).build();
@@ -89,15 +85,10 @@ public class EmployeeAPI {
     }
 
     @PUT
+    @JwtRoles({"admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response update(Employee e) throws ParseException {
-        String auth = httpHeaders.getHeaderString("Authorization");
-        Response response = JwtTokenUtils.authValidation(auth, roles);
-        if (response != null) {
-            return response;
-        }
-
         if (!e.createRequestValidation(true)) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("Requires: `login` and `role` parameters!")).build();
         }
@@ -116,15 +107,10 @@ public class EmployeeAPI {
 
     @Path("{id}")
     @DELETE
+    @JwtRoles({"admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response delete(@PathParam("id") long id) throws ParseException {
-        String auth = httpHeaders.getHeaderString("Authorization");
-        Response response = JwtTokenUtils.authValidation(auth, roles);
-        if (response != null) {
-            return response;
-        }
-
         Employee employee = employeeManager.find(id);
         if (employee == null) {
             return Response.status(Response.Status.BAD_REQUEST).entity(new ResponseMessageDTO("User not found!")).build();
@@ -142,21 +128,17 @@ public class EmployeeAPI {
     }
 
     @GET
+    @JwtRoles({"admin"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response get(@QueryParam("jwt") String jwt) throws ParseException {
-        String auth = httpHeaders.getHeaderString("Authorization");
-        Response response = JwtTokenUtils.authValidation(auth, roles);
-        if (response != null) {
-            return response;
-        }
-
         List<EmployeeDTO> employees = employeeManager.getAll().stream().map(EmployeeDTO::new).toList();
         return Response.status(Response.Status.OK).entity(employees).build();
     }
 
     @Path("validate")
     @GET
+    @JwtRoles({"admin"})
     @Produces({MediaType.APPLICATION_JSON})
     public Response validate() {
         String auth = httpHeaders.getHeaderString("Authorization");

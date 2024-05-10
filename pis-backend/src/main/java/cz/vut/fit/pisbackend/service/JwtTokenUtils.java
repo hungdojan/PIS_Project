@@ -98,6 +98,7 @@ public class JwtTokenUtils {
             var jwtClaims = getClaimSet(stringToSignedJwt(tokenValue));
             Date expTime = jwtClaims.getExpirationTime();
             if (!roles.isEmpty() && !roles.contains(jwtClaims.getStringClaim("role"))) {
+                //System.out.println("claim: " + jwtClaims.getStringClaim("role"));
                 return Response.status(Response.Status.FORBIDDEN)
                     .entity(new ResponseMessageDTO("Not authorized to call this API"))
                     .build();

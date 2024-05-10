@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
 import cz.vut.fit.pisbackend.api.dto.TableDTO;
 import cz.vut.fit.pisbackend.data.Table;
@@ -33,13 +34,15 @@ public class TablesAPI {
     private UriInfo context;
 
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<TableDTO> getTables() {
         return tableMgr.findAll().stream().map(t -> new TableDTO(t)).toList();
     }
 
-    @Path("/{id}/reservations")
     @GET
+    @Path("/{id}/reservations")
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationResponseDTO> getTableReservations(@PathParam("id") Long id)
     {
@@ -55,6 +58,7 @@ public class TablesAPI {
      */
     @GET
     @Path("{id}/orders")
+    @JwtRoles({"staff", "manager"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<OrderResponseDTO> getOrders(@PathParam("id") long tableId, @QueryParam("paidFilter") boolean paidFilter) {
         // display only unpaid orders
@@ -65,6 +69,7 @@ public class TablesAPI {
     }
 
     @POST
+    @JwtRoles({"manager"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addTable(TableDTO table) {
@@ -77,6 +82,7 @@ public class TablesAPI {
     }
 
     @DELETE
+    @JwtRoles({"manager"})
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response deleteOrder(@PathParam("id") long id)

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.*;
 import cz.vut.fit.pisbackend.data.*;
 import jakarta.inject.Inject;
@@ -20,6 +21,7 @@ public class RoomsAPI {
     private UriInfo context;
 
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces({MediaType.APPLICATION_JSON})
     public List<RoomDTO> getRooms() {
         return roomMngr.findAll().stream().map(r -> new RoomDTO(r)).toList();
@@ -27,6 +29,7 @@ public class RoomsAPI {
 
     @GET
     @Path("/{id}")
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getRoomById(@PathParam("id") long id) {
         Room room = roomMngr.find(id);
@@ -37,6 +40,7 @@ public class RoomsAPI {
     }
 
     @POST
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createRoom(RoomDTO roomDTO) {
@@ -56,6 +60,7 @@ public class RoomsAPI {
 
     @PUT
     @Path("/{id}")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateRoom(@PathParam("id") Long id, RoomDTO src)
@@ -74,6 +79,7 @@ public class RoomsAPI {
 
     @DELETE
     @Path("/{id}")
+    @JwtRoles({"manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteRoom(@PathParam("id") Long id)
     {
@@ -89,6 +95,7 @@ public class RoomsAPI {
 
     @Path("/{id}/reservations")
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationResponseDTO> getRoomReservations(@PathParam("id") Long id)
     {
@@ -103,6 +110,7 @@ public class RoomsAPI {
 
     @Path("/{id}/orders")
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<OrderResponseDTO> getRoomOrders(@PathParam("id") Long id)
     {
@@ -116,6 +124,7 @@ public class RoomsAPI {
 
     @GET
     @Path("/available")
+    @JwtRoles({"staff", "manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public List<RoomDTO>  getAvailableRooms(ReservationDTO reservation) {
@@ -126,6 +135,7 @@ public class RoomsAPI {
 
     @GET
     @Path("/available/{id}")
+    @JwtRoles({"staff", "manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON})
     public Response getAvailableRooms(@PathParam("id") Long id, ReservationDTO reservation) {
