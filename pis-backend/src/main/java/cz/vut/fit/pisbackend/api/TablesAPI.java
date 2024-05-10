@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cz.vut.fit.pisbackend.api.dto.ReservationResponseDTO;
+import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.data.Room;
 import cz.vut.fit.pisbackend.data.Table;
 import jakarta.inject.Inject;
@@ -16,6 +17,7 @@ import jakarta.ws.rs.core.UriInfo;
 import cz.vut.fit.pisbackend.api.dto.OrderResponseDTO;
 import cz.vut.fit.pisbackend.api.dto.TableDTO;
 import cz.vut.fit.pisbackend.data.Table;
+import cz.vut.fit.pisbackend.data.Order;
 import cz.vut.fit.pisbackend.service.OrderManager;
 import cz.vut.fit.pisbackend.service.TableManager;
 
@@ -73,4 +75,29 @@ public class TablesAPI {
         Table saved = tableMgr.create(t);
         return Response.ok(new TableDTO(saved)).build();
     }
+
+    @DELETE
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response deleteOrder(@PathParam("id") long id)
+    {
+        Table found = tableMgr.find(id);
+        if (found == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                           .entity(new ResponseMessageDTO("Cannot delete non-existing table"))
+                           .build();
+        }
+        for (Order order : found.getOrders()) {
+            System.out.println(order.getToTable());
+        }
+        for (Order order : found.getOrders()) {
+            order.setToTable(null);
+        }
+        for (Order order : found.getOrders()) {
+            System.out.println(order.getToTable());
+        }
+        tableMgr.remove(found);
+        return Response.status(Response.Status.OK).build();
+    }
+
 }

@@ -119,11 +119,11 @@ public class EmployeeAPI {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response delete(@PathParam("id") long id) throws ParseException {
-        //String auth = httpHeaders.getHeaderString("Authorization");
-        //Response response = JwtTokenUtils.authValidation(auth, roles);
-        //if (response != null) {
-        //    return response;
-        //}
+        String auth = httpHeaders.getHeaderString("Authorization");
+        Response response = JwtTokenUtils.authValidation(auth, roles);
+        if (response != null) {
+            return response;
+        }
 
         Employee employee = employeeManager.find(id);
         if (employee == null) {

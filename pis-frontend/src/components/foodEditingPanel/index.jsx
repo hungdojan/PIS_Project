@@ -306,7 +306,6 @@ const FoodEditPanel = ({
           )}
           <Form.Group>
             <Form.Label className="mt-2">Price:</Form.Label>
-            {/* TODO: allow only numbers */}
             <InputGroup>
               <Form.Control
                 type="text"
@@ -334,7 +333,6 @@ const FoodEditPanel = ({
               label="active"
               id="active"
               onChange={(e) => handleChange(e)}
-              // set value
             />
           </Form.Group>
           <Button variant="secondary" onClick={handleCancel}>

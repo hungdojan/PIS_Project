@@ -59,7 +59,6 @@ const FoodItemRow = ({ item, onChange, selectable }) => {
       <Col className="text-center my-auto">{capitalToUpperCase(item.type)}</Col>
       <Col className="text-center my-auto">{item.price}</Col>
       <Col className="text-center my-auto">
-        {/* TODO: */}
         {item.active ? 'Active' : 'Inactive'}
       </Col>
     </Row>
@@ -100,6 +99,7 @@ const FoodPricing = () => {
 
   useEffect(() => {
     fetchFoodItems();
+    fetchTypeListing();
   }, []);
 
   const fetchFoodItems = () => {
@@ -127,6 +127,21 @@ const FoodPricing = () => {
       })
     );
     setSelectedItem();
+  };
+
+  const fetchTypeListing = () => {
+    axios
+      .all([axios.get('/api/foods/types'), axios.get('/api/drinks/types')])
+      .then(
+        axios.spread((foodResp, drinkResp) => {
+          let _types = ['all'].concat(foodResp.data).concat(drinkResp.data);
+          // setTypes(_types);
+          setFilterValues({
+            ...filterValues,
+            type: _types,
+          });
+        })
+      );
   };
 
   const setActiveItem = (itemID) => {
@@ -188,6 +203,9 @@ const FoodPricing = () => {
           (_filters.active === 'active' && item.active) ||
           (_filters.active === 'inactive' && !item.active)
         );
+      })
+      .filter((item) => {
+        return _filters.type === 'all' || _filters.type === item.type;
       })
       .sort((a, b) => {
         switch (_filters.sort) {
