@@ -179,9 +179,15 @@ const FoodOrders = () => {
           <Col>
             <strong>Order ID:</strong> {order.id}
           </Col>
-          <Col>
-            <strong>Table ID:</strong> {order.toTable.id}
-          </Col>
+          {order.toTable ? (
+            <Col>
+              <strong>Table ID:</strong> {order.toTable.id}
+            </Col>
+          ) : (
+            <Col>
+              <strong>Room ID:</strong> {order.toRoom.id}
+            </Col>
+          )}
         </Row>
         <Row>
           <Col>
