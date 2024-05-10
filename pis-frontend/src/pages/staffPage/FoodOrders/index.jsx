@@ -9,17 +9,18 @@ const FoodOrders = () => {
     status: 'all',
     type: 'all',
     table: 'all',
-    date: '',
-    time: '',
+    room: 'all',
   });
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [tables, setTables] = useState([]);
+  const [rooms, setRooms] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedDelete, setSelectedDelete] = useState();
 
   useEffect(() => {
     fetchFoodOrders(); // Call fetchTables when the component mounts
     fetchTables();
+    fetchRooms();
   }, []); // Empty dependency array to mimic componentDidMount
 
   const fetchFoodOrders = () => {
@@ -53,6 +54,12 @@ const FoodOrders = () => {
       .then((resp) => setTables(['all', ...resp.data.map((table) => table.id)]))
       .catch((err) => alert(err));
   };
+  const fetchRooms = () => {
+    axios
+      .get('/api/rooms')
+      .then((resp) => setRooms(['all', ...resp.data.map((room) => room.id)]))
+      .catch((err) => alert(err));
+  };
 
   const handleStatusChange = (e) => {
     const newFilterState = {
@@ -76,6 +83,15 @@ const FoodOrders = () => {
     const newFilterState = {
       ...filters,
       table: e.target.value,
+    };
+    setFilters(newFilterState);
+    applyFilters(Object.values(orders), newFilterState);
+  };
+
+  const handleRoomChange = (e) => {
+    const newFilterState = {
+      ...filters,
+      room: e.target.value,
     };
     setFilters(newFilterState);
     applyFilters(Object.values(orders), newFilterState);
@@ -165,8 +181,14 @@ const FoodOrders = () => {
       // table
       .filter((item) => {
         return (
+          _filters.room === 'all' ||
+          (item.toRoom && parseInt(_filters.room) === item.toRoom.id)
+        );
+      })
+      .filter((item) => {
+        return (
           _filters.table === 'all' ||
-          parseInt(_filters.table) === item.toTable.id
+          (item.toTable && parseInt(_filters.table) === item.toTable.id)
         );
       });
     setFilteredOrders(_filteredItems);
@@ -264,6 +286,18 @@ const FoodOrders = () => {
           <Form.Label>Table: </Form.Label>
           <Form.Select value={filters.table} onChange={handleTableChange}>
             {tables.map((tableOpt) => {
+              return (
+                <option value={tableOpt}>
+                  {tableOpt === 'all' ? 'All' : tableOpt}
+                </option>
+              );
+            })}
+          </Form.Select>
+        </Col>
+        <Col md={2}>
+          <Form.Label>Room: </Form.Label>
+          <Form.Select value={filters.room} onChange={handleRoomChange}>
+            {rooms.map((tableOpt) => {
               return (
                 <option value={tableOpt}>
                   {tableOpt === 'all' ? 'All' : tableOpt}
