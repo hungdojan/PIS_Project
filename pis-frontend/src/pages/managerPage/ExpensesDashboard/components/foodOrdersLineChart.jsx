@@ -58,7 +58,7 @@ const OrdersLineChart = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '600px', maxHeight: '400px', margin: '0 auto' }}>
       <h2>Orders Over Time</h2>
       {chartData && <Line data={chartData} />}
     </div>

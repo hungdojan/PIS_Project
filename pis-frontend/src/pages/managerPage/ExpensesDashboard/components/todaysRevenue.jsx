@@ -14,7 +14,7 @@ const TodayRevenue = () => {
         // Calculate today's revenue
         let revenue = 0;
         const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-        orders.forEach(order => {
+        orders.forEach((order) => {
           if (order.atTime.startsWith(today)) {
             if (order.food) {
               revenue += order.food.price;
@@ -32,12 +32,12 @@ const TodayRevenue = () => {
     };
 
     fetchAllOrders(); // Call the function when component mounts
-
   }, []); // Run effect only once when component mounts
 
   return (
     <div>
-      <h2>Today's Revenue: ${todayRevenue}</h2>
+      <h3>{todayRevenue} €</h3>
+      <h4>Today's Revenue</h4>
     </div>
   );
 };

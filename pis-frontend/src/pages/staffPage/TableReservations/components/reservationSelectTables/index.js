@@ -78,12 +78,15 @@ function SelectRooms() {
         <Col>
           <Row>
             <h2>Table Reservation</h2>
-            <DisplayTables setSelectedTableId={setSelectedTableId} selectedTableId={selectedTableId}/>
+            <DisplayTables
+              setSelectedTableId={setSelectedTableId}
+              selectedTableId={selectedTableId}
+            />
           </Row>
         </Col>
         <Col>
           {/* Table reservation form */}
-          <ReservationForm selectedTableId={selectedTableId}/>
+          <ReservationForm selectedTableId={selectedTableId} />
         </Col>
       </Row>
     </>
@@ -99,7 +102,12 @@ const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
         const response = await fetch('/api/tables');
         if (response.ok) {
           const tableData = await response.json();
-          setTables(tableData);
+          // Assuming the response data structure is an array of table objects with 'id' and 'capacity' properties
+          const tablesWithCapacity = tableData.map(table => ({
+            id: table.id,
+            capacity: table.capacity
+          }));
+          setTables(tablesWithCapacity);
         } else {
           console.error('Failed to fetch tables');
         }
@@ -122,20 +130,25 @@ const DisplayTables = ({ setSelectedTableId, selectedTableId }) => {
           <Col key={table.id}>
             <div
               style={{
-                width: '100px',
-                height: '100px',
+                position: 'relative', // Ensure capacity text stays within the square
+                margin: '15px',
+                width: '150px',
+                height: '150px',
                 backgroundColor:
                   selectedTableId === table.id ? 'lightgreen' : 'lightblue',
-                border: '1px solid black',
+                borderRadius: '20px',
                 textAlign: 'center',
                 lineHeight: '100px', // Center content vertically
                 cursor: 'pointer',
               }}
               onClick={() => handleTableClick(table.id)}
             >
-              {`Table ${table.id}`}
-              <br />
-              {`Capacity: ${table.capacity}`}
+              <div style={{ marginBottom: '-50px' }}>
+                {`Table ${table.id}`}
+              </div>
+              <div style={{ position: 'absolute', bottom: '0  px', left: '0', right: '0' }}> {/* Adjust position of capacity text */}
+                {`Capacity: ${table.capacity}`}
+              </div>
             </div>
           </Col>
         ))}

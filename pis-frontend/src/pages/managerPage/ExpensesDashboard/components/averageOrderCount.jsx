@@ -10,9 +10,11 @@ const AverageOrderCount = () => {
       try {
         const response = await axios.get('/api/orders'); // Fetch all orders
         const orders = response.data;
-        
+
         // Calculate total number of days and total number of orders
-        const uniqueDays = new Set(orders.map(order => order.atTime.substring(0, 10))); // Extracting date part from atTime
+        const uniqueDays = new Set(
+          orders.map((order) => order.atTime.substring(0, 10))
+        ); // Extracting date part from atTime
         const totalDays = uniqueDays.size;
         const totalOrders = orders.length;
 
@@ -26,14 +28,14 @@ const AverageOrderCount = () => {
     };
 
     fetchAllOrders(); // Call the function when component mounts
-
   }, []); // Run effect only once when component mounts
 
   return (
     <div>
-      <h2>Average Order Count Per Day: {averageOrderCount}</h2>
+      <h3>{averageOrderCount}</h3>
+      <h4>Average Order Count Per Day </h4>
     </div>
   );
 };
 
-export  {AverageOrderCount};
+export { AverageOrderCount };

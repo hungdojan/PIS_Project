@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Col, Row } from 'react-bootstrap';
-
+import './reservationEditPanel.css'
 const ReservationForm = ({ selectedTableId }) => {
   // State to manage form inputs
   const [name, setName] = useState('');
@@ -281,7 +281,7 @@ const ReservationForm = ({ selectedTableId }) => {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className='table-submit-btn'>
           Submit
         </Button>
         {selectedTableId === null && (

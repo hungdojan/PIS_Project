@@ -6,3 +6,8 @@
 .food-values.active {
     background-color: #77dd77;
 }
+
+#root > div > div > div.manager-view.col > div > div > div.pt-3.pe-4.col-md-9.col-sm-12{
+    max-height: 100vh;
+    overflow: auto;
+}

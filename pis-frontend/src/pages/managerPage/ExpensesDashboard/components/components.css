@@ -1,0 +1,12 @@
+.expenses-col{
+    background-color: white;
+    padding: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 15px;
+}
+
+.manager-view{
+    padding-top: 20px;
+    background-color:beige;
+}

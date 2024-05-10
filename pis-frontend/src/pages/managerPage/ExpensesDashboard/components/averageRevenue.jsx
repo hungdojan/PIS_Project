@@ -37,7 +37,8 @@ const AverageRevenue = () => {
 
   return (
     <div>
-      <h2>Average Revenue: ${averageRevenue}</h2>
+    <h3>{averageRevenue}€</h3>
+      <h4>Average Revenue</h4>
     </div>
   );
 };

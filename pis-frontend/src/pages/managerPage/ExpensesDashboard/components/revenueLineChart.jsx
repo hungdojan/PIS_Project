@@ -79,7 +79,7 @@ const RevenueLineChart = () => {
     }
   }
   return (
-    <div>
+    <div style={{ maxWidth: '600px', maxHeight: '400px', margin: '0 auto' }}>
       <h2>Revenue Over Time</h2>
       {chartData && <Line data={chartData} options={options}></Line>}
     </div>

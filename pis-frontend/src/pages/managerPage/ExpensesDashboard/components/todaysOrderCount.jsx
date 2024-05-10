@@ -30,7 +30,8 @@ const TodayOrdersCount = () => {
 
   return (
     <div>
-      <h2>Total Orders Placed Today: {ordersCount}</h2>
+      <h3>{ordersCount}</h3>
+      <h4>Total Orders Placed Today</h4>
     </div>
   );
 };

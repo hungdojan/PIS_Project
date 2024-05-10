@@ -284,7 +284,7 @@ const RoomReservationForm = ({ selectedRoom }) => {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" className='room-submit-btn'>
           Submit
         </Button>
         {reservationStatus && (
