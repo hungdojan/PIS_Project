@@ -38,16 +38,58 @@ INSERT INTO Menu (name, description) VALUES ('Menu3', 'Menu for Wednesday');
 INSERT INTO Menu (name, description) VALUES ('Menu4', 'Menu for Thursday');
 INSERT INTO Menu (name, description) VALUES ('Menu5', 'Menu for Friday');
 
-INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Lemonade', NULL, 2.3, 'non-alcoholic',400, TRUE);
-INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Cola',  NULL, 1.99, 'non-alcoholic', 500, TRUE);
-INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Sprite', NULL, 1.99, 'non-alcoholic', 300, TRUE);
-INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Beer', NULL, 2.5, 'alcoholic', 500, TRUE);
-INSERT INTO Drink (name, description, price, type, volume, active) VALUES ('Coffee', NULL, 2.5, 'hot', 500, TRUE);
+INSERT INTO Drink (name, description, price, type, volume, active) VALUES
+('Lemonade', NULL, 2.3, 'non-alcoholic',400, TRUE),
+('Cola',  NULL, 1.99, 'non-alcoholic', 500, TRUE),
+('Sprite', NULL, 1.99, 'non-alcoholic', 300, TRUE),
+('Beer', NULL, 2.5, 'alcoholic', 500, TRUE),
+('Coffee', NULL, 2.5, 'hot', 500, TRUE),
+('Iced Tea', 'Refreshing blend of black tea and lemon', 2.5, 'non-alcoholic', 450, TRUE),
+('Orange Juice', 'Freshly squeezed oranges', 3.0, 'non-alcoholic', 350, TRUE),
+('Cranberry Cocktail', 'Tangy blend of cranberry and lime', 2.8, 'alcoholic', 400, TRUE),
+('Pineapple Punch', 'Sweet and tropical, with a hint of coconut', 3.2, 'non-alcoholic', 500, TRUE),
+('Ginger Ale', 'Sparkling ginger soda', 2.7, 'non-alcoholic', 330, TRUE),
+('Watermelon Cooler', 'Chilled watermelon juice with mint', 2.9, 'non-alcoholic', 450, TRUE),
+('Lime Soda', 'Fizzing lime soda', 2.4, 'non-alcoholic', 400, TRUE),
+('Mango Lassi', 'Creamy mango yogurt smoothie', 3.5, 'non-alcoholic', 350, TRUE),
+('Peach Iced Tea', 'Iced tea infused with peach essence', 3.3, 'non-alcoholic', 450, TRUE),
+('Strawberry Lemonade', 'Tart lemonade with a burst of strawberry', 2.8, 'non-alcoholic', 400, TRUE),
+('Coconut Water', 'Naturally hydrating coconut water', 2.6, 'non-alcoholic', 500, TRUE),
+('Blueberry Smoothie', 'Blend of blueberries, yogurt, and honey', 3.2, 'non-alcoholic', 400, TRUE),
+('Pomegranate Juice', 'Freshly squeezed pomegranates', 3.1, 'non-alcoholic', 350, TRUE),
+('Cucumber Mint Cooler', 'Cooling cucumber with a hint of mint', 2.9, 'non-alcoholic', 400, TRUE),
+('Apple Cider', 'Warm spiced apple cider', 3.4, 'hot', 350, TRUE),
+('Vanilla Milkshake', 'Classic creamy vanilla milkshake', 3.6, 'non-alcoholic', 400, TRUE),
+('Raspberry Lemonade', 'Zesty lemonade with a touch of raspberry', 2.7, 'non-alcoholic', 400, TRUE),
+('Passionfruit Punch', 'Exotic passionfruit blend with a splash of citrus', 3.0, 'non-alcoholic', 450, TRUE),
+('Mint Julep', 'Refreshing mint-infused drink', 3.3, 'alcoholic', 400, TRUE),
+('Grapefruit Spritzer', 'Bubbly grapefruit soda', 2.5, 'non-alcoholic', 330, TRUE);
 
-INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500, TRUE);
-INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('French Fries', 'Crispy and tasty', 3.50, 'side', '1,2', 200, TRUE);
-INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Chicken Salad', 'Grilled chicken with mixed greens', 8.99, 'meat', '1,2', 350, TRUE);
-INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES ('Vegan Burger', 'Delicious plant-based burger', 7.99, 'vegetarian', '1', 400, TRUE);
+INSERT INTO Food (name, description, price, type, allergens, grams, active) VALUES
+('Pork chop', 'Very delicious', 9.99, 'meat', '1,2', 500, TRUE),
+('French Fries', 'Crispy and tasty', 3.50, 'side', '1,2', 200, TRUE),
+('Chicken Salad', 'Grilled chicken with mixed greens', 8.99, 'meat', '1,2', 350, TRUE),
+('Vegan Burger', 'Delicious plant-based burger', 7.99, 'vegetarian', '1', 400, TRUE),
+('Beef Burger', 'Juicy beef patty with lettuce, tomato, and cheese', 8.99, 'meat', '1,2', 300, TRUE),
+('Grilled Chicken Sandwich', 'Tender grilled chicken breast with mayo and pickles', 7.49, 'meat', NULL, 350, TRUE),
+('Vegetarian Pizza', 'Loaded with fresh veggies and gooey cheese', 10.99, 'vegetarian', '3,4', 400, TRUE),
+('Shrimp Alfredo Pasta', 'Creamy alfredo sauce with succulent shrimp', 12.99, 'seafood', '5', 450, TRUE),
+('Margherita Pizza', 'Classic pizza topped with tomato sauce, mozzarella, and basil', 9.49, 'vegetarian', '3,4', 400, TRUE),
+('Salmon Fillet', 'Grilled salmon served with lemon butter sauce', 14.99, 'seafood', NULL, 350, TRUE),
+('Spaghetti Bolognese', 'Traditional Italian pasta dish with rich meat sauce', 11.99, 'meat', '1,2', 400, TRUE),
+('Caprese Salad', 'Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze', 6.99, 'vegetarian', NULL, 250, TRUE),
+('BBQ Ribs', 'Fall-off-the-bone ribs smothered in tangy BBQ sauce', 13.49, 'meat', NULL, 500, TRUE),
+('Mushroom Risotto', 'Creamy risotto with wild mushrooms and Parmesan cheese', 9.99, 'vegetarian', NULL, 350, TRUE),
+('Fish and Chips', 'Crispy battered fish served with fries and tartar sauce', 10.99, 'seafood', '5', 450, TRUE),
+('Caesar Salad', 'Romaine lettuce, croutons, Parmesan cheese, and Caesar dressing', 7.99, 'vegetarian', NULL, 300, TRUE),
+('Beef Tacos', 'Soft tortillas filled with seasoned ground beef, lettuce, and cheese', 8.49, 'meat', '1,2', 350, TRUE),
+('Vegetable Stir-Fry', 'Assorted vegetables sautéed in a savory sauce', 9.49, 'vegetarian', NULL, 300, TRUE),
+('Lobster Bisque', 'Rich and creamy soup made with tender lobster meat', 11.99, 'seafood', '5', 350, TRUE),
+('Eggplant Parmesan', 'Breaded and fried eggplant topped with marinara sauce and cheese', 9.99, 'vegetarian', '4', 400, TRUE),
+('Pulled Pork Sandwich', 'Slow-cooked pulled pork piled high on a bun with BBQ sauce', 9.49, 'meat', NULL, 400, TRUE),
+('Quinoa Salad', 'Nutty quinoa mixed with fresh vegetables and vinaigrette', 8.49, 'vegetarian', NULL, 300, TRUE),
+('Clam Chowder', 'Creamy New England-style soup loaded with clams and potatoes', 10.99, 'seafood', '5', 350, TRUE),
+('Falafel Wrap', 'Crispy falafel balls wrapped in pita bread with tahini sauce', 7.99, 'vegetarian', NULL, 350, TRUE);
 
 INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id) VALUES (99, '2024-06-27 17:50:06', 'food', 'Importand food', 1, 2);
 INSERT INTO Expenses (price, time, type, description, createdBy_id, orderedFrom_id) VALUES (150, '2024-06-28 13:00:00', 'equipment', 'Kitchen maintenance', 1, 2);
@@ -58,10 +100,96 @@ INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (1, 1);
 INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (3, 3);
 INSERT INTO Reservation_Tablee (Reservation_id, tables_id) VALUES (4, 4);
 
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-27 10:22:56', FALSE, '2024-06-29 14:22:56', FALSE, NULL, 1, NULL, 1);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-28 11:22:56', FALSE, '2024-06-29 13:22:56', FALSE, 1, NULL, NULL, 2);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, 2, NULL, 1, NULL);
-INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id) VALUES ('2024-06-30 15:22:56', FALSE, '2024-06-29 12:42:56', FALSE, NULL, 4, 2, NULL);
+INSERT INTO Order_ (atTime, prepared, preparedTime, payed, toRoom_id, toTable_id, food_id, drink_id)
+VALUES
+('2024-06-27 10:22:56', FALSE, '2024-06-29 14:22:56', FALSE, NULL, 1, NULL, 1),
+('2024-06-28 11:22:56', FALSE, '2024-06-29 13:22:56', FALSE, 1, NULL, NULL, 2),
+('2024-06-29 13:22:56', TRUE, '2024-06-29 12:22:56', TRUE, 2, NULL, 1, NULL),
+('2024-06-30 15:22:56', FALSE, '2024-06-29 12:42:56', FALSE, NULL, 4, 2, NULL),
+
+('2024-06-28 11:22:56', FALSE, '2024-06-28 13:22:56', TRUE, NULL, 1, 2, NULL),
+('2024-07-05 15:45:30', FALSE, '2024-07-05 17:45:30', TRUE, NULL, 2, 2, NULL),
+('2024-07-12 08:10:15', FALSE, '2024-07-12 10:10:15', TRUE, NULL, 3, 2, NULL),
+('2024-07-19 12:30:00', FALSE, '2024-07-19 14:30:00', FALSE, NULL, 4, 2, NULL),
+('2024-07-26 17:20:45', FALSE, '2024-07-26 19:20:45', FALSE, NULL, 5, 3, NULL),
+('2024-08-02 09:55:20', FALSE, '2024-08-02 11:55:20', FALSE, NULL, 1, 6, NULL),
+('2024-08-09 14:15:10', FALSE, '2024-08-09 16:15:10', FALSE, NULL, 2, 8, NULL),
+('2024-08-16 10:40:00', FALSE, '2024-08-16 12:40:00', FALSE, NULL, 3, 7, NULL),
+('2024-08-23 18:05:30', FALSE, '2024-08-23 20:05:30', FALSE, NULL, 4, 9, NULL),
+('2024-08-30 13:00:45', FALSE, '2024-08-30 15:00:45', FALSE, NULL, 5, 10, NULL),
+('2024-09-06 11:22:56', FALSE, '2024-09-06 13:22:56', FALSE, NULL, 1, 11, NULL),
+('2024-09-13 15:45:30', FALSE, '2024-09-13 17:45:30', FALSE, NULL, 2, 12, NULL),
+('2024-09-20 08:10:15', FALSE, '2024-09-20 10:10:15', FALSE, NULL, 3, 13, NULL),
+('2024-09-27 12:30:00', FALSE, '2024-09-27 14:30:00', TRUE, NULL, 4, 15, NULL),
+('2024-10-04 17:20:45', FALSE, '2024-10-04 19:20:45', TRUE, NULL, 5, 16, NULL),
+('2024-10-11 09:55:20', FALSE, '2024-10-11 11:55:20', TRUE, NULL, 1, 14, NULL),
+('2024-10-18 14:15:10', FALSE, '2024-10-18 16:15:10', FALSE, NULL, 2, 17, NULL),
+('2024-10-25 10:40:00', FALSE, '2024-10-25 12:40:00', FALSE, NULL, 3, 16, NULL),
+('2024-11-01 18:05:30', FALSE, '2024-11-01 20:05:30', FALSE, NULL, 4, 19, NULL),
+('2024-11-08 13:00:45', FALSE, '2024-11-08 15:00:45', FALSE, NULL, 5, 20, NULL),
+
+('2024-06-28 11:22:56', FALSE, '2024-06-28 13:22:56', TRUE, NULL, 1, NULL, 2),
+('2024-07-05 15:45:30', FALSE, '2024-07-05 17:45:30', TRUE, NULL, 2, NULL, 3),
+('2024-07-12 08:10:15', FALSE, '2024-07-12 10:10:15', TRUE, NULL, 3, NULL, 1),
+('2024-07-19 12:30:00', FALSE, '2024-07-19 14:30:00', FALSE, NULL, 4, NULL, 4),
+('2024-07-26 17:20:45', FALSE, '2024-07-26 19:20:45', FALSE, NULL, 5, NULL, 5),
+('2024-08-02 09:55:20', FALSE, '2024-08-02 11:55:20', FALSE, NULL, 1, NULL, 6),
+('2024-08-09 14:15:10', FALSE, '2024-08-09 16:15:10', FALSE, NULL, 2, NULL, 7),
+('2024-08-16 10:40:00', FALSE, '2024-08-16 12:40:00', FALSE, NULL, 3, NULL, 8),
+('2024-08-23 18:05:30', FALSE, '2024-08-23 20:05:30', FALSE, NULL, 4, NULL, 9),
+('2024-08-30 13:00:45', FALSE, '2024-08-30 15:00:45', FALSE, NULL, 5, NULL, 10),
+('2024-09-06 11:22:56', FALSE, '2024-09-06 13:22:56', FALSE, NULL, 1, NULL, 11),
+('2024-09-13 15:45:30', FALSE, '2024-09-13 17:45:30', FALSE, NULL, 2, NULL, 12),
+('2024-09-20 08:10:15', FALSE, '2024-09-20 10:10:15', FALSE, NULL, 3, NULL, 13),
+('2024-09-27 12:30:00', FALSE, '2024-09-27 14:30:00', TRUE, NULL, 4, NULL, 14),
+('2024-10-04 17:20:45', FALSE, '2024-10-04 19:20:45', TRUE, NULL, 5, NULL, 15),
+('2024-10-11 09:55:20', FALSE, '2024-10-11 11:55:20', TRUE, NULL, 1, NULL, 16),
+('2024-10-18 14:15:10', FALSE, '2024-10-18 16:15:10', FALSE, NULL, 2, NULL, 17),
+('2024-10-25 10:40:00', FALSE, '2024-10-25 12:40:00', FALSE, NULL, 3, NULL, 18),
+('2024-11-01 18:05:30', FALSE, '2024-11-01 20:05:30', FALSE, NULL, 4, NULL, 19),
+('2024-11-08 13:00:45', FALSE, '2024-11-08 15:00:45', FALSE, NULL, 5, NULL, 20),
+
+('2024-06-28 11:22:56', TRUE, '2024-06-28 13:22:56', TRUE, 1, NULL, 2, NULL),
+('2024-07-05 15:45:30', TRUE, '2024-07-05 17:45:30', TRUE, 2, NULL, 3, NULL),
+('2024-07-12 08:10:15', TRUE, '2024-07-12 10:10:15', TRUE, 3, NULL, 1, NULL),
+('2024-07-19 12:30:00', TRUE, '2024-07-19 14:30:00', TRUE, 4, NULL, 4, NULL),
+('2024-07-26 17:20:45', TRUE, '2024-07-26 19:20:45', TRUE, 1, NULL, 5, NULL),
+('2024-08-02 09:55:20', TRUE, '2024-08-02 11:55:20', TRUE, 2, NULL, 6, NULL),
+('2024-08-09 14:15:10', TRUE, '2024-08-09 16:15:10', TRUE, 3, NULL, 7, NULL),
+('2024-08-16 10:40:00', TRUE, '2024-08-16 12:40:00', TRUE, 4, NULL, 8, NULL),
+('2024-08-23 18:05:30', TRUE, '2024-08-23 20:05:30', TRUE, 1, NULL, 9, NULL),
+('2024-08-30 13:00:45', TRUE, '2024-08-30 15:00:45', TRUE, 2, NULL, 10, NULL),
+('2024-09-06 11:22:56', TRUE, '2024-09-06 13:22:56', TRUE, 3, NULL, 11, NULL),
+('2024-09-13 15:45:30', TRUE, '2024-09-13 17:45:30', TRUE, 4, NULL, 12, NULL),
+('2024-09-20 08:10:15', TRUE, '2024-09-20 10:10:15', TRUE, 1, NULL, 13, NULL),
+('2024-09-27 12:30:00', TRUE, '2024-09-27 14:30:00', TRUE, 2, NULL, 14, NULL),
+('2024-10-04 17:20:45', TRUE, '2024-10-04 19:20:45', TRUE, 3, NULL, 15, NULL),
+('2024-10-11 09:55:20', TRUE, '2024-10-11 11:55:20', TRUE, 4, NULL, 16, NULL),
+('2024-10-18 14:15:10', TRUE, '2024-10-18 16:15:10', TRUE, 1, NULL, 17, NULL),
+('2024-10-25 10:40:00', TRUE, '2024-10-25 12:40:00', TRUE, 2, NULL, 18, NULL),
+('2024-11-01 18:05:30', FALSE, '2024-11-01 20:05:30', FALSE, 3, NULL, 19, NULL),
+('2024-11-08 13:00:45', TRUE, '2024-11-08 15:00:45', FALSE, 4, NULL, 20, NULL),
+('2024-06-28 11:22:56', FALSE, '2024-06-28 13:22:56', FALSE, 1, NULL, NULL, 2),
+('2024-07-05 15:45:30', FALSE, '2024-07-05 17:45:30', FALSE, 2, NULL, NULL, 3),
+('2024-07-12 08:10:15', FALSE, '2024-07-12 10:10:15', FALSE, 3, NULL, NULL, 1),
+('2024-07-19 12:30:00', FALSE, '2024-07-19 14:30:00', FALSE, 4, NULL, NULL, 4),
+('2024-07-26 17:20:45', FALSE, '2024-07-26 19:20:45', FALSE, 1, NULL, NULL, 5),
+('2024-08-02 09:55:20', FALSE, '2024-08-02 11:55:20', FALSE, 2, NULL, NULL, 6),
+('2024-08-09 14:15:10', FALSE, '2024-08-09 16:15:10', FALSE, 3, NULL, NULL, 7),
+('2024-08-09 14:15:10', TRUE, '2024-08-09 16:15:10', TRUE, 3, NULL, NULL, 7),
+('2024-08-16 10:40:00', TRUE, '2024-08-16 12:40:00', TRUE, 4, NULL, NULL, 8),
+('2024-08-23 18:05:30', TRUE, '2024-08-23 20:05:30', TRUE, 1, NULL, NULL, 9),
+('2024-08-30 13:00:45', TRUE, '2024-08-30 15:00:45', TRUE, 2, NULL, NULL, 10),
+('2024-09-06 11:22:56', TRUE, '2024-09-06 13:22:56', TRUE, 3, NULL, NULL, 11),
+('2024-09-13 15:45:30', TRUE, '2024-09-13 17:45:30', TRUE, 4, NULL, NULL, 12),
+('2024-09-20 08:10:15', TRUE, '2024-09-20 10:10:15', TRUE, 1, NULL, NULL, 13),
+('2024-09-27 12:30:00', TRUE, '2024-09-27 14:30:00', TRUE, 2, NULL, NULL, 14),
+('2024-10-04 17:20:45', TRUE, '2024-10-04 19:20:45', TRUE, 3, NULL, NULL, 15),
+('2024-10-11 09:55:20', TRUE, '2024-10-11 11:55:20', TRUE, 4, NULL, NULL, 16),
+('2024-10-18 14:15:10', TRUE, '2024-10-18 16:15:10', TRUE, 1, NULL, NULL, 17),
+('2024-10-25 10:40:00', TRUE, '2024-10-25 12:40:00', TRUE, 2, NULL, NULL, 18),
+('2024-11-01 18:05:30', FALSE, '2024-11-01 20:05:30', FALSE, 3, NULL, NULL, 19),
+('2024-11-08 13:00:45', TRUE, '2024-11-08 15:00:45', FALSE, 4, NULL, NULL, 20);
 
 
 INSERT INTO Menu_Drink (Menu_id, drinks_id) VALUES (1, 1);
