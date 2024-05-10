@@ -42,6 +42,16 @@ const ManageRoomsDashboard = () => {
       .catch((err) => alert(err));
   };
 
+  const handleUpdateRoom = () => {
+    // axios.put('/api/rooms', selectRoom).then(() => fetchAll());
+    // setSelectRoom();
+  };
+
+  const handleUpdateTable = () => {
+    // axios.put('/api/tables', selectTable).then(() => fetchAll());
+    // setSelectTable();
+  };
+
   return (
     <Row>
       <Col className="manage-rooms ps-3">
@@ -54,7 +64,12 @@ const ManageRoomsDashboard = () => {
         />
       </Col>
       <Col md={3} className="editing-tool">
-        <TableEditForm room={selectRoom} table={selectTable} />
+        <TableEditForm
+          room={selectRoom}
+          table={selectTable}
+          onUpdateRoom={handleUpdateRoom}
+          onUpdateTable={handleUpdateTable}
+        />
       </Col>
     </Row>
   );
@@ -189,7 +204,7 @@ const TableManagement = ({ tables, fetchAll, setSelectTable }) => {
   );
 };
 
-const TableEditForm = ({ onSave, table, room }) => {
+const TableEditForm = ({ onUpdateRoom, onUpdateTable, table, room }) => {
   const [_room, setRoom] = useState({
     capacity: 0,
     description: '',
@@ -223,16 +238,16 @@ const TableEditForm = ({ onSave, table, room }) => {
     });
   };
   const handleRoomSave = () => {
-    onSave();
+    onUpdateRoom();
   };
   const handleTableSave = () => {
-    onSave();
+    onUpdateTable();
   };
 
   return (
     <>
       <div className="p-4">
-        <h4>Edit Room</h4>
+        <h4>Room info</h4>
         <div>
           <input
             id="description"
@@ -241,6 +256,7 @@ const TableEditForm = ({ onSave, table, room }) => {
             value={_room.description}
             className="input-field m-0 mb-2"
             onChange={handleRoomChange}
+            disabled
           />
         </div>
         <div>
@@ -251,17 +267,18 @@ const TableEditForm = ({ onSave, table, room }) => {
             value={_room.capacity}
             className="input-field m-0"
             onChange={handleRoomChange}
+            disabled
           />
         </div>
-        <div className="pt-3">
+        {/* <div className="pt-3">
           <Button onClick={handleRoomSave} className="me-2">
             Save
           </Button>
-        </div>
+        </div> */}
       </div>
 
       <div className="p-4">
-        <h4>Edit Table</h4>
+        <h4>Table info</h4>
         <div>
           <input
             id="capacity"
@@ -270,13 +287,14 @@ const TableEditForm = ({ onSave, table, room }) => {
             value={_table.capacity}
             className="input-field m-0"
             onChange={handleTableChange}
+            disabled
           />
         </div>
-        <div className="pt-3">
+        {/* <div className="pt-3">
           <Button onClick={handleTableSave} className="me-2">
             Save
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   );
