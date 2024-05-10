@@ -23,7 +23,6 @@ public class DrinksAPI {
     private UriInfo context;
 
     @GET
-    @JwtRoles({"staff", "manager"})
     @Produces({ MediaType.APPLICATION_JSON })
     public List<DrinkDTO> getAll(@QueryParam("active") Boolean active) {
         if (active == null) {
