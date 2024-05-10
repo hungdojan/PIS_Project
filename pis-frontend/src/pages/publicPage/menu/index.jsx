@@ -9,11 +9,16 @@ const MenuPage = () => {
   useEffect(() => {
     document.title = 'Menu Page';
     // Simulate fetching menu data when component mounts
-    axios.all([axios.get('/api/foods'), axios.get('/api/drinks')]).then(
-      axios.spread((foodResp, drinkResp) => {
-        setMenuData([...menuData, ...foodResp.data, ...drinkResp.data]);
-      })
-    );
+    axios
+      .all([
+        axios.get('/api/foods', { params: { active: true } }),
+        axios.get('/api/drinks', { params: { active: true } }),
+      ])
+      .then(
+        axios.spread((foodResp, drinkResp) => {
+          setMenuData([...menuData, ...foodResp.data, ...drinkResp.data]);
+        })
+      );
   }, []);
 
   const capitalToUpperCase = (str) => {

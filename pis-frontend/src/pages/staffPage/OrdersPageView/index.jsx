@@ -39,17 +39,6 @@ const OrdersPageView = () => {
 
     fetchTables();
     fetchAllMenuItems();
-
-    // // Handle correct 100% height with the navigation bar above the container
-    // function handleResize() {
-    //   const navbar = document.querySelector('.navbar-menu');
-    //   if (navbar) {
-    //     setNavbarHeight(navbar.offsetHeight);
-    //   }
-    // }
-    // handleResize();
-    // window.addEventListener('resize', handleResize);
-    // return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const fetchTables = () => {
@@ -64,24 +53,29 @@ const OrdersPageView = () => {
   };
 
   const fetchAllMenuItems = () => {
-    axios.all([axios.get('/api/foods'), axios.get('/api/drinks')]).then(
-      axios.spread((foodResp, drinkResp) => {
-        setAllFoodItems([
-          ...foodResp.data.map((item) => {
-            return {
-              ...item,
-              category: 'food',
-            };
-          }),
-          ...drinkResp.data.map((item) => {
-            return {
-              ...item,
-              category: 'drink',
-            };
-          }),
-        ]);
-      })
-    );
+    axios
+      .all([
+        axios.get('/api/foods', { params: { active: true } }),
+        axios.get('/api/drinks', { params: { active: true } }),
+      ])
+      .then(
+        axios.spread((foodResp, drinkResp) => {
+          setAllFoodItems([
+            ...foodResp.data.map((item) => {
+              return {
+                ...item,
+                category: 'food',
+              };
+            }),
+            ...drinkResp.data.map((item) => {
+              return {
+                ...item,
+                category: 'drink',
+              };
+            }),
+          ]);
+        })
+      );
   };
 
   const fetchOrderForTable = (table) => {

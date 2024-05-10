@@ -63,6 +63,17 @@ const FoodEditPanel = ({
     setFoodItem(updateFoodItem);
   };
 
+  const handleCheckboxChange = (e) => {
+    setEdit(true);
+    lockFunction(false);
+    const updateFoodItem = {
+      ...foodItem,
+      active: e.target.checked,
+    };
+    console.log(updateFoodItem);
+    setFoodItem(updateFoodItem);
+  };
+
   const resetState = () => {
     setShowCancelModal(false);
     setShowDeleteModal(false);
@@ -332,7 +343,8 @@ const FoodEditPanel = ({
               type="checkbox"
               label="active"
               id="active"
-              onChange={(e) => handleChange(e)}
+              checked={foodItem.active}
+              onChange={(e) => handleCheckboxChange(e)}
             />
           </Form.Group>
           <Button variant="secondary" onClick={handleCancel}>
