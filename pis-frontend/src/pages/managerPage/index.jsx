@@ -1,19 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
-import {
-  Nav,
-  NavItem,
-  NavLink,
-  Form,
-  Dropdown,
-  DropdownButton,
-  Container,
-  Row,
-  Col,
-  Button,
-} from 'react-bootstrap';
+import { Nav, Container, Row, Col, Button } from 'react-bootstrap';
 import './ManagerPage.css';
-import { FaTrash } from 'react-icons/fa';
+import { Expenses } from './ExpensesDashboard';
 import FoodPricing from './FoodPricing';
 import ManageRoomsDashboard from './RoomReservation';
 
@@ -120,52 +109,7 @@ const Sidebar = ({ handleNavItemClick = () => {}, activeNavItem = '' }) => {
       <Button variant="danger" onClick={handleLogout}>
         Logout
       </Button>
-
-      {/* <DropdownButton
-          id="dropdownUser2"
-          title={
-            <img
-              src="https://github.com/mdo.png"
-              alt=""
-              width="32"
-              height="32"
-              className="rounded-circle me-2"
-            />
-          }
-        >
-          <Dropdown.Item href="#">New project...</Dropdown.Item>
-          <Dropdown.Item href="#">Settings</Dropdown.Item>
-          <Dropdown.Item href="#">Profile</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item href="#">Sign out</Dropdown.Item>
-        </DropdownButton> */}
     </div>
-  );
-};
-
-// =========== VIEW 2 ===========
-const Expenses = () => {
-  return (
-    <Container fluid>
-      {/* First row with 4 elements */}
-      <Row className="mb-3">
-        <Col>Element 1</Col>
-        <Col>Element 2</Col>
-        <Col>Element 3</Col>
-        <Col>Element 4</Col>
-      </Row>
-      {/* Second row with 2 elements */}
-      <Row className="mb-3">
-        <Col md={9}>Element 5</Col>
-        <Col md={3}>Element 6</Col>
-      </Row>
-      {/* Third row with 3 elements */}
-      <Row>
-        <Col md={6}>Element 7</Col>
-        <Col md={3}>Element 8</Col>
-        <Col md={3}>Element 9</Col>
-      </Row>
-    </Container>
   );
 };
 

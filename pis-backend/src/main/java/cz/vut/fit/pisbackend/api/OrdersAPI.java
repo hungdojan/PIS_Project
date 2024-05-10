@@ -173,7 +173,6 @@ public class OrdersAPI {
 
     @DELETE
     @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteOrder(@PathParam("id") long id)
     {

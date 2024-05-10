@@ -17,7 +17,7 @@ public class Table {
     private int capacity;
     @ManyToMany(mappedBy="tables")
     private Collection<Reservation> reservations;
-    @OneToMany(mappedBy = "toTable")
+    @OneToMany(mappedBy = "toTable", cascade=CascadeType.MERGE,fetch = FetchType.LAZY)
     private Collection<Order> orders;
 
     public Table() {
