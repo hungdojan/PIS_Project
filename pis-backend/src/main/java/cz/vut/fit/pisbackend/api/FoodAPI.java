@@ -1,5 +1,6 @@
 package cz.vut.fit.pisbackend.api;
 
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.DrinkDTO;
 import cz.vut.fit.pisbackend.api.dto.FoodDTO;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
@@ -22,6 +23,7 @@ public class FoodAPI {
     private UriInfo context;
 
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces({ MediaType.APPLICATION_JSON })
     public List<FoodDTO> getAll(@QueryParam("active") Boolean active) {
         if (active == null) {
@@ -32,6 +34,7 @@ public class FoodAPI {
     }
 
     @POST
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createFood(FoodDTO food) {
@@ -56,6 +59,7 @@ public class FoodAPI {
 
     @PUT
     @Path("{id}")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateFood(FoodDTO food)
@@ -79,6 +83,7 @@ public class FoodAPI {
 
     @DELETE
     @Path("{id}")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteFood(@PathParam("id") long id)

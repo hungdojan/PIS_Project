@@ -1,5 +1,6 @@
 package cz.vut.fit.pisbackend.api;
 
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.ResponseMessageDTO;
 import cz.vut.fit.pisbackend.api.dto.MenuDTO;
 import cz.vut.fit.pisbackend.api.dto.MenuResponseDTO;
@@ -39,6 +40,7 @@ public class MenuAPI {
     }
 
     @POST
+    @JwtRoles({"manager"})
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response addMenu(MenuDTO menu)
@@ -57,6 +59,7 @@ public class MenuAPI {
     }
 
     @PUT
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateMenu(MenuDTO menu)
@@ -81,9 +84,10 @@ public class MenuAPI {
 
     @DELETE
     @Path("{id}")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteOrder(@PathParam("id") long id)
+    public Response deleteMenu(@PathParam("id") long id)
     {
         Menu found = menuMgr.find(id);
         if (found == null) {

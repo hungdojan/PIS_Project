@@ -1,5 +1,6 @@
 package cz.vut.fit.pisbackend.api;
 
+import cz.vut.fit.pisbackend.JwtRoles;
 import cz.vut.fit.pisbackend.api.dto.*;
 import cz.vut.fit.pisbackend.data.EmployeeManager;
 import cz.vut.fit.pisbackend.data.Reservation;
@@ -30,6 +31,7 @@ public class ReservationsAPI {
     private UriInfo uriInfo;
 
     @GET
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationResponseDTO> getReservations() {
         return reservationMngr.findAll().stream().map(r -> new ReservationResponseDTO(r)).toList();
@@ -37,6 +39,7 @@ public class ReservationsAPI {
 
     @GET
     @Path("/{id}")
+    @JwtRoles({"staff", "manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response getReservationById(@PathParam("id") long id) {
         Reservation reservation = reservationMngr.find(id);
@@ -47,6 +50,7 @@ public class ReservationsAPI {
     }
 
     @POST
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createReservation(ReservationDTO reservationDTO) {
@@ -67,6 +71,7 @@ public class ReservationsAPI {
 
     @PUT
     @Path("/{id}")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updateReservation(@PathParam("id") Long id, ReservationDTO reservationDTO) {
@@ -89,6 +94,7 @@ public class ReservationsAPI {
 
     @DELETE
     @Path("/{id}")
+    @JwtRoles({"manager"})
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteReservation(@PathParam("id") Long id) {
         Reservation reservation = reservationMngr.find(id);
@@ -101,6 +107,7 @@ public class ReservationsAPI {
 
     @POST
     @Path("/reservationstime")
+    @JwtRoles({"manager"})
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<ReservationResponseDTO> getReservationTime(ReservationDTO reservationDTO) {
